@@ -14,6 +14,7 @@ buildscript {
         hilt_lifecycle = "1.0.0-alpha03"
         hilt_navigation = "1.0.0-alpha03"
         work_version = "2.7.1"
+        room_version = "2.4.1"
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:8.1.1'
