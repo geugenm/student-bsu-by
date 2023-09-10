@@ -69,130 +69,122 @@ import me.onebone.toolbar.rememberCollapsingToolbarScaffoldState
 @ExperimentalToolbarApi
 @ExperimentalMaterialApi
 @Composable
-fun HostelScreen(
-    isTablet: Boolean,
-    onMenuClicked: () -> Unit,
-    hostelViewModel: HostelViewModel = hiltViewModel()
-) {
+fun HostelScreen(isTablet: Boolean, onMenuClicked: () -> Unit, hostelViewModel: HostelViewModel = hiltViewModel()
+                )
+{
 
-    val state by hostelViewModel.hostelStateCommunication
-        .collectAsState()
+    val state by hostelViewModel.hostelStateCommunication.collectAsState()
 
-    when (state) {
-        is DataState.Success<*> -> {
-            when (val value = state.valueOrNull()) {
+    when (state)
+    {
+        is DataState.Success<*> ->
+        {
+            when (val value = state.valueOrNull())
+            {
                 is HostelState.Provided -> ProvidedHostelScreen(
-                    isTablet = isTablet,
-                    address = value.address,
-                    onMenuClicked = onMenuClicked,
-                    onShowOnMapClicked = {
+                    isTablet = isTablet, address = value.address, onMenuClicked = onMenuClicked, onShowOnMapClicked = {
                         hostelViewModel.handle(
                             HostelEvent.ShowHostelOnMapClicked(
                                 value
-                            )
-                        )
+                                                              )
+                                              )
 
-                    },
-                    image = hostelViewModel.getHostelImage(value),
-                    updater = hostelViewModel
-                )
+                    }, image = hostelViewModel.getHostelImage(value), updater = hostelViewModel
+                                                               )
 
                 is HostelState.NotProvided -> NonProvidedHostelScreen(
-                    isTablet,
-                    ads = value.adverts,
-                    viewModel = hostelViewModel,
-                    onMenuClicked = onMenuClicked
-                )
+                    isTablet, ads = value.adverts, viewModel = hostelViewModel, onMenuClicked = onMenuClicked
+                                                                     )
+
+                else ->
+                {
+                }
             }
         }
 
-        is DataState.Loading -> LoadingHostelScreen(
+        is DataState.Loading    -> LoadingHostelScreen(
             isTablet = isTablet,
             onMenuClicked = onMenuClicked,
-        )
+                                                      )
 
-        is DataState.Empty -> ErrorScreen(
+        is DataState.Empty      -> ErrorScreen(
             isTablet = isTablet,
             toolbarText = stringResource(id = R.string.hostel),
             onMenuClicked = onMenuClicked,
             updater = hostelViewModel,
             error = stringResource(id = R.string.error_load_timetable)
-        )
+                                              )
 
-        is DataState.Error -> ErrorScreen(
+        is DataState.Error      -> ErrorScreen(
             isTablet = isTablet,
             toolbarText = stringResource(id = R.string.hostel),
             onMenuClicked = onMenuClicked,
             updater = hostelViewModel,
             error = stringResource(id = (state as DataState.Error).message)
-        )
+                                              )
     }
 }
 
 @Composable
-fun LoadingHostelScreen(
-    isTablet: Boolean,
-    onMenuClicked: () -> Unit = {}
-) {
+fun LoadingHostelScreen(isTablet: Boolean, onMenuClicked: () -> Unit = {}
+                       )
+{
 
     Box(
         Modifier
             .fillMaxSize()
             .bsuBackgroundPattern(
-                MaterialTheme.colors.primary.copy(alpha = .05f),
-                true
-            ),
-    ) {
+                MaterialTheme.colors.primary.copy(alpha = .05f), true
+                                 ),
+       ) {
         Column(
             Modifier
                 .background(MaterialTheme.colors.secondary)
                 .zIndex(2f)
-        ) {
+              ) {
             Spacer(modifier = Modifier.statusBarsHeight())
             TopAppBar(
-                elevation = 0.dp,
-                backgroundColor = Color.Transparent
-            ) {
-                if (!isTablet) {
+                elevation = 0.dp, backgroundColor = Color.Transparent
+                     ) {
+                if (!isTablet)
+                {
                     NavigationMenuButton(onClick = onMenuClicked)
                 }
                 Text(
                     text = stringResource(id = R.string.hostel),
                     color = MaterialTheme.colors.onSecondary,
                     style = MaterialTheme.typography.subtitle1
-                )
+                    )
             }
         }
         BsuProgressBar(
-            modifier = Modifier.align(Alignment.Center),
-            tint = MaterialTheme.colors.primary
-        )
+            modifier = Modifier.align(Alignment.Center), tint = MaterialTheme.colors.primary
+                      )
     }
 }
 
 
 @ExperimentalToolbarApi
 @Composable
-private fun ProvidedHostelScreen(
-    isTablet: Boolean,
-    address: String,
-    onMenuClicked: () -> Unit,
-    onShowOnMapClicked: () -> Unit,
-    image: String? = null,
-    updater: Updatable
-) {
+private fun ProvidedHostelScreen(isTablet: Boolean,
+                                 address: String,
+                                 onMenuClicked: () -> Unit,
+                                 onShowOnMapClicked: () -> Unit,
+                                 image: String? = null,
+                                 updater: Updatable
+                                )
+{
 
     val scaffoldState = rememberCollapsingToolbarScaffoldState()
     val refreshState = rememberSwipeRefreshState(
         isRefreshing = updater.isUpdating.collectAsState().value
-    )
+                                                )
     LaunchedEffect(Unit) {
         scaffoldState.toolbarState.collapse(0)
         scaffoldState.toolbarState.expand(500)
     }
 
-    CollapsingToolbarScaffold(
-        modifier = Modifier.fillMaxSize(),
+    CollapsingToolbarScaffold(modifier = Modifier.fillMaxSize(),
         state = scaffoldState,
         enabled = false,
         scrollStrategy = ScrollStrategy.ExitUntilCollapsed,
@@ -201,10 +193,10 @@ private fun ProvidedHostelScreen(
             Column(Modifier.zIndex(2f)) {
                 Spacer(modifier = Modifier.statusBarsHeight())
                 TopAppBar(
-                    backgroundColor = Color.Transparent,
-                    elevation = 0.dp
-                ) {
-                    if (!isTablet) {
+                    backgroundColor = Color.Transparent, elevation = 0.dp
+                         ) {
+                    if (!isTablet)
+                    {
                         NavigationMenuButton(onClick = onMenuClicked)
                     }
                     AnimatedVisibility(visible = scaffoldState.toolbarState.progress == 0f) {
@@ -212,24 +204,21 @@ private fun ProvidedHostelScreen(
                             text = stringResource(id = R.string.hostel),
                             color = MaterialTheme.colors.onSecondary,
                             style = MaterialTheme.typography.subtitle1
-                        )
+                            )
                     }
                 }
             }
             image?.let {
-                GlideImage(
-                    imageModel = it,
+                GlideImage(imageModel = it,
                     modifier = Modifier
                         .fillMaxWidth()
                         .aspectRatio(1.4f)
                         .alpha(scaffoldState.toolbarState.progress),
                     loading = {
                         BsuProgressBar(
-                            modifier = Modifier.align(Alignment.Center),
-                            tint = MaterialTheme.colors.primary
-                        )
-                    }
-                )
+                            modifier = Modifier.align(Alignment.Center), tint = MaterialTheme.colors.primary
+                                      )
+                    })
             }
         }) {
         SwipeRefresh(
@@ -242,10 +231,9 @@ private fun ProvidedHostelScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .bsuBackgroundPattern(
-                    MaterialTheme.colors.primary.copy(alpha = .05f),
-                    true
-                )
-        ) {
+                    MaterialTheme.colors.primary.copy(alpha = .05f), true
+                                     )
+                    ) {
 
             Column(
                 Modifier
@@ -254,53 +242,47 @@ private fun ProvidedHostelScreen(
                     }
                     .fillMaxSize()
                     .verticalScroll(rememberScrollState()),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
+                horizontalAlignment = Alignment.CenterHorizontally) {
 
                 Card(
                     modifier = Modifier
                         .padding(
-                            horizontal = 30.dp,
-                            vertical = 30.dp
-                        )
+                            horizontal = 30.dp, vertical = 30.dp
+                                )
                         .widthIn(max = 400.dp),
                     elevation = 3.dp,
                     backgroundColor = MaterialTheme.colors.secondary,
-                ) {
-                    Column(
-                        modifier = Modifier
-                            .padding(20.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
+                    Column(
+                        modifier = Modifier.padding(20.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                          ) {
                         Text(
                             text = stringResource(id = R.string.hostel_provided),
                             style = MaterialTheme.typography.h2,
                             textAlign = TextAlign.Center
-                        )
+                            )
                         Spacer(modifier = Modifier.height(10.dp))
                         Text(
-                            text = address,
-                            textAlign = TextAlign.Center,
-                            style = MaterialTheme.typography.subtitle1
-                        )
+                            text = address, textAlign = TextAlign.Center, style = MaterialTheme.typography.subtitle1
+                            )
                     }
                 }
                 Button(
                     onClick = onShowOnMapClicked,
-                ) {
+                      ) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically
-                    ) {
+                       ) {
                         Icon(
                             imageVector = Icons.Default.Place,
                             tint = MaterialTheme.colors.onPrimary,
                             contentDescription = "Show on map"
-                        )
+                            )
                         Spacer(modifier = Modifier.width(10.dp))
                         Text(
-                            text = stringResource(id = R.string.show_on_map),
-                            color = MaterialTheme.colors.onPrimary
-                        )
+                            text = stringResource(id = R.string.show_on_map), color = MaterialTheme.colors.onPrimary
+                            )
                     }
                 }
 
@@ -316,44 +298,41 @@ private fun NonProvidedHostelScreen(
     ads: List<HostelAdvert>,
     viewModel: HostelViewModel,
     onMenuClicked: () -> Unit,
-) {
+                                   )
+{
 
     var needShowDialog by rememberSaveable {
         mutableStateOf(true)
     }
 
-    if (needShowDialog) {
+    if (needShowDialog)
+    {
         Dialog(onDismissRequest = { needShowDialog = false }) {
             Card(backgroundColor = MaterialTheme.colors.secondary) {
                 Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier.padding(
-                        horizontal = 10.dp,
-                        vertical = 5.dp
-                    )
-                ) {
+                    horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.padding(
+                        horizontal = 10.dp, vertical = 5.dp
+                                                                                                   )
+                      ) {
                     Text(
                         text = stringResource(id = R.string.hostel_not_provided),
                         style = MaterialTheme.typography.subtitle1,
                         textAlign = TextAlign.Center,
-                    )
+                        )
                     Spacer(modifier = Modifier.height(10.dp))
                     Text(
                         text = stringResource(id = R.string.hostel_not_provided_ext),
                         style = MaterialTheme.typography.body1,
                         textAlign = TextAlign.Center,
-                    )
+                        )
                     Spacer(modifier = Modifier.height(10.dp))
 
                     TextButton(
-                        onClick = { needShowDialog = false },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                    ) {
+                        onClick = { needShowDialog = false }, modifier = Modifier.fillMaxWidth()
+                              ) {
                         Text(
-                            text = stringResource(id = R.string.close),
-                            color = MaterialTheme.colors.onSecondary
-                        )
+                            text = stringResource(id = R.string.close), color = MaterialTheme.colors.onSecondary
+                            )
                     }
                 }
             }
@@ -363,7 +342,7 @@ private fun NonProvidedHostelScreen(
     val scaffoldState = rememberCollapsingToolbarScaffoldState()
     val refreshState = rememberSwipeRefreshState(
         isRefreshing = viewModel.isUpdating.collectAsState().value
-    )
+                                                )
 
     Column {
         Spacer(
@@ -372,68 +351,56 @@ private fun NonProvidedHostelScreen(
                 .fillMaxWidth()
                 .statusBarsHeight()
                 .background(MaterialTheme.colors.secondary)
-        )
-        CollapsingToolbarScaffold(
-            modifier = Modifier
-                .fillMaxSize()
-                .zIndex(1f),
+              )
+        CollapsingToolbarScaffold(modifier = Modifier
+            .fillMaxSize()
+            .zIndex(1f),
             state = scaffoldState,
             scrollStrategy = ScrollStrategy.EnterAlwaysCollapsed,
             toolbarModifier = Modifier.background(MaterialTheme.colors.secondary),
             toolbar = {
                 Column(
                     modifier = Modifier.animateContentSize()
-                ) {
+                      ) {
 
                     TopAppBar(
-                        backgroundColor = Color.Transparent,
-                        elevation = 1.dp
-                    ) {
-                        if (!isTablet) {
+                        backgroundColor = Color.Transparent, elevation = 1.dp
+                             ) {
+                        if (!isTablet)
+                        {
                             NavigationMenuButton(onClick = onMenuClicked)
                         }
                         Text(
                             text = stringResource(id = R.string.hostel),
                             color = MaterialTheme.colors.onSecondary,
                             style = MaterialTheme.typography.subtitle1
-                        )
+                            )
                     }
                 }
             }) {
             SwipeRefresh(
-                state = refreshState,
-                onRefresh = viewModel::update,
-                indicator = { state, offset ->
+                state = refreshState, onRefresh = viewModel::update, indicator = { state, offset ->
                     BsuProgressBarSwipeRefreshIndicator(state = state, trigger = offset)
-                },
-                modifier = Modifier
+                }, modifier = Modifier
                     .fillMaxSize()
                     .bsuBackgroundPattern(
-                        MaterialTheme.colors.primary.copy(alpha = .05f),
-                        true
-                    )
-            ) {
+                        MaterialTheme.colors.primary.copy(alpha = .05f), true
+                                         )
+                        ) {
 
-                LazyColumn(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .graphicsLayer {
-                            translationY = refreshState.indicatorOffset
-                        }
+                LazyColumn(modifier = Modifier
+                    .fillMaxSize()
+                    .graphicsLayer {
+                        translationY = refreshState.indicatorOffset
+                    }
 
-                ) {
+                          ) {
                     items(ads.size) {
-                        HostelAdWidget(
-                            modifier = Modifier
-                                .padding(5.dp),
-                            ad = ads[it],
-                            onLocateClicked = {
-                                viewModel.handle(HostelEvent.ShowAdOnMapClicked(ads[it]))
-                            },
-                            onCallClicked = {
-                                viewModel.handle(HostelEvent.CallClicked(ads[it]))
-                            }
-                        )
+                        HostelAdWidget(modifier = Modifier.padding(5.dp), ad = ads[it], onLocateClicked = {
+                            viewModel.handle(HostelEvent.ShowAdOnMapClicked(ads[it]))
+                        }, onCallClicked = {
+                            viewModel.handle(HostelEvent.CallClicked(ads[it]))
+                        })
                     }
                     item { Spacer(modifier = Modifier.navigationBarsWithImePadding()) }
                 }
