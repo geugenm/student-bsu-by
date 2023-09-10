@@ -96,7 +96,7 @@ dependencies {
     implementation "com.google.accompanist:accompanist-navigation-animation:0.21.2-beta"
 
     // Preferences
-    implementation "androidx.preference:preference-ktx:1.1.1"
+    implementation "androidx.preference:preference-ktx:1.2.1"
 
     // Cookie Management
     implementation 'com.github.franmontiel:PersistentCookieJar:v1.0.1'

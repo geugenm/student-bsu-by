@@ -57,11 +57,9 @@ fun StudentbsubyTheme(
     fun update() {
 
         activity.window.apply {
-          //  navigationBarColor = ContextCompat.getColor(activity, navBarColor)
             decorView.systemUiVisibility = if (!isDark)
                 View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
             else 0
-//            statusBarColor = android.graphics.Color.WHITE
         }
     }
 
