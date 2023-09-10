@@ -22,7 +22,7 @@ class NewsRepository @Inject constructor(
         dao.getAll()
     }.getOrNull()
 
-    override suspend fun getFromWeb(): List<News>? {
+    override suspend fun getFromWeb(): List<News> {
         return Jsoup.parse(api.news().html())
             .getElementsByClass("LineMain")
             .first()

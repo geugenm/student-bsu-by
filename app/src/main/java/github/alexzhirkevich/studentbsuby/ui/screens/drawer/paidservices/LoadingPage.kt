@@ -11,9 +11,10 @@ import github.alexzhirkevich.studentbsuby.ui.common.BsuProgressBar
 
 @Composable
 fun PaidServicesLoadingPage() {
-    Box(modifier = Modifier
-        .fillMaxSize()
-    ){
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+    ) {
         BsuProgressBar(
             Modifier.align(Alignment.Center),
             size = 100.dp,

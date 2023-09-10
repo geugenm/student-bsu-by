@@ -4,11 +4,28 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Tab
+import androidx.compose.material.TabRow
+import androidx.compose.material.Text
+import androidx.compose.material.TopAppBar
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -22,7 +39,11 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.insets.LocalWindowInsets
 import com.google.accompanist.insets.statusBarsHeight
 import com.google.accompanist.insets.statusBarsPadding
-import com.google.accompanist.pager.*
+import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.HorizontalPager
+import com.google.accompanist.pager.PagerState
+import com.google.accompanist.pager.pagerTabIndicatorOffset
+import com.google.accompanist.pager.rememberPagerState
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import github.alexzhirkevich.studentbsuby.R
@@ -35,7 +56,13 @@ import github.alexzhirkevich.studentbsuby.util.animatedSquaresBackground
 import github.alexzhirkevich.studentbsuby.util.bsuBackgroundPattern
 import github.alexzhirkevich.studentbsuby.util.communication.collectAsState
 import kotlinx.coroutines.launch
-import me.onebone.toolbar.*
+import me.onebone.toolbar.CollapsingToolbarScaffold
+import me.onebone.toolbar.CollapsingToolbarScope
+import me.onebone.toolbar.CollapsingToolbarState
+import me.onebone.toolbar.ExperimentalToolbarApi
+import me.onebone.toolbar.ScrollStrategy
+import me.onebone.toolbar.rememberCollapsingToolbarScaffoldState
+import me.onebone.toolbar.rememberCollapsingToolbarState
 
 private const val TabsHeight = 40
 
@@ -47,7 +74,7 @@ private const val TabsHeight = 40
 fun TimetableScreen(
     isTablet: Boolean,
     timetableViewModel: TimetableViewModel = hiltViewModel(),
-    onMenuClicked : () -> Unit = {},
+    onMenuClicked: () -> Unit = {},
 ) {
 
     val scaffoldState = rememberCollapsingToolbarScaffoldState(
@@ -97,7 +124,7 @@ fun TimetableScreen(
 @ExperimentalPagerApi
 @Composable
 private fun CollapsingToolbarScope.Toolbar(
-    isTablet : Boolean,
+    isTablet: Boolean,
     toolbarState: CollapsingToolbarState,
     pagerState: PagerState,
     viewModel: TimetableViewModel,
@@ -164,7 +191,7 @@ private fun CollapsingToolbarScope.Toolbar(
             Column {
                 Text(
                     text = stringArrayResource(id = R.array.weekdays)
-                            [viewModel.dayOfWeek],
+                        [viewModel.dayOfWeek],
                     style = MaterialTheme.typography.h2,
                     color = MaterialTheme.colors.primary
 
@@ -292,6 +319,7 @@ private fun Body(
                     }
                 }
             }
+
             DataState.Empty -> {
                 Box(
                     modifier = Modifier
@@ -307,6 +335,7 @@ private fun Body(
                     )
                 }
             }
+
             is DataState.Error -> {
                 Box(
                     modifier = Modifier
@@ -322,6 +351,7 @@ private fun Body(
                     )
                 }
             }
+
             DataState.Loading -> {
                 Box(Modifier.fillMaxSize()) {
                     BsuProgressBar(

@@ -3,15 +3,36 @@ package github.alexzhirkevich.studentbsuby.ui.screens.drawer.hostel
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.*
+import androidx.compose.material.Button
+import androidx.compose.material.Card
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
+import androidx.compose.material.TextButton
+import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Place
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -33,8 +54,8 @@ import github.alexzhirkevich.studentbsuby.data.models.HostelAdvert
 import github.alexzhirkevich.studentbsuby.repo.HostelState
 import github.alexzhirkevich.studentbsuby.ui.common.BsuProgressBar
 import github.alexzhirkevich.studentbsuby.ui.common.BsuProgressBarSwipeRefreshIndicator
-import github.alexzhirkevich.studentbsuby.ui.common.NavigationMenuButton
 import github.alexzhirkevich.studentbsuby.ui.common.ErrorScreen
+import github.alexzhirkevich.studentbsuby.ui.common.NavigationMenuButton
 import github.alexzhirkevich.studentbsuby.util.DataState
 import github.alexzhirkevich.studentbsuby.util.Updatable
 import github.alexzhirkevich.studentbsuby.util.bsuBackgroundPattern
@@ -49,8 +70,8 @@ import me.onebone.toolbar.rememberCollapsingToolbarScaffoldState
 @ExperimentalMaterialApi
 @Composable
 fun HostelScreen(
-    isTablet : Boolean,
-    onMenuClicked : () -> Unit,
+    isTablet: Boolean,
+    onMenuClicked: () -> Unit,
     hostelViewModel: HostelViewModel = hiltViewModel()
 ) {
 
@@ -65,14 +86,17 @@ fun HostelScreen(
                     address = value.address,
                     onMenuClicked = onMenuClicked,
                     onShowOnMapClicked = {
-                        hostelViewModel.handle(HostelEvent.ShowHostelOnMapClicked(
-                            value
-                        ))
+                        hostelViewModel.handle(
+                            HostelEvent.ShowHostelOnMapClicked(
+                                value
+                            )
+                        )
 
                     },
                     image = hostelViewModel.getHostelImage(value),
                     updater = hostelViewModel
                 )
+
                 is HostelState.NotProvided -> NonProvidedHostelScreen(
                     isTablet,
                     ads = value.adverts,
@@ -81,17 +105,20 @@ fun HostelScreen(
                 )
             }
         }
+
         is DataState.Loading -> LoadingHostelScreen(
             isTablet = isTablet,
             onMenuClicked = onMenuClicked,
         )
+
         is DataState.Empty -> ErrorScreen(
-            isTablet=isTablet,
+            isTablet = isTablet,
             toolbarText = stringResource(id = R.string.hostel),
             onMenuClicked = onMenuClicked,
             updater = hostelViewModel,
             error = stringResource(id = R.string.error_load_timetable)
         )
+
         is DataState.Error -> ErrorScreen(
             isTablet = isTablet,
             toolbarText = stringResource(id = R.string.hostel),
@@ -148,11 +175,11 @@ fun LoadingHostelScreen(
 @Composable
 private fun ProvidedHostelScreen(
     isTablet: Boolean,
-    address : String,
+    address: String,
     onMenuClicked: () -> Unit,
-    onShowOnMapClicked : () -> Unit,
-    image : String?=null,
-    updater : Updatable
+    onShowOnMapClicked: () -> Unit,
+    image: String? = null,
+    updater: Updatable
 ) {
 
     val scaffoldState = rememberCollapsingToolbarScaffoldState()
@@ -209,7 +236,7 @@ private fun ProvidedHostelScreen(
             state = refreshState,
             swipeEnabled = scaffoldState.toolbarState.progress == 1f,
             onRefresh = updater::update,
-            indicator = { state,offset->
+            indicator = { state, offset ->
                 BsuProgressBarSwipeRefreshIndicator(state = state, trigger = offset)
             },
             modifier = Modifier
@@ -239,7 +266,7 @@ private fun ProvidedHostelScreen(
                         .widthIn(max = 400.dp),
                     elevation = 3.dp,
                     backgroundColor = MaterialTheme.colors.secondary,
-                    ) {
+                ) {
                     Column(
                         modifier = Modifier
                             .padding(20.dp),
@@ -286,7 +313,7 @@ private fun ProvidedHostelScreen(
 @Composable
 private fun NonProvidedHostelScreen(
     isTablet: Boolean,
-    ads : List<HostelAdvert>,
+    ads: List<HostelAdvert>,
     viewModel: HostelViewModel,
     onMenuClicked: () -> Unit,
 ) {
@@ -319,7 +346,7 @@ private fun NonProvidedHostelScreen(
                     Spacer(modifier = Modifier.height(10.dp))
 
                     TextButton(
-                        onClick = { needShowDialog=false },
+                        onClick = { needShowDialog = false },
                         modifier = Modifier
                             .fillMaxWidth()
                     ) {

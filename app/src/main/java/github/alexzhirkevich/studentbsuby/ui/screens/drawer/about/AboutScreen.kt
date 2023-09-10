@@ -3,10 +3,23 @@ package github.alexzhirkevich.studentbsuby.ui.screens.drawer.about
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.*
+import androidx.compose.material.Card
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
+import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.runtime.Composable
@@ -29,14 +42,20 @@ import github.alexzhirkevich.studentbsuby.R
 import github.alexzhirkevich.studentbsuby.ui.common.NavigationMenuButton
 import github.alexzhirkevich.studentbsuby.util.animatedSquaresBackground
 import github.alexzhirkevich.studentbsuby.util.bsuBackgroundPattern
-import me.onebone.toolbar.*
+import me.onebone.toolbar.CollapsingToolbarScaffold
+import me.onebone.toolbar.ExperimentalToolbarApi
+import me.onebone.toolbar.ScrollStrategy
+import me.onebone.toolbar.rememberCollapsingToolbarScaffoldState
+import me.onebone.toolbar.rememberCollapsingToolbarState
+
 
 @ExperimentalToolbarApi
 @Composable
 fun AboutScreen(
-    isTablet : Boolean,
+    isTablet: Boolean,
     aboutViewModel: AboutViewModel = hiltViewModel(),
-                onMenuClicked : () -> Unit) {
+    onMenuClicked: () -> Unit
+) {
 
     val scaffoldState = rememberCollapsingToolbarScaffoldState(
         toolbarState = rememberCollapsingToolbarState(0)

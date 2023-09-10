@@ -40,7 +40,7 @@ interface ProfileApi {
     suspend fun hostel(): Response<ResponseBody>
 
      @GET("PersonalCabinet/stb")
-    suspend fun studBilet(): Response<ResponseBody>
+    suspend fun studentTicket(): Response<ResponseBody>
 
     suspend fun exit() : Response<ResponseBody>
 

@@ -1,21 +1,49 @@
-
 package github.alexzhirkevich.studentbsuby.ui.screens.drawer.subjects
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
-import androidx.compose.foundation.*
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.*
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Checkbox
+import androidx.compose.material.CheckboxDefaults
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
+import androidx.compose.material.ScrollableTabRow
+import androidx.compose.material.Tab
+import androidx.compose.material.Text
+import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -41,9 +69,19 @@ import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import github.alexzhirkevich.studentbsuby.R
 import github.alexzhirkevich.studentbsuby.data.models.Subject
-import github.alexzhirkevich.studentbsuby.ui.common.*
-import github.alexzhirkevich.studentbsuby.util.*
+import github.alexzhirkevich.studentbsuby.ui.common.BsuProgressBar
+import github.alexzhirkevich.studentbsuby.ui.common.BsuProgressBarSwipeRefreshIndicator
+import github.alexzhirkevich.studentbsuby.ui.common.DefaultTextInput
+import github.alexzhirkevich.studentbsuby.ui.common.ErrorScreen
+import github.alexzhirkevich.studentbsuby.ui.common.ErrorWidget
+import github.alexzhirkevich.studentbsuby.ui.common.FlowBox
+import github.alexzhirkevich.studentbsuby.ui.common.NavigationMenuButton
+import github.alexzhirkevich.studentbsuby.util.DataState
+import github.alexzhirkevich.studentbsuby.util.Updatable
+import github.alexzhirkevich.studentbsuby.util.applyIf
+import github.alexzhirkevich.studentbsuby.util.bsuBackgroundPattern
 import github.alexzhirkevich.studentbsuby.util.communication.collectAsState
+import github.alexzhirkevich.studentbsuby.util.valueOrNull
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import me.onebone.toolbar.CollapsingToolbarScaffold
@@ -60,7 +98,7 @@ import me.onebone.toolbar.rememberCollapsingToolbarScaffoldState
 fun SubjectsScreen(
     isTablet: Boolean,
     subjectsViewModel: SubjectsViewModel = hiltViewModel(),
-    onMenuClicked : () -> Unit
+    onMenuClicked: () -> Unit
 ) {
 
     val data by subjectsViewModel.subjectsCommunication
@@ -68,14 +106,15 @@ fun SubjectsScreen(
 
     when (val subjects = data) {
         is DataState.Success<*>, is DataState.Loading -> {
-           SuccessSubjectsScreen(
-               isTablet = isTablet,
-               subjectsViewModel = subjectsViewModel,
-               subjects = subjects,
-               onMenuClicked = onMenuClicked,
-           )
+            SuccessSubjectsScreen(
+                isTablet = isTablet,
+                subjectsViewModel = subjectsViewModel,
+                subjects = subjects,
+                onMenuClicked = onMenuClicked,
+            )
         }
-        is DataState.Empty ->  Box(
+
+        is DataState.Empty -> Box(
             modifier = Modifier
                 .fillMaxSize()
         ) {
@@ -88,6 +127,7 @@ fun SubjectsScreen(
                 onMenuClicked = onMenuClicked
             )
         }
+
         is DataState.Error -> Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -120,7 +160,7 @@ private fun SuccessSubjectsScreen(
 ) {
     val scaffoldState = rememberCollapsingToolbarScaffoldState()
 
-    
+
     Column {
         Spacer(
             modifier = Modifier
@@ -198,7 +238,7 @@ private fun SuccessSubjectsScreen(
 
 @Composable
 private fun Toolbar(
-    isTablet : Boolean,
+    isTablet: Boolean,
     viewModel: SubjectsViewModel,
     onMenuClicked: () -> Unit
 ) {
@@ -291,7 +331,7 @@ private fun Toolbar(
                     .animateEnterExit(
                         enter = slideInVertically(),
                         exit = slideOutVertically()
-                )
+                    )
             ) {
 
                 val withCredit by viewModel.withCreditCommunication
@@ -356,21 +396,25 @@ private fun Toolbar(
 private fun SearchSubjects(
     visibleSubjects: List<List<Subject>>,
     searchText: String
-){
+) {
 
     Column(Modifier.fillMaxSize()) {
-        Spacer(modifier = Modifier
-            .fillMaxWidth()
-            .height(1.dp)
-            .background(Color.Gray.copy(alpha = .3f))
+        Spacer(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(1.dp)
+                .background(Color.Gray.copy(alpha = .3f))
         )
         if (visibleSubjects.any { it.isNotEmpty() }) {
             val openedSubject = remember {
                 mutableStateListOf<Subject>()
             }
 
-            LazyColumn(Modifier.weight(1f)
-                .navigationBarsWithImePadding()) {
+            LazyColumn(
+                Modifier
+                    .weight(1f)
+                    .navigationBarsWithImePadding()
+            ) {
                 visibleSubjects.forEachIndexed { idx, list ->
                     if (list.isNotEmpty()) {
                         stickyHeader {
@@ -440,7 +484,7 @@ private fun AllSemesters(
             state.scrollToPage(initialSemester)
     }
 
-    LaunchedEffect(key1 = state.currentPage){
+    LaunchedEffect(key1 = state.currentPage) {
         onSemesterChanged(state.currentPage)
     }
 
@@ -489,7 +533,8 @@ private fun AllSemesters(
         }
     ) {
         val refreshState = rememberSwipeRefreshState(
-            isRefreshing = isRefreshing)
+            isRefreshing = isRefreshing
+        )
 
         val openedSubjects = remember {
             mutableStateListOf<Subject>()
@@ -513,7 +558,7 @@ private fun AllSemesters(
                 if (visibleSubjects.getOrNull(page)?.isNotEmpty() == true) {
                     Page(
                         modifier = Modifier
-                        .fillMaxSize()
+                            .fillMaxSize()
                             .verticalScroll(rememberScrollState())
                             .navigationBarsWithImePadding()
                             .graphicsLayer {
@@ -546,9 +591,9 @@ private fun AllSemesters(
 @Composable
 private fun Page(
     subjects: List<Subject>,
-    opened : SnapshotStateList<Subject>,
+    opened: SnapshotStateList<Subject>,
     modifier: Modifier = Modifier,
-    withBottomPadding : Boolean = false,
+    withBottomPadding: Boolean = false,
 ) {
     FlowBox(
         elementWidth = 180.dp,
@@ -563,13 +608,13 @@ private fun Page(
                 isOpened = isOpened,
                 modifier = Modifier
                     .padding(5.dp)
-            ){
-                if (isOpened){
+            ) {
+                if (isOpened) {
                     opened.remove(it)
                 } else opened.add(it)
             }
         }
-        if (withBottomPadding){
+        if (withBottomPadding) {
             Spacer(modifier = Modifier.navigationBarsHeight(10.dp))
             Spacer(modifier = Modifier.navigationBarsHeight(10.dp))
         }

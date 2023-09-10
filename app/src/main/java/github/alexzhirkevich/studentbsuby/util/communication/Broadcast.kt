@@ -8,8 +8,7 @@ interface Broadcast<T> : Serializer<T> {
 
     val extraKey: String get() = action + "_value"
 
-    companion object {
-    }
+    companion object
 }
 
 interface Serializer<T> {

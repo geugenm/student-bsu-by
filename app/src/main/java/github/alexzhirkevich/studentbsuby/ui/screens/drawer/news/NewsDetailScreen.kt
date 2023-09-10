@@ -20,7 +20,7 @@ import github.alexzhirkevich.studentbsuby.ui.theme.values.Colors
 
 @Composable
 fun NewsDetailsScreen(
-    viewModel: NewsViewModel = hiltViewModel(), id : Int
+    viewModel: NewsViewModel = hiltViewModel(), id: Int
 ) {
 
     val bgColor = Colors.GrayBackground

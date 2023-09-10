@@ -1,11 +1,22 @@
 package github.alexzhirkevich.studentbsuby.ui.screens.drawer.news
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.*
+import androidx.compose.material.Card
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.LocalContentColor
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
+import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -60,21 +71,24 @@ fun NewsListScreen(
             ) {
                 navController.navigate(Route.DrawerScreen.News.NewsDetail(it.id.toString()))
             }
+
             is DataState.Empty -> Error(
                 title = stringResource(id = R.string.empty),
                 error = stringResource(id = R.string.news_empty)
             )
+
             is DataState.Error -> Error(
                 title = stringResource(id = R.string.something_gone_wrong),
                 error = stringResource(id = n.message)
             )
+
             is DataState.Loading -> Loading()
         }
     }
 }
 
 @Composable
-private fun Toolbar(isTablet : Boolean, onMenuClicked: () -> Unit) {
+private fun Toolbar(isTablet: Boolean, onMenuClicked: () -> Unit) {
     Column {
         TopAppBar(
             modifier = Modifier.zIndex(1f),
@@ -90,19 +104,21 @@ private fun Toolbar(isTablet : Boolean, onMenuClicked: () -> Unit) {
                 style = MaterialTheme.typography.subtitle1
             )
         }
-        Spacer(modifier = Modifier
-            .height(1f.dp)
-            .fillMaxWidth()
-            .background(LocalContentColor.current.copy(.1f)))
+        Spacer(
+            modifier = Modifier
+                .height(1f.dp)
+                .fillMaxWidth()
+                .background(LocalContentColor.current.copy(.1f))
+        )
     }
 }
 
 @ExperimentalMaterialApi
 @Composable
 private fun Body(
-    news : List<News>,
+    news: List<News>,
     modifier: Modifier = Modifier,
-    onClick : (News) -> Unit = {}
+    onClick: (News) -> Unit = {}
 ) {
     LazyColumn(
         modifier.fillMaxSize(),
@@ -124,7 +140,7 @@ private fun Body(
 private fun NewsWidget(news: News, modifier: Modifier = Modifier, onClick: () -> Unit) {
     Card(
         backgroundColor = MaterialTheme.colors.secondary,
-        modifier =  modifier ,
+        modifier = modifier,
         onClick = onClick
     ) {
         Column(
@@ -151,9 +167,10 @@ private fun NewsWidget(news: News, modifier: Modifier = Modifier, onClick: () ->
 
 @Composable
 private fun Loading() {
-    Box(modifier = Modifier
-        .fillMaxSize()
-    ){
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+    ) {
         BsuProgressBar(
             Modifier.align(Alignment.Center),
             size = 100.dp,
