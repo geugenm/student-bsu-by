@@ -9,9 +9,6 @@ import javax.inject.Inject
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 
-private const val STABLE_VER = "stable_version"
-private const val LATEST_VER = "latest_version"
-
 private const val UPDATE_PROP_DELAY = 3 * 24 * 60 * 60 * 1000L
 
 data class ApplicationVersion(
@@ -34,18 +31,18 @@ class RemoteConfigRepository @Inject constructor(
 
     }
 
-    private suspend fun getVersion(name: String): ApplicationVersion? = kotlin.runCatching {
+    private suspend fun getVersion(): ApplicationVersion? = kotlin.runCatching {
         null
     }.getOrNull()
 
     suspend fun getLatestVersionIfNeeded(): ApplicationVersion? =
-        getVersion(LATEST_VER)?.takeIf {
+        getVersion()?.takeIf {
             BuildConfig.VERSION_CODE < it.code &&
                     System.currentTimeMillis() - lastUpdateProp >= UPDATE_PROP_DELAY
         }.also { lastUpdateProp = System.currentTimeMillis() }
 
     suspend fun getMinimumStableVersionIfNeeded(): ApplicationVersion? =
-        getVersion(STABLE_VER)?.takeIf { BuildConfig.VERSION_CODE < it.code }
+        getVersion()?.takeIf { BuildConfig.VERSION_CODE < it.code }
 
     fun telegram(): String = kotlin.runCatching {
         null
