@@ -9,6 +9,13 @@ android {
 
     signingConfigs {
         release {
+            // Place file release.keystore in app directory
+            // To generate new keystore use Keystore explorer (Win) - https://keystore-explorer.org/downloads.html
+
+//            storeFile file("release.keystore")
+//            storePassword ""
+//            keyAlias ""
+//            keyPassword ""
         }
     }
     compileSdk 34
@@ -25,9 +32,24 @@ android {
         }
     }
     buildTypes {
+        release {
+            // TODO: Fix R8 recurse problem
+            postprocessing {
+                removeUnusedCode true
+                optimizeCode true
+                obfuscate false
+                removeUnusedResources true
+            }
+
+            minifyEnabled false
+            shrinkResources false
+
+            signingConfig signingConfigs.release
+        }
         debug {
             jniDebuggable true
             renderscriptDebuggable true
+            signingConfig signingConfigs.debug
         }
     }
 
