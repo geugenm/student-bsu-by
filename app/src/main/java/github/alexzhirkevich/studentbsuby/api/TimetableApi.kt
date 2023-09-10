@@ -6,26 +6,33 @@ import org.jsoup.Jsoup
 import retrofit2.Response
 import retrofit2.http.*
 
-fun TimetableApi.dayOfWeek(@IntRange(from = 0, to = 5) day : Int) : FormUrlEncodedBody = mapOf(
-    "ctl00\$ctl00\$ContentPlaceHolder0\$ContentPlaceHolder1\$ctlSchedule1\$ScriptManager1" to "ctl00\$ctl00\$ContentPlaceHolder0\$ContentPlaceHolder1\$ctlSchedule1\$UpdatePanel1|ctl00\$ctl00\$ContentPlaceHolder0\$ContentPlaceHolder1\$ctlSchedule1\$cmdDay${day+1}",
-    "__EVENTTARGET" to "ctl00\$ctl00\$ContentPlaceHolder0\$ContentPlaceHolder1\$ctlSchedule1\$cmdDay${day+1}",
-)
+fun TimetableApi.dayOfWeek(@IntRange(from = 0, to = 5) day: Int): FormUrlEncodedBody {
+    val eventTarget =
+        "ctl00\$ctl00\$ContentPlaceHolder0\$ContentPlaceHolder1\$ctlSchedule1\$cmdDay${day + 1}"
+    val scriptManager =
+        "ctl00\$ctl00\$ContentPlaceHolder0\$ContentPlaceHolder1\$ctlSchedule1\$ScriptManager1"
+
+    return mapOf(
+        scriptManager to "$eventTarget|${scriptManager}",
+        "__EVENTTARGET" to eventTarget
+    )
+}
 
 interface TimetableApi {
 
     @Headers("User-Agent: Mozilla")
     @GET("PersonalCabinet/Schedule")
-    suspend fun init() : Response<ResponseBody>
+    suspend fun init(): Response<ResponseBody>
 
     @FormUrlEncoded
     @Headers("User-Agent: Mozilla")
     @POST("PersonalCabinet/Schedule")
     suspend fun timetable(
         @FieldMap(encoded = false) dayOfWeek: FormUrlEncodedBody
-    ) : Response<ResponseBody>
+    ): Response<ResponseBody>
 }
 
-class TimetableApiWrapper(private val api : TimetableApi) : TimetableApi{
+class TimetableApiWrapper(private val api: TimetableApi) : TimetableApi {
 
     private var __VIEWSTATE = ""
     private var __VIEWSTATEGENERATOR = ""
@@ -47,8 +54,9 @@ class TimetableApiWrapper(private val api : TimetableApi) : TimetableApi{
             ?.attr("value").orEmpty()
         __EVENTVALIDATION = jsoup?.getElementById("__EVENTVALIDATION")
             ?.attr("value").orEmpty()
-        __BTNLOGON = jsoup?.getElementsByAttributeValue("name","ctl00\$ContentPlaceHolder0\$btnLogon")
-            ?.attr("value") ?: "Войти"
+        __BTNLOGON =
+            jsoup?.getElementsByAttributeValue("name", "ctl00\$ContentPlaceHolder0\$btnLogon")
+                ?.attr("value") ?: "Войти"
         return resp
     }
 

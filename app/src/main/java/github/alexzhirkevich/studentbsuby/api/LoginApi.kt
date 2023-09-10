@@ -3,7 +3,11 @@ package github.alexzhirkevich.studentbsuby.api
 import okhttp3.ResponseBody
 import org.jsoup.Jsoup
 import retrofit2.Response
-import retrofit2.http.*
+import retrofit2.http.FieldMap
+import retrofit2.http.FormUrlEncoded
+import retrofit2.http.GET
+import retrofit2.http.POST
+import retrofit2.http.Streaming
 import java.nio.charset.Charset
 
 fun LoginApi.createLoginData(
@@ -31,11 +35,14 @@ interface LoginApi {
     ): Response<ResponseBody>
 }
 
-val ResponseBody.isSessionExpired
-    get() = source().apply {
-        request(Long.MAX_VALUE)
-    }.buffer.clone().readString(Charset.forName("UTF-8")).let {
-        it.contains("ctl00_ContentPlaceHolder0_cmdLogIn") || it.contains("ctl00\$ContentPlaceHolder0\$btnLogon")
+val ResponseBody.isSessionExpired: Boolean
+    get() {
+        val responseString = source().buffer.clone().readString(Charset.forName("UTF-8"))
+
+        val isCmdLogInPresent = responseString.contains("ctl00_ContentPlaceHolder0_cmdLogIn")
+        val isBtnLogonPresent = responseString.contains("ctl00\$ContentPlaceHolder0\$btnLogon")
+
+        return isCmdLogInPresent || isBtnLogonPresent
     }
 
 class LoginApiWrapper(val api: LoginApi) : LoginApi {
