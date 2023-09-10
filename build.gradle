@@ -8,8 +8,8 @@ buildscript {
     }
 
     ext {
-        compose_version = '1.0.5'
-        kotlin_version = "1.5.31"
+        compose_version = '1.1.0-beta04'
+        kotlin_version = "1.6.0"
         hilt_version = "2.38.1"
         hilt_lifecycle = "1.0.0-alpha03"
         hilt_navigation = "1.0.0-alpha03"
@@ -20,9 +20,7 @@ buildscript {
 
         classpath 'com.android.tools.build:gradle:7.1.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath 'com.google.gms:google-services:4.3.10'
         classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
-        classpath 'com.google.firebase:firebase-crashlytics-gradle:2.8.1'
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
