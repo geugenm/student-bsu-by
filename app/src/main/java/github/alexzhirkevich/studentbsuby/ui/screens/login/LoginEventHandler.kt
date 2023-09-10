@@ -23,7 +23,6 @@ import github.alexzhirkevich.studentbsuby.util.communication.StateMapper
 import github.alexzhirkevich.studentbsuby.util.dispatchers.Dispatchers
 import github.alexzhirkevich.studentbsuby.workers.SyncWorkerManager
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.delay
 import me.onebone.toolbar.ExperimentalToolbarApi
 
 @ExperimentalCoroutinesApi
@@ -61,7 +60,6 @@ class LoginEventHandler(
         dispatchers = dispatchers,
         resourceManager = resourceManager,
         loginRepository = loginRepository,
-        syncWorkerManager = syncWorkerManager,
         loginMapper = loginMapper,
         passwordMapper = passMapper,
         captchaMapper = captchaMapper,
@@ -162,61 +160,43 @@ private class InitLoginHandler(
 
     override suspend fun handle(event: LoginEvent.InitLogin)
     {
-        if (loginRepository.autoLogin)
+        if (!loginRepository.autoLogin) return
+
+        val init = loginRepository.initialize()
+        if (init.loggedIn)
         {
-//            while (true) {
-            try
-            {
-                if (!loginRepository.autoLogin) return
-
-                val init = loginRepository.initialize()
-
-                if (init.loggedIn)
-                {
-                    connectivityMapper.map(ConnectivityUi.Connected)
-                    return navigate(dispatchers, event.navController)
-                }
-
-                val captcha = loginRepository.updateCaptcha(true) ?: throw Exception()
-
-                if (!init.success)
-                {
-                    throw Exception()
-                }
-
-                val captchaText = kotlin.runCatching {
-                    loginRepository.getCaptchaText(captcha)
-                }.getOrNull() ?: return
-
-                if (login(
-                        dispatchers,
-                        resourceManager,
-                        loginRepository,
-                        event.navController,
-                        loginRepository.username,
-                        loginRepository.password,
-                        captchaText
-                         ).first
-                )
-                {
-                    connectivityMapper.map(ConnectivityUi.Connected)
-//                        kotlin.runCatching {
-//                            if (!syncWorkerManager.isEnabled()) {
-//                                syncWorkerManager.run()
-//                            }
-//                        }
-                    return
-                } else
-                {
-                    connectivityMapper.map(ConnectivityUi.Offline)
-                }
-            } catch (t: Throwable)
-            {
-                connectivityMapper.map(ConnectivityUi.Connecting)
-                delay(3000)
-            }
+            connectivityMapper.map(ConnectivityUi.Connected)
+            return navigate(dispatchers, event.navController)
         }
-//        }
+
+        val captcha = loginRepository.updateCaptcha(true) ?: return
+        if (!init.success) return
+
+        val captchaText = try
+        {
+            loginRepository.getCaptchaText(captcha)
+        } catch (e: Exception)
+        {
+            return
+        }
+
+        val loginResult = login(
+            dispatchers,
+            resourceManager,
+            loginRepository,
+            event.navController,
+            loginRepository.username,
+            loginRepository.password,
+            captchaText
+                               ).first
+
+        if (loginResult)
+        {
+            connectivityMapper.map(ConnectivityUi.Connected)
+        } else
+        {
+            connectivityMapper.map(ConnectivityUi.Offline)
+        }
     }
 
     companion object
@@ -270,7 +250,6 @@ private class LoginClickedHandler(
     private val dispatchers: Dispatchers,
     private val resourceManager: ResourceManager,
     private val loginRepository: LoginRepository,
-    private val syncWorkerManager: SyncWorkerManager,
     private val loginMapper: StateMapper<String>,
     private val passwordMapper: StateMapper<String>,
     private val captchaMapper: StateMapper<String>,
@@ -307,8 +286,6 @@ private class LoginClickedHandler(
             if (logged.first)
             {
                 loginRepository.autoLogin = autoLoginMapper.current
-//                if (!syncWorkerManager.isEnabled())
-//                    syncWorkerManager.run()
             } else
             {
                 updateHandler.handle(LoginEvent.UpdateClicked(false))
