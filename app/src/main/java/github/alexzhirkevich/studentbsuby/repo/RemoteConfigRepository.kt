@@ -12,22 +12,23 @@ import kotlin.coroutines.resumeWithException
 private const val UPDATE_PROP_DELAY = 3 * 24 * 60 * 60 * 1000L
 
 data class ApplicationVersion(
-    val code: Int,
-    val name: String,
-    val desc: String
-)
+    val code: Int, val name: String, val desc: String
+                             )
 
 class RemoteConfigRepository @Inject constructor(
     preferences: SharedPreferences
-) {
+                                                )
+{
 
     private var lastUpdateProp by sharedPreferences(preferences, 0L)
 
-    init {
+    init
+    {
 
     }
 
-    fun update() {
+    fun update()
+    {
 
     }
 
@@ -35,11 +36,9 @@ class RemoteConfigRepository @Inject constructor(
         null
     }.getOrNull()
 
-    suspend fun getLatestVersionIfNeeded(): ApplicationVersion? =
-        getVersion()?.takeIf {
-            BuildConfig.VERSION_CODE < it.code &&
-                    System.currentTimeMillis() - lastUpdateProp >= UPDATE_PROP_DELAY
-        }.also { lastUpdateProp = System.currentTimeMillis() }
+    suspend fun getLatestVersionIfNeeded(): ApplicationVersion? = getVersion()?.takeIf {
+        BuildConfig.VERSION_CODE < it.code && System.currentTimeMillis() - lastUpdateProp >= UPDATE_PROP_DELAY
+    }.also { lastUpdateProp = System.currentTimeMillis() }
 
     suspend fun getMinimumStableVersionIfNeeded(): ApplicationVersion? =
         getVersion()?.takeIf { BuildConfig.VERSION_CODE < it.code }
@@ -58,8 +57,7 @@ suspend fun <T> Task<T>.await(): T = suspendCancellableCoroutine { cont ->
     addOnCanceledListener {
         cont.cancel()
     }.addOnSuccessListener {
-        if (it != null)
-            cont.resume(it)
+        if (it != null) cont.resume(it)
         else cont.cancel()
     }.addOnFailureListener {
         cont.resumeWithException(it)

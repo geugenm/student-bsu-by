@@ -21,19 +21,20 @@ annotation class IsTimetableUpdatingQualifier
 
 @Module
 @InstallIn(ViewModelComponent::class)
-class TimetableModule {
+class TimetableModule
+{
 
     private val isUpdatingCommunication = StateFlowCommunication(false)
 
-    private val timetableCommunication = StateFlowCommunication<DataState<Timetable>>(DataState.Empty)
+    private val timetableCommunication =
+        StateFlowCommunication<DataState<Timetable>>(DataState.Empty)
 
     @Provides
     @IsTimetableUpdatingQualifier
-    fun provideIsUpdatingCommunication() : StateCommunication<Boolean> =
-        isUpdatingCommunication
+    fun provideIsUpdatingCommunication(): StateCommunication<Boolean> = isUpdatingCommunication
 
     @Provides
-    fun provideTimetableCommunication() : StateCommunication<DataState<Timetable>> =
+    fun provideTimetableCommunication(): StateCommunication<DataState<Timetable>> =
         timetableCommunication
 
     @Provides
@@ -41,11 +42,11 @@ class TimetableModule {
         calendar: Calendar,
         timetableRepository: TimetableRepository,
         connectivityManager: ConnectivityManager
-    ) : SuspendEventHandler<TimetableEvent> = TimetableEventHandler(
+                           ): SuspendEventHandler<TimetableEvent> = TimetableEventHandler(
         timetableRepository = timetableRepository,
         calendar = calendar,
         timetableMapper = timetableCommunication,
         isUpdatingMapper = isUpdatingCommunication,
         connectivityManager = connectivityManager
-    )
+                                                                                         )
 }

@@ -10,32 +10,31 @@ import github.alexzhirkevich.studentbsuby.util.BaseSuspendEventHandler
 import github.alexzhirkevich.studentbsuby.util.SuspendEventHandler
 
 class AboutEventHandler(
-    context: Context,
-    configRepository: RemoteConfigRepository
-) : SuspendEventHandler<AboutEvent> by SuspendEventHandler.from(
-    TgClickedHandler(context, configRepository),
-    EmailClickedHandler(context, configRepository)
-)
+    context: Context, configRepository: RemoteConfigRepository
+                       ) : SuspendEventHandler<AboutEvent> by SuspendEventHandler.from(
+    TgClickedHandler(context, configRepository), EmailClickedHandler(context, configRepository)
+                                                                                      )
 
 private class TgClickedHandler(
-    private val context: Context,
-    private val configRepository : RemoteConfigRepository
-): BaseSuspendEventHandler<AboutEvent.TgClicked>(
+    private val context: Context, private val configRepository: RemoteConfigRepository
+                              ) : BaseSuspendEventHandler<AboutEvent.TgClicked>(
     AboutEvent.TgClicked::class
-){
+                                                                               )
+{
 
-    override suspend fun launch() {
+    override suspend fun launch()
+    {
         kotlin.runCatching {
             configRepository.update()
         }
     }
 
-    override suspend fun handle(event: AboutEvent.TgClicked) {
+    override suspend fun handle(event: AboutEvent.TgClicked)
+    {
 
         kotlin.runCatching {
             val uri = Uri.parse(configRepository.telegram())
-            Intent(Intent.ACTION_VIEW, uri)
-                .apply {
+            Intent(Intent.ACTION_VIEW, uri).apply {
                     flags = Intent.FLAG_ACTIVITY_NEW_TASK
                 }.let {
                     context.startActivity(it)
@@ -43,21 +42,24 @@ private class TgClickedHandler(
         }
     }
 }
-private class EmailClickedHandler(
-    private val context: Context,
-    private val configRepository : RemoteConfigRepository
-): BaseSuspendEventHandler<AboutEvent.EmailClicked>(
-    AboutEvent.EmailClicked::class
-){
 
-    override suspend fun launch() {
+private class EmailClickedHandler(
+    private val context: Context, private val configRepository: RemoteConfigRepository
+                                 ) : BaseSuspendEventHandler<AboutEvent.EmailClicked>(
+    AboutEvent.EmailClicked::class
+                                                                                     )
+{
+
+    override suspend fun launch()
+    {
         kotlin.runCatching {
             configRepository.update()
         }
     }
 
     @SuppressLint("IntentReset")
-    override suspend fun handle(event: AboutEvent.EmailClicked) {
+    override suspend fun handle(event: AboutEvent.EmailClicked)
+    {
         kotlin.runCatching {
             Intent(Intent.ACTION_SENDTO).apply {
                 type = "text/html"

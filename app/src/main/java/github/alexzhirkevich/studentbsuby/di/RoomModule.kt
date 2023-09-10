@@ -12,15 +12,14 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-class RoomModule {
+class RoomModule
+{
 
     @Provides
     @Singleton
-    fun provideDatabase(@ApplicationContext context: Context) : AppDatabase =
-        Room
-            .databaseBuilder(context, AppDatabase::class.java, "db_cache")
-            .fallbackToDestructiveMigration()
-            .build()
+    fun provideDatabase(@ApplicationContext context: Context): AppDatabase =
+        Room.databaseBuilder(context, AppDatabase::class.java, "db_cache")
+            .fallbackToDestructiveMigration().build()
 
 
     @Singleton
@@ -29,11 +28,11 @@ class RoomModule {
 
     @Singleton
     @Provides
-    fun provideSubjectsDao(appDatabase: AppDatabase)  = appDatabase.subjectsDao()
+    fun provideSubjectsDao(appDatabase: AppDatabase) = appDatabase.subjectsDao()
 
     @Singleton
     @Provides
-    fun provideLessonsDao(appDatabase: AppDatabase)  = appDatabase.lessonsDao()
+    fun provideLessonsDao(appDatabase: AppDatabase) = appDatabase.lessonsDao()
 
     @Singleton
     @Provides
@@ -41,9 +40,9 @@ class RoomModule {
 
     @Singleton
     @Provides
-    fun providePaidServicesDao(appDatabase: AppDatabase)  = appDatabase.paidServicesDao()
+    fun providePaidServicesDao(appDatabase: AppDatabase) = appDatabase.paidServicesDao()
 
     @Singleton
     @Provides
-    fun provideNewsDao(appDatabase: AppDatabase)  = appDatabase.newsDao()
+    fun provideNewsDao(appDatabase: AppDatabase) = appDatabase.newsDao()
 }

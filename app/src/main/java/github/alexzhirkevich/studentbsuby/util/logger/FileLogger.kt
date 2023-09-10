@@ -12,62 +12,69 @@ import github.alexzhirkevich.studentbsuby.R
 import java.io.File
 import java.text.DateFormat
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
+import java.util.Locale
 
-abstract class DefaultLogger : Logger {
+abstract class DefaultLogger : Logger
+{
 
-    override fun log(msg: String, tag : String, logLevel: Logger.LogLevel, cause: Throwable?) {
-        when (logLevel) {
+    override fun log(msg: String, tag: String, logLevel: Logger.LogLevel, cause: Throwable?)
+    {
+        when (logLevel)
+        {
             Logger.LogLevel.Warning -> Log.w(tag, msg, cause)
-            Logger.LogLevel.Error -> Log.e(tag, msg, cause)
+            Logger.LogLevel.Error   -> Log.e(tag, msg, cause)
         }
     }
 }
 
 class FileLogger constructor(
-    context : Context
-) : DefaultLogger() {
+    context: Context
+                            ) : DefaultLogger()
+{
 
     private val logDir = File(context.getExternalFilesDir(null), "Debug")
     private val logFile = File(logDir, "Logs.txt")
 
     private val timestampDateFormat: DateFormat = SimpleDateFormat(
         "[yyyy-mm-dd hh:mm:ss]", Locale.getDefault()
-    )
+                                                                  )
 
-    init {
+    init
+    {
         synchronized(FileLogger::class) {
             tryInit()
         }
     }
 
-    override fun log(msg: String, tag: String, logLevel: Logger.LogLevel, cause : Throwable?) {
+    override fun log(msg: String, tag: String, logLevel: Logger.LogLevel, cause: Throwable?)
+    {
 
-        if (BuildConfig.DEBUG) {
+        if (BuildConfig.DEBUG)
+        {
             super.log(msg, tag, logLevel, cause)
         }
 
         synchronized(FileLogger::class) {
             tryInit()
             kotlin.runCatching {
-                logFile.appendText(
-                    buildString {
-                        append(timestampDateFormat.format(Date()))
-                        append(" \\\\ ${logLevel.name.take(1)}\n")
-                        append("$tag: $msg\n")
-                        if (cause != null && logLevel == Logger.LogLevel.Error)
-                            append(cause.stackTraceToString())
-                        append("\n")
-                    }
-                )
+                logFile.appendText(buildString {
+                    append(timestampDateFormat.format(Date()))
+                    append(" \\\\ ${logLevel.name.take(1)}\n")
+                    append("$tag: $msg\n")
+                    if (cause != null && logLevel == Logger.LogLevel.Error) append(cause.stackTraceToString())
+                    append("\n")
+                })
             }
         }
     }
 
-    private fun tryInit() {
+    private fun tryInit()
+    {
         kotlin.runCatching {
             logDir.mkdirs()
-            if (!logFile.exists()) {
+            if (!logFile.exists())
+            {
                 logFile.createNewFile()
                 logFile.appendText(buildString {
                     append("Device: ${Build.DEVICE}\n")
@@ -84,22 +91,24 @@ class FileLogger constructor(
         }
     }
 
-    override fun share(context: Context) {
+    override fun share(context: Context)
+    {
         kotlin.runCatching {
-            val uri = FileProvider.getUriForFile(context, BuildConfig.APPLICATION_ID + ".provider",logFile)
+            val uri = FileProvider.getUriForFile(
+                context,
+                BuildConfig.APPLICATION_ID + ".provider",
+                logFile
+                                                )
             Intent(Intent.ACTION_SEND).apply {
                 type = "application/txt"
                 flags = FLAG_GRANT_READ_URI_PERMISSION
                 putExtra(Intent.EXTRA_STREAM, uri)
             }.let {
-                context.startActivity(
-                    Intent.createChooser(
-                        it,
-                        context.getString(R.string.share_logs)
-                    ).apply {
-                        flags = FLAG_ACTIVITY_NEW_TASK
-                    }
-                )
+                context.startActivity(Intent.createChooser(
+                    it, context.getString(R.string.share_logs)
+                                                          ).apply {
+                    flags = FLAG_ACTIVITY_NEW_TASK
+                })
             }
         }
     }

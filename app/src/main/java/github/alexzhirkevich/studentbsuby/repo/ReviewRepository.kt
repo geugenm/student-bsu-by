@@ -13,20 +13,22 @@ import javax.inject.Inject
 private const val REVIEW_DELAY = 3 * 24 * 60 * 60 * 1000
 
 class ReviewRepository @Inject constructor(
-    preferences: SharedPreferences,
-    @ApplicationContext context: Context
-) {
+    preferences: SharedPreferences, @ApplicationContext context: Context
+                                          )
+{
 
     private val firstInitializing by sharedPreferences(
         preferences, System.currentTimeMillis()
-    )
+                                                      )
 
     private val reviewManager by lazy {
         ReviewManagerFactory.create(context)
     }
 
-    suspend fun tryShowReviewDialog(activity: Activity) {
-        if (System.currentTimeMillis() - firstInitializing > REVIEW_DELAY) {
+    suspend fun tryShowReviewDialog(activity: Activity)
+    {
+        if (System.currentTimeMillis() - firstInitializing > REVIEW_DELAY)
+        {
             kotlin.runCatching {
                 val info = reviewManager.requestReview()
                 reviewManager.launchReview(activity, info)

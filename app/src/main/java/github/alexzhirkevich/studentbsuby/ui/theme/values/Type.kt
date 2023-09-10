@@ -19,41 +19,31 @@ val UbuntuFontFamily = FontFamily(
     Font(R.font.ubuntu_medium_italic, weight = FontWeight.Medium, style = FontStyle.Italic),
     Font(R.font.ubuntu_light, weight = FontWeight.Light),
     Font(R.font.ubuntu_light_italic, weight = FontWeight.Light, style = FontStyle.Italic),
-)
+                                 )
 
 
-fun typography(color : Color) = Typography(
+fun typography(color: Color) = Typography(
     defaultFontFamily = UbuntuFontFamily,
     body1 = TextStyle(
-        fontSize = 16.sp,
-        color = color
-    ),
+        fontSize = 16.sp, color = color
+                     ),
     body2 = TextStyle(
         fontSize = 16.sp,
         fontWeight = FontWeight.Medium,
-        color =  Colors.Gray,
-    ),
+        color = Colors.Gray,
+                     ),
     caption = TextStyle(
-        fontSize = 13.sp,
-        fontWeight = FontWeight.Light,
-        color = Colors.Gray
-    ),
+        fontSize = 13.sp, fontWeight = FontWeight.Light, color = Colors.Gray
+                       ),
     subtitle1 = TextStyle(
-        fontWeight = FontWeight.Medium,
-        fontSize = 20.sp,
-        color = color
-    ),
+        fontWeight = FontWeight.Medium, fontSize = 20.sp, color = color
+                         ),
     h1 = TextStyle(
-        fontWeight = FontWeight.Bold,
-        fontSize = 70.sp,
-        color = color
-    ),
+        fontWeight = FontWeight.Bold, fontSize = 70.sp, color = color
+                  ),
     h2 = TextStyle(
-        fontWeight = FontWeight.Bold,
-        fontSize = 32.sp,
-        color = color
-    )
-    /* Other default text styles to override
+        fontWeight = FontWeight.Bold, fontSize = 32.sp, color = color
+                  )/* Other default text styles to override
     button = TextStyle(
         fontFamily = FontFamily.Default,
         fontWeight = FontWeight.W500,
@@ -65,4 +55,4 @@ fun typography(color : Color) = Typography(
         fontSize = 12.sp
     )
     */
-)
+                                         )

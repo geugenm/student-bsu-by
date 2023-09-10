@@ -10,19 +10,18 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 
 
 open class BroadcastReceiverCommunication<T>(
-    private val context: Context,
-    override val action: String,
-    private val serializer: Serializer<T>
-) : BroadcastCommunication<T>, Serializer<T> by serializer {
+    private val context: Context, override val action: String, private val serializer: Serializer<T>
+                                            ) : BroadcastCommunication<T>,
+    Serializer<T> by serializer
+{
 
     @Suppress("UNCHECKED_CAST")
     override suspend fun collect(collector: suspend (T) -> Unit): Unit = supervisorScope {
-        val receiver = object : BroadcastReceiver() {
-            override fun onReceive(context: Context?, intent: Intent?) {
-                intent?.extras
-                    ?.getBundle(extraKey)
-                    ?.let(serializer::deserialize)
-                    ?.let {
+        val receiver = object : BroadcastReceiver()
+        {
+            override fun onReceive(context: Context?, intent: Intent?)
+            {
+                intent?.extras?.getBundle(extraKey)?.let(serializer::deserialize)?.let {
                         launch {
                             collector.invoke(it)
                         }

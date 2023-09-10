@@ -52,37 +52,34 @@ import me.onebone.toolbar.rememberCollapsingToolbarState
 @ExperimentalToolbarApi
 @Composable
 fun AboutScreen(
-    isTablet: Boolean,
-    aboutViewModel: AboutViewModel = hiltViewModel(),
-    onMenuClicked: () -> Unit
-) {
+    isTablet: Boolean, aboutViewModel: AboutViewModel = hiltViewModel(), onMenuClicked: () -> Unit
+               )
+{
 
     val scaffoldState = rememberCollapsingToolbarScaffoldState(
         toolbarState = rememberCollapsingToolbarState(0)
-    )
+                                                              )
 
     LaunchedEffect(Unit) {
         scaffoldState.toolbarState.collapse(0)
         scaffoldState.toolbarState.expand(500)
     }
 
-    CollapsingToolbarScaffold(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colors.background),
-        toolbarModifier = Modifier
-            .background(MaterialTheme.colors.secondary),
+    CollapsingToolbarScaffold(modifier = Modifier
+        .fillMaxSize()
+        .background(MaterialTheme.colors.background),
+        toolbarModifier = Modifier.background(MaterialTheme.colors.secondary),
         state = scaffoldState,
         scrollStrategy = ScrollStrategy.ExitUntilCollapsed,
         toolbar = {
             Column {
                 Spacer(modifier = Modifier.statusBarsHeight())
                 TopAppBar(
-                    elevation = 0.dp,
-                    backgroundColor = Color.Transparent
-                ) {
+                    elevation = 0.dp, backgroundColor = Color.Transparent
+                         ) {
 
-                    if (!isTablet) {
+                    if (!isTablet)
+                    {
                         NavigationMenuButton(onClick = onMenuClicked)
                     }
                     AnimatedVisibility(visible = scaffoldState.toolbarState.progress == 0f) {
@@ -90,7 +87,7 @@ fun AboutScreen(
                             text = stringResource(id = R.string.about),
                             color = MaterialTheme.colors.onSecondary,
                             style = MaterialTheme.typography.subtitle1
-                        )
+                            )
                     }
                 }
 
@@ -109,31 +106,30 @@ fun AboutScreen(
                         color = MaterialTheme.colors.primary.copy(alpha = .05f),
                         count = 10,
                         size = 200.dp
-                    )
+                                              )
                     .alpha(scaffoldState.toolbarState.progress)
                     .padding(
-                        vertical = 60.dp,
-                        horizontal = 50.dp
-                    )
-            )
+                        vertical = 60.dp, horizontal = 50.dp
+                            )
+                )
         }) {
 
         Column(
             Modifier
                 .bsuBackgroundPattern(
                     color = MaterialTheme.colors.primary.copy(alpha = .05f)
-                )
+                                     )
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
                 .padding(20.dp)
 
 
-        ) {
+              ) {
 
             Card(
                 elevation = 3.dp,
                 backgroundColor = MaterialTheme.colors.secondary,
-            ) {
+                ) {
                 HtmlText(
                     textId = R.string.about_text,
                     style = MaterialTheme.typography.body1,
@@ -141,8 +137,8 @@ fun AboutScreen(
                     urlSpanStyle = SpanStyle(
                         color = MaterialTheme.colors.primary,
                         textDecoration = TextDecoration.Underline
-                    )
-                )
+                                            )
+                        )
             }
 
             Spacer(modifier = Modifier.height(10.dp))
@@ -152,31 +148,27 @@ fun AboutScreen(
                 Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceAround,
                 verticalAlignment = Alignment.CenterVertically
-            ) {
+               ) {
 
-                IconButton(
-                    onClick = {
-                        aboutViewModel.handle(AboutEvent.EmailClicked)
-                    }
-                ) {
+                IconButton(onClick = {
+                    aboutViewModel.handle(AboutEvent.EmailClicked)
+                }) {
                     Icon(
                         imageVector = Icons.Default.Email,
                         contentDescription = "E-mail",
                         tint = MaterialTheme.colors.primary,
                         modifier = Modifier.size(32.dp)
-                    )
+                        )
                 }
 
-                IconButton(
-                    onClick = {
-                        aboutViewModel.handle(AboutEvent.TgClicked)
-                    }
-                ) {
+                IconButton(onClick = {
+                    aboutViewModel.handle(AboutEvent.TgClicked)
+                }) {
                     Image(
                         painter = painterResource(R.drawable.ic_telegram),
                         contentDescription = "Telegram",
                         modifier = Modifier.size(32.dp)
-                    )
+                         )
                 }
             }
         }

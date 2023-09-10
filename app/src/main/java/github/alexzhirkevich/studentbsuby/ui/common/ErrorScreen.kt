@@ -2,7 +2,13 @@ package github.alexzhirkevich.studentbsuby.ui.common
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme
@@ -29,31 +35,32 @@ import github.alexzhirkevich.studentbsuby.util.communication.collectAsState
 
 @Composable
 fun ErrorScreen(
-    isTablet : Boolean,
+    isTablet: Boolean,
     toolbarText: String,
     error: String,
     updater: Updatable,
     title: String = stringResource(id = R.string.something_gone_wrong),
     onMenuClicked: () -> Unit = {}
-) {
+               )
+{
     Column(
         Modifier
             .background(MaterialTheme.colors.secondary)
             .zIndex(2f)
-    ) {
+          ) {
         Spacer(modifier = Modifier.statusBarsHeight())
         TopAppBar(
-            elevation = 0.dp,
-            backgroundColor = Color.Transparent
-        ) {
-            if (!isTablet) {
+            elevation = 0.dp, backgroundColor = Color.Transparent
+                 ) {
+            if (!isTablet)
+            {
                 NavigationMenuButton(onClick = onMenuClicked)
             }
             Text(
                 text = toolbarText,
                 color = MaterialTheme.colors.onSecondary,
                 style = MaterialTheme.typography.subtitle1
-            )
+                )
         }
     }
 
@@ -65,54 +72,50 @@ fun ErrorScreen(
         SwipeRefresh(
             state = rememberSwipeRefreshState(
                 isRefreshing = isUpdating
-            ),
-            indicator = { state,offset->
+                                             ),
+            indicator = { state, offset ->
                 BsuProgressBarSwipeRefreshIndicator(state = state, trigger = offset)
             },
             indicatorPadding = PaddingValues(top = status.toDp() + 75.dp),
             onRefresh = updater::update
-        ) {
+                    ) {
             Box(
                 Modifier
                     .fillMaxSize()
                     .verticalScroll(rememberScrollState())
                     .background(MaterialTheme.colors.background)
-            ) {
+               ) {
                 ErrorWidget(
                     modifier = Modifier
                         .align(Alignment.Center)
                         .padding(horizontal = 30.dp),
                     title = title,
                     error = error
-                )
+                           )
             }
         }
     }
 }
 
 @Composable
-fun ErrorWidget(title : String, error : String, modifier: Modifier = Modifier) {
+fun ErrorWidget(title: String, error: String, modifier: Modifier = Modifier)
+{
 
     Column(
         modifier = modifier.padding(horizontal = 30.dp),
         horizontalAlignment = Alignment.CenterHorizontally
-    ) {
+          ) {
         Image(
-            painter = painterResource(id = R.drawable.error),
-            contentDescription = ""
-        )
+            painter = painterResource(id = R.drawable.error), contentDescription = ""
+             )
         Spacer(modifier = Modifier.height(20.dp))
         Text(
-            text = title,
-            style = MaterialTheme.typography.h2,
-            textAlign = TextAlign.Center
-        )
+            text = title, style = MaterialTheme.typography.h2, textAlign = TextAlign.Center
+            )
         Spacer(modifier = Modifier.height(15.dp))
         Text(
-            text = error,
-            style = MaterialTheme.typography.body1,
-            textAlign = TextAlign.Center
+            text = error, style = MaterialTheme.typography.body1, textAlign = TextAlign.Center
 
-        )
+            )
     }
 }

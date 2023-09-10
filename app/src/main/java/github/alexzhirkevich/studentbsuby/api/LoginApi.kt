@@ -12,14 +12,15 @@ import java.nio.charset.Charset
 
 fun LoginApi.createLoginData(
     login: String, stud: String, captcha: String
-): FormUrlEncodedBody = mapOf(
+                            ): FormUrlEncodedBody = mapOf(
     "ctl00\$ContentPlaceHolder0\$txtUserLogin" to login,
     "ctl00\$ContentPlaceHolder0\$txtUserPassword" to stud,
     "ctl00\$ContentPlaceHolder0\$txtCapture" to captcha,
-)
+                                                         )
 
 
-interface LoginApi {
+interface LoginApi
+{
 
     @GET("login.aspx")
     suspend fun initialize(): Response<ResponseBody>
@@ -32,11 +33,12 @@ interface LoginApi {
     @POST("login.aspx")
     suspend fun login(
         @FieldMap(encoded = false) body: FormUrlEncodedBody
-    ): Response<ResponseBody>
+                     ): Response<ResponseBody>
 }
 
 val ResponseBody.isSessionExpired: Boolean
-    get() {
+    get()
+    {
         val responseString = source().buffer.clone().readString(Charset.forName("UTF-8"))
 
         val isCmdLogInPresent = responseString.contains("ctl00_ContentPlaceHolder0_cmdLogIn")
@@ -45,7 +47,8 @@ val ResponseBody.isSessionExpired: Boolean
         return isCmdLogInPresent || isBtnLogonPresent
     }
 
-class LoginApiWrapper(val api: LoginApi) : LoginApi {
+class LoginApiWrapper(val api: LoginApi) : LoginApi
+{
 
     private var __VIEWSTATE = ""
     private var __VIEWSTATEGENERATOR = ""
@@ -54,7 +57,8 @@ class LoginApiWrapper(val api: LoginApi) : LoginApi {
     private var __EVENTTARGET = ""
     private var __EVENTARGUMENT = ""
 
-    override suspend fun initialize(): Response<ResponseBody> {
+    override suspend fun initialize(): Response<ResponseBody>
+    {
         val response = api.initialize()
         val jsoup = response.body()?.byteStream()?.use { stream ->
             Jsoup.parse(stream.readBytes().toString(Charsets.UTF_8))
@@ -73,11 +77,15 @@ class LoginApiWrapper(val api: LoginApi) : LoginApi {
         return response
     }
 
-    override suspend fun captcha(): Response<ResponseBody> {
+    override suspend fun captcha(): Response<ResponseBody>
+    {
         return api.captcha()
     }
 
-    override suspend fun login(@FieldMap(encoded = false) body: FormUrlEncodedBody): Response<ResponseBody> {
+    override suspend fun login(
+        @FieldMap(encoded = false) body: FormUrlEncodedBody
+                              ): Response<ResponseBody>
+    {
         val form = body.toMutableMap().apply {
             this["__EVENTTARGET"] = __EVENTTARGET
             this["__EVENTARGUMENT"] = __EVENTARGUMENT

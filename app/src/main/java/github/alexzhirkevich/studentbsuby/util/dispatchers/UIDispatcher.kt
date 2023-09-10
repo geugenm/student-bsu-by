@@ -4,7 +4,8 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 
-interface UIDispatcher{
+interface UIDispatcher
+{
 
     /**
      * Launches given [block] in [scope] with dispatcher defined as Main.
@@ -16,13 +17,12 @@ interface UIDispatcher{
         key: Any? = null,
         exceptionHandler: CoroutineExceptionHandler? = null,
         block: suspend CoroutineScope.() -> Unit
-    ): Job
+                ): Job
 
     /**
      * Switches dispatcher to Main.
      * */
     suspend fun <T> runOnUI(
-        exceptionHandler: CoroutineExceptionHandler? = null,
-        block: suspend CoroutineScope.() -> T
-    ): T
+        exceptionHandler: CoroutineExceptionHandler? = null, block: suspend CoroutineScope.() -> T
+                           ): T
 }

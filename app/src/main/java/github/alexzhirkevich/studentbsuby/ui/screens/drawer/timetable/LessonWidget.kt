@@ -2,11 +2,24 @@ package github.alexzhirkevich.studentbsuby.ui.screens.drawer.timetable
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.*
+import androidx.compose.material.Card
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.filled.ExpandLess
+import androidx.compose.material.icons.filled.ExpandMore
+import androidx.compose.material.icons.filled.LocalFireDepartment
+import androidx.compose.material.icons.filled.Schedule
+import androidx.compose.material.icons.filled.TaskAlt
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -27,13 +40,16 @@ import github.alexzhirkevich.studentbsuby.data.models.Lesson
 
 const val LessonTimeWidth = 60
 const val LessonTimeLineOffsetX = LessonTimeWidth + 12
+
 @ExperimentalMaterialApi
 @Composable
 fun LessonWidget(
     lesson: Lesson,
-    state : LessonState,
-    backgroundColor : Color= MaterialTheme.colors.background,
-    modifier: Modifier = Modifier) {
+    state: LessonState,
+    backgroundColor: Color = MaterialTheme.colors.background,
+    modifier: Modifier = Modifier
+                )
+{
 
     var expanded by rememberSaveable {
         mutableStateOf(state == LessonState.RUNNING)
@@ -48,46 +64,46 @@ fun LessonWidget(
                 .width(LessonTimeWidth.dp)
                 .padding(vertical = 3.dp),
             textAlign = TextAlign.Center
-        )
+            )
 
         Icon(
             contentDescription = "Lesson state",
             tint = MaterialTheme.colors.primary,
-            imageVector = when (state) {
+            imageVector = when (state)
+            {
                 LessonState.INCOMING -> Icons.Default.Schedule
-                LessonState.RUNNING -> Icons.Default.LocalFireDepartment
-                LessonState.PASSED -> Icons.Default.TaskAlt
+                LessonState.RUNNING  -> Icons.Default.LocalFireDepartment
+                LessonState.PASSED   -> Icons.Default.TaskAlt
             },
             modifier = Modifier
                 .clip(CircleShape)
                 .background(backgroundColor)
                 .padding(vertical = 5.dp)
-        )
+            )
         Spacer(modifier = Modifier.width(10.dp))
 
         Card(
-            modifier = Modifier
-                .weight(1f),
+            modifier = Modifier.weight(1f),
             elevation = 5.dp,
             backgroundColor = MaterialTheme.colors.secondary,
             onClick = { expanded = !expanded },
-        ) {
-            Row(
-                Modifier
-                    .padding(horizontal = 10.dp, vertical = 5.dp)
             ) {
+            Row(
+                Modifier.padding(horizontal = 10.dp, vertical = 5.dp)
+               ) {
                 Column(
                     Modifier
                         .weight(1f)
                         .animateContentSize()
-                ) {
+                      ) {
                     Text(
                         text = lesson.name,
                         style = MaterialTheme.typography.subtitle1,
                         color = MaterialTheme.colors.onSecondary,
-                    )
+                        )
 
-                    if (expanded) {
+                    if (expanded)
+                    {
 
                         val audienceText = "${stringResource(R.string.audience)}: ${lesson.place}"
                         val typeText = "${stringResource(R.string.type)}: ${lesson.type}"
@@ -99,29 +115,26 @@ fun LessonWidget(
                             audienceText to lesson.place,
                             typeText to lesson.type,
                             teacherText to lesson.teacher
-                        ).forEach {
+                              ).forEach {
                             Text(
                                 text = AnnotatedString(
-                                    it.first,
-                                    spanStyles = listOf(
+                                    it.first, spanStyles = listOf(
                                         AnnotatedString.Range(
                                             SpanStyle(fontWeight = FontWeight.Medium),
                                             start = 0,
                                             end = it.first.length - it.second.length - 1
-                                        )
-                                    )
-                                ),
-                                style = MaterialTheme.typography.body2
-                            )
+                                                             )
+                                                                 )
+                                                      ), style = MaterialTheme.typography.body2
+                                )
                         }
                     }
                 }
                 Spacer(modifier = Modifier.width(10.dp))
                 Icon(
-                    imageVector = if (expanded)
-                        Icons.Default.ExpandLess else Icons.Default.ExpandMore,
+                    imageVector = if (expanded) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
                     contentDescription = "Expand"
-                )
+                    )
             }
         }
     }

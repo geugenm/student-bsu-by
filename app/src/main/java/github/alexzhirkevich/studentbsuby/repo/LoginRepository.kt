@@ -19,7 +19,8 @@ interface UsernameProvider
     val username: String
 }
 
-open class UsernameProviderImpl @Inject constructor(@CredentialsPrefsQualifier val credentialsPrefs: SharedPreferences
+open class UsernameProviderImpl @Inject constructor(
+    @CredentialsPrefsQualifier val credentialsPrefs: SharedPreferences
                                                    ) : UsernameProvider
 {
 
@@ -42,7 +43,8 @@ class LoginRepository @Inject constructor(
                                          ) : UsernameProviderImpl(credentialsPreferences)
 {
 
-    data class LoginResponse(val success: Boolean, val loggedIn: Boolean, val loginResult: String?
+    data class LoginResponse(
+        val success: Boolean, val loggedIn: Boolean, val loginResult: String?
                             )
 
     var password by sharedPreferences(credentialsPreferences, "")
@@ -73,7 +75,10 @@ class LoginRepository @Inject constructor(
             }
             return LoginResponse(
                 success = successful,
-                loggedIn = result?.contains("вошли", true) == true || logout?.contains("logout", true) == true,
+                loggedIn = result?.contains("вошли", true) == true || logout?.contains(
+                    "logout",
+                    true
+                                                                                      ) == true,
                 loginResult = result
                                 )
         } catch (t: Throwable)
@@ -84,7 +89,8 @@ class LoginRepository @Inject constructor(
         }
     }
 
-    suspend fun login(login: String, password: String, captcha: String
+    suspend fun login(
+        login: String, password: String, captcha: String
                      ): LoginResponse
     {
         return try
@@ -106,11 +112,11 @@ class LoginRepository @Inject constructor(
                 this.username = login
                 this.password = password
                 null
-            }
-            else
+            } else
             {
-                (jsoup?.getElementById("ctl00_ContentPlaceHolder0_lbLoginResult")?.text()?.takeIf(String::isNotBlank)
-                    ?: jsoup?.getElementsByClass("style1")?.lastOrNull()?.text()?.takeIf(String::isNotBlank))
+                (jsoup?.getElementById("ctl00_ContentPlaceHolder0_lbLoginResult")?.text()
+                    ?.takeIf(String::isNotBlank) ?: jsoup?.getElementsByClass("style1")
+                    ?.lastOrNull()?.text()?.takeIf(String::isNotBlank))
             }
 
             return LoginResponse(
@@ -143,9 +149,8 @@ class LoginRepository @Inject constructor(
     tailrec suspend fun getCaptchaText(bitmap: Bitmap): String
     {
         return kotlin.runCatching {
-            val text =
-                captchaRecognizer.recognize(bitmap).replace("B", "6", true).replace("A", "4").filter(Char::isDigit)
-                    .take(6)
+            val text = captchaRecognizer.recognize(bitmap).replace("B", "6", true).replace("A", "4")
+                .filter(Char::isDigit).take(6)
             if (text.length != 6)
             {
                 if (currentUpdateCount < overflowCount)
@@ -153,10 +158,8 @@ class LoginRepository @Inject constructor(
                     currentUpdateCount++
                     val newBitmap = updateCaptcha(true) ?: return@runCatching ""
                     return getCaptchaText(newBitmap)
-                }
-                else currentUpdateCount = 0
-            }
-            else
+                } else currentUpdateCount = 0
+            } else
             {
                 currentUpdateCount = 0
                 return text

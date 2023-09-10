@@ -11,10 +11,9 @@ import org.jsoup.parser.Tag
 import javax.inject.Inject
 
 class NewsRepository @Inject constructor(
-    private val api: ProfileApi,
-    private val dao : NewsDao,
-    val baseUrl : Uri
-) : CacheWebRepository<List<News>>() {
+    private val api: ProfileApi, private val dao: NewsDao, val baseUrl: Uri
+                                        ) : CacheWebRepository<List<News>>()
+{
 
     val newsUrl get() = "$baseUrl/${ProfileApi.URL_NEWS}"
 
@@ -22,52 +21,38 @@ class NewsRepository @Inject constructor(
         dao.getAll()
     }.getOrNull()
 
-    override suspend fun getFromWeb(): List<News> {
-        return Jsoup.parse(api.news().html())
-            .getElementsByClass("LineMain")
-            .first()
-            .getElementsByTag("tbody")
-            .first()
-            .getElementsByTag("td")
-            .last()
-            .children()
-            .apply {
+    override suspend fun getFromWeb(): List<News>
+    {
+        return Jsoup.parse(api.news().html()).getElementsByClass("LineMain").first()
+            .getElementsByTag("tbody").first().getElementsByTag("td").last().children().apply {
                 removeAll {
                     it.tag() == Tag.valueOf("br")
                 }
-            }
-            .drop(1)
+            }.drop(1)
 
             .groupUnless {
                 it.tag() == Tag.valueOf("h2")
-            }
-            .filter {
-                it.isNotEmpty() &&
-                        it[0].getElementsByAttributeValueContaining("href", "id=")
-                            .isNotEmpty()
-            }
-            .map {
+            }.filter {
+                it.isNotEmpty() && it[0].getElementsByAttributeValueContaining("href", "id=")
+                    .isNotEmpty()
+            }.map {
                 News(
-                    id = it[0]
-                        .getElementsByAttributeValueContaining("href", "id=")
-                        .first()
-                        .attr("href")
-                        .substringAfter("=", "0")
-                        .toInt(),
+                    id = it[0].getElementsByAttributeValueContaining("href", "id=").first()
+                        .attr("href").substringAfter("=", "0").toInt(),
                     title = it[0].text().trim(),
                     preview = it.filterNot {
                         it.allElements.any {
                             it.hasAttr("href")
                         }
                     }.takeIf(Collection<*>::isNotEmpty)
-                        ?.joinToString("\n", transform = Element::text)
-                        ?.trim()
-                )
+                        ?.joinToString("\n", transform = Element::text)?.trim()
+                    )
             }
 
     }
 
-    override suspend fun saveToCache(value: List<News>) {
+    override suspend fun saveToCache(value: List<News>)
+    {
         kotlin.runCatching {
             dao.clear()
             value.forEach { dao.insert(it) }
@@ -76,17 +61,18 @@ class NewsRepository @Inject constructor(
 
     fun getNewsItem(id: Int, dataSource: DataSource) = NewsContentRepository(
         id, dao, api
-    ).get(dataSource)
+                                                                            ).get(dataSource)
 }
 
-fun <T> List<T>.groupUnless(predicate : (T) -> Boolean) : List<List<T>>{
+fun <T> List<T>.groupUnless(predicate: (T) -> Boolean): List<List<T>>
+{
     val result = mutableListOf<List<T>>()
 
     var start = 0
     forEachIndexed { index, t ->
-        if (predicate(t) || index == size - 1) {
-            if (index-start != 0)
-                result.add(subList(start, index))
+        if (predicate(t) || index == size - 1)
+        {
+            if (index - start != 0) result.add(subList(start, index))
             start = index
         }
     }
@@ -94,30 +80,29 @@ fun <T> List<T>.groupUnless(predicate : (T) -> Boolean) : List<List<T>>{
 }
 
 class NewsContentRepository constructor(
-    private val id : Int,
-    private val newsDao: NewsDao,
-    private val profileApi: ProfileApi
-) : CacheWebRepository<NewsContent>() {
+    private val id: Int, private val newsDao: NewsDao, private val profileApi: ProfileApi
+                                       ) : CacheWebRepository<NewsContent>()
+{
 
     override suspend fun getFromCache(): NewsContent? = kotlin.runCatching {
         newsDao.getContent(id)
     }.getOrNull()
 
-    override suspend fun getFromWeb(): NewsContent {
+    override suspend fun getFromWeb(): NewsContent
+    {
         return Jsoup.parse(profileApi.newsItem(id).html())
             .getElementById("ctl00_ctl00_ContentPlaceHolder0_ContentPlaceHolder1_frmNewsItem")
             .apply {
                 select("img").forEach {
                     it.attr("width", "100%")
                 }
-            }
-            .html()
-            .let {
+            }.html().let {
                 NewsContent(id, it)
             }
     }
 
-    override suspend fun saveToCache(value: NewsContent) {
+    override suspend fun saveToCache(value: NewsContent)
+    {
         kotlin.runCatching {
             newsDao.insertContent(value)
         }

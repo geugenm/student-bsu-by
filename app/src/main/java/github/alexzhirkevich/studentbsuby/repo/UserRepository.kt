@@ -7,28 +7,30 @@ import org.jsoup.Jsoup
 import javax.inject.Inject
 
 class UserRepository @Inject constructor(
-    private val dao : UsersDao,
-    private val api : ProfileApi,
+    private val dao: UsersDao,
+    private val api: ProfileApi,
     private val usernameProvider: UsernameProvider
-) : CacheWebRepository<User>() {
+                                        ) : CacheWebRepository<User>()
+{
 
     override suspend fun getFromCache(): User? =
         usernameProvider.username.takeIf(String::isNotBlank)
-            ?.let { kotlin.runCatching { dao.get(it) }.getOrNull()}
+            ?.let { kotlin.runCatching { dao.get(it) }.getOrNull() }
 
-    override suspend fun getFromWeb(): User {
+    override suspend fun getFromWeb(): User
+    {
 
         val doc = Jsoup.parse(api.studProgress().html())
 
         val name = doc.getElementById("ctl00_ctl00_ContentPlaceHolder0_lbFIO1").text()
-        val faculty = doc
-            .getElementById("ctl00_ctl00_ContentPlaceHolder0_ContentPlaceHolder1_ctlStudProgress1_lbStudFacultet")
+        val faculty =
+            doc.getElementById("ctl00_ctl00_ContentPlaceHolder0_ContentPlaceHolder1_ctlStudProgress1_lbStudFacultet")
                 .text()
-        val info = doc
-            .getElementById("ctl00_ctl00_ContentPlaceHolder0_ContentPlaceHolder1_ctlStudProgress1_lbStudKurs")
+        val info =
+            doc.getElementById("ctl00_ctl00_ContentPlaceHolder0_ContentPlaceHolder1_ctlStudProgress1_lbStudKurs")
                 .text()
-        val avg = doc
-            .getElementById("ctl00_ctl00_ContentPlaceHolder0_ContentPlaceHolder1_ctlStudProgress1_lbStudBall")
+        val avg =
+            doc.getElementById("ctl00_ctl00_ContentPlaceHolder0_ContentPlaceHolder1_ctlStudProgress1_lbStudBall")
                 .text()
 
         return User(
@@ -37,10 +39,11 @@ class UserRepository @Inject constructor(
             faculty = faculty,
             info = info,
             avgGrade = avg
-        )
+                   )
     }
 
-    override suspend fun saveToCache(value: User) {
+    override suspend fun saveToCache(value: User)
+    {
         kotlin.runCatching {
             dao.insert(value)
         }

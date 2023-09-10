@@ -20,6 +20,5 @@ import javax.inject.Inject
 @ExperimentalPagerApi
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
-    val state : StateCommunication<SettingsState>,
-    handler : EventHandler<SettingsEvent>
-) : ViewModel(), EventHandler<SettingsEvent> by handler
+    val state: StateCommunication<SettingsState>, handler: EventHandler<SettingsEvent>
+                                           ) : ViewModel(), EventHandler<SettingsEvent> by handler

@@ -16,14 +16,17 @@ import javax.inject.Inject
 class TimetableRepository @Inject constructor(
     private val usernameProvider: UsernameProvider,
     private val timetableApi: TimetableApi,
-    private val lessonsDao : LessonsDao
-) : CacheWebRepository<List<List<Lesson>>>() {
+    private val lessonsDao: LessonsDao
+                                             ) : CacheWebRepository<List<List<Lesson>>>()
+{
 
-    suspend fun init(){
+    suspend fun init()
+    {
         timetableApi.init()
     }
 
-    override suspend fun getFromWeb(): List<List<Lesson>> {
+    override suspend fun getFromWeb(): List<List<Lesson>>
+    {
 
         val username = usernameProvider.username.takeIf(String::isNotBlank)
             ?: throw UsernameNotFoundException()
@@ -33,8 +36,7 @@ class TimetableRepository @Inject constructor(
                 async {
 
                     val string = timetableApi.timetable(timetableApi.dayOfWeek(day)).html()
-                    val html =
-                        '<' + string.substringAfter('<').substringBeforeLast('>') + '>'
+                    val html = '<' + string.substringAfter('<').substringBeforeLast('>') + '>'
                     val jsoup = Jsoup.parse(html)
 
                     val numbers = jsoup.getElementsByClass("styleNumber").mapNotNull {
@@ -76,25 +78,21 @@ class TimetableRepository @Inject constructor(
 
                     kotlin.runCatching {
                         numbers.indices.mapNotNull {
-                            if (it in chunkedNames.indices && chunkedNames[it].isNotEmpty()) {
+                            if (it in chunkedNames.indices && chunkedNames[it].isNotEmpty())
+                            {
                                 Lesson(
                                     id = 0,
                                     owner = username,
                                     dayOfWeek = day,
-                                    number = if (it in numbers.indices)
-                                        numbers[it].first ?: 0 else 0,
+                                    number = if (it in numbers.indices) numbers[it].first
+                                        ?: 0 else 0,
                                     name = chunkedNames[it],
-                                    place = if (it in chunkedAudiences.indices)
-                                        chunkedAudiences[it] else "",
-                                    type = if (it in chunkedTypes.indices)
-                                        chunkedTypes[it] else "",
-                                    teacher = if (it in chunkedTeachers.indices)
-                                        chunkedTeachers[it] else "",
-                                    starts = if (it in timesStart.indices)
-                                        timesStart[it] else "",
-                                    ends = if (it in timesEnd.indices)
-                                        timesEnd[it] else ""
-                                )
+                                    place = if (it in chunkedAudiences.indices) chunkedAudiences[it] else "",
+                                    type = if (it in chunkedTypes.indices) chunkedTypes[it] else "",
+                                    teacher = if (it in chunkedTeachers.indices) chunkedTeachers[it] else "",
+                                    starts = if (it in timesStart.indices) timesStart[it] else "",
+                                    ends = if (it in timesEnd.indices) timesEnd[it] else ""
+                                      )
                             } else null
                         }
                     }.getOrNull() ?: emptyList()
@@ -110,16 +108,19 @@ class TimetableRepository @Inject constructor(
         }
     }
 
-    private fun <T> chunk(spans : List<Int>, values : List<Pair<T,Int>>) : List<List<T>> {
+    private fun <T> chunk(spans: List<Int>, values: List<Pair<T, Int>>): List<List<T>>
+    {
         val mutableValues = values.toMutableList()
         return spans.map { chunkSize ->
             var currentChunkSize = 0
             val currentList = mutableListOf<T>()
-            while (currentChunkSize<chunkSize && mutableValues.isNotEmpty()){
+            while (currentChunkSize < chunkSize && mutableValues.isNotEmpty())
+            {
                 val item = mutableValues.removeFirst()
-                val diff = chunkSize - (currentChunkSize+item.second)
-                if (diff<0){
-                    mutableValues.add(0,item.first to -diff)
+                val diff = chunkSize - (currentChunkSize + item.second)
+                if (diff < 0)
+                {
+                    mutableValues.add(0, item.first to -diff)
                 }
                 currentChunkSize += item.second
                 currentList.add(item.first)
@@ -128,7 +129,8 @@ class TimetableRepository @Inject constructor(
         }
     }
 
-    override suspend fun getFromCache(): List<List<Lesson>>{
+    override suspend fun getFromCache(): List<List<Lesson>>
+    {
         return kotlin.runCatching {
             usernameProvider.username.takeIf(String::isNotBlank)?.let { username ->
                 lessonsDao.getAll(username)
@@ -136,7 +138,8 @@ class TimetableRepository @Inject constructor(
         }.getOrNull() ?: emptyList()
     }
 
-    override suspend fun saveToCache(value : List<List<Lesson>> ){
+    override suspend fun saveToCache(value: List<List<Lesson>>)
+    {
         kotlin.runCatching {
             usernameProvider.username.takeIf(String::isNotBlank)?.let { username ->
                 lessonsDao.clear(username)

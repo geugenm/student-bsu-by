@@ -5,13 +5,22 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Typeface
 import android.graphics.drawable.Drawable
-import androidx.annotation.*
+import androidx.annotation.ArrayRes
+import androidx.annotation.BoolRes
+import androidx.annotation.ColorRes
+import androidx.annotation.DimenRes
+import androidx.annotation.DrawableRes
+import androidx.annotation.FontRes
+import androidx.annotation.IntegerRes
+import androidx.annotation.RawRes
+import androidx.annotation.StringRes
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 
-interface ResourceManager {
+interface ResourceManager
+{
 
-    fun string(@StringRes id: Int, vararg args : Any): String
+    fun string(@StringRes id: Int, vararg args: Any): String
     fun integer(@IntegerRes id: Int): Int
     fun raw(@RawRes id: Int): ByteArray
     fun boolean(@BoolRes id: Int): Boolean
@@ -23,8 +32,10 @@ interface ResourceManager {
     fun bitmap(@DrawableRes id: Int): Bitmap
     fun font(@FontRes id: Int): Typeface?
 
-    class Base(private val context: Context) : ResourceManager {
-        override fun string(id: Int, vararg args: Any): String = context.resources.getString(id,args)
+    class Base(private val context: Context) : ResourceManager
+    {
+        override fun string(id: Int, vararg args: Any): String =
+            context.resources.getString(id, args)
 
         override fun integer(id: Int): Int = context.resources.getInteger(id)
 
@@ -42,8 +53,7 @@ interface ResourceManager {
 
         override fun drawable(id: Int): Drawable? = ContextCompat.getDrawable(context, id)
 
-        override fun bitmap(id: Int): Bitmap = BitmapFactory
-            .decodeResource(context.resources,id)
+        override fun bitmap(id: Int): Bitmap = BitmapFactory.decodeResource(context.resources, id)
 
         override fun font(id: Int): Typeface? = ResourcesCompat.getFont(context, id)
     }

@@ -8,26 +8,32 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.hilt.work.HiltWorker
-import androidx.work.*
+import androidx.work.BackoffPolicy
+import androidx.work.Constraints
+import androidx.work.CoroutineWorker
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.NetworkType
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
+import androidx.work.WorkerParameters
+import androidx.work.await
 import com.google.accompanist.pager.ExperimentalPagerApi
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import github.alexzhirkevich.studentbsuby.R
-import github.alexzhirkevich.studentbsuby.data.models.Lesson
-import github.alexzhirkevich.studentbsuby.repo.*
+import github.alexzhirkevich.studentbsuby.repo.HostelRepository
+import github.alexzhirkevich.studentbsuby.repo.LoginRepository
+import github.alexzhirkevich.studentbsuby.repo.TimetableRepository
 import github.alexzhirkevich.studentbsuby.util.NotificationCreator
 import github.alexzhirkevich.studentbsuby.util.WorkerManager
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.coroutineScope
 import me.onebone.toolbar.ExperimentalToolbarApi
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Singleton
 
-private const val HostelUpdateNotification  = 1000001
-private const val TimetableUpdateNotification  = 1000092
+private const val HostelUpdateNotification = 1000001
+private const val TimetableUpdateNotification = 1000092
 
 @ExperimentalToolbarApi
 @ExperimentalCoroutinesApi
@@ -39,33 +45,34 @@ private const val TimetableUpdateNotification  = 1000092
 @Singleton
 class SyncWorkerManager @Inject constructor(
     private val workManager: WorkManager,
-) : WorkerManager {
+                                           ) : WorkerManager
+{
 
-    override suspend fun isEnabled(): Boolean {
-        return workManager.getWorkInfosForUniqueWork(SyncWorker.TAG)
-            .await().isNotEmpty()
+    override suspend fun isEnabled(): Boolean
+    {
+        return workManager.getWorkInfosForUniqueWork(SyncWorker.TAG).await().isNotEmpty()
     }
 
-    override fun run() {
-        val request = PeriodicWorkRequestBuilder<SyncWorker>(1, TimeUnit.HOURS)
-            .setBackoffCriteria(BackoffPolicy.LINEAR, 15, TimeUnit.MINUTES)
+    override fun run()
+    {
+        val request = PeriodicWorkRequestBuilder<SyncWorker>(1, TimeUnit.HOURS).setBackoffCriteria(
+                BackoffPolicy.LINEAR,
+                15,
+                TimeUnit.MINUTES
+                                                                                                  )
             .setConstraints(
-                Constraints.Builder()
-                    .setRequiredNetworkType(NetworkType.CONNECTED)
-                    .setRequiresBatteryNotLow(true)
-                    .build()
-            )
-            .build()
+                Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED)
+                    .setRequiresBatteryNotLow(true).build()
+                           ).build()
 
-       workManager
-            .enqueueUniquePeriodicWork(
-                SyncWorker.TAG,
-                ExistingPeriodicWorkPolicy.KEEP,
-                request)
+        workManager.enqueueUniquePeriodicWork(
+                SyncWorker.TAG, ExistingPeriodicWorkPolicy.KEEP, request
+                                             )
 
     }
 
-    override fun stop() {
+    override fun stop()
+    {
         workManager.cancelUniqueWork(SyncWorker.TAG)
     }
 
@@ -85,18 +92,23 @@ class SyncWorker @AssistedInject constructor(
     private val hostelRepository: HostelRepository,
     private val timetableRepository: TimetableRepository,
     private val loginRepository: LoginRepository,
-) : CoroutineWorker(context, parameters) {
+                                            ) : CoroutineWorker(context, parameters)
+{
 
-    companion object {
+    companion object
+    {
         const val TAG = "SynchronizationWorker"
     }
 
     private val notificationCreator = NotificationCreator(
-        context, "CHANNEL_SYNCHRONIZATION", context.getString(R.string.updates),
+        context,
+        "CHANNEL_SYNCHRONIZATION",
+        context.getString(R.string.updates),
         context.getString(R.string.notification_channel_description)
-    )
+                                                         )
 
-    override suspend fun doWork(): Result {
+    override suspend fun doWork(): Result
+    {
         return Result.success()
 //        return if (login()) {
 //            timetableRepository.init()
@@ -191,8 +203,10 @@ class SyncWorker @AssistedInject constructor(
 @ExperimentalAnimationApi
 @ExperimentalMaterialApi
 @ExperimentalComposeUiApi
-class SyncWorkerReceiver : BroadcastReceiver() {
-    override fun onReceive(context: Context, intent: Intent) {
+class SyncWorkerReceiver : BroadcastReceiver()
+{
+    override fun onReceive(context: Context, intent: Intent)
+    {
 //        if (intent.action in listOf(Intent.ACTION_BOOT_COMPLETED, Intent.ACTION_REBOOT)) {
 //            SyncWorkerManager(WorkManager.getInstance(context))
 //                .run()

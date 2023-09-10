@@ -8,7 +8,8 @@ import github.alexzhirkevich.studentbsuby.data.models.News
 import github.alexzhirkevich.studentbsuby.data.models.NewsContent
 
 @Dao
-interface NewsDao {
+interface NewsDao
+{
 
     @Insert(onConflict = REPLACE)
     suspend fun insert(news: News)
@@ -17,13 +18,13 @@ interface NewsDao {
     suspend fun insertContent(content: NewsContent)
 
     @Query("SELECT * FROM News ORDER BY id DESC")
-    suspend fun getAll() : List<News>
+    suspend fun getAll(): List<News>
 
     @Query("SELECT * FROM NewsContent WHERE id = :id LIMIT 1")
-    suspend fun getContent(id : Int) : NewsContent
+    suspend fun getContent(id: Int): NewsContent
 
     @Query("DELETE FROM NewsContent WHERE id = :id")
-    suspend fun clearContent(id : Int)
+    suspend fun clearContent(id: Int)
 
     @Query("DELETE FROM NEWS")
     suspend fun clear()

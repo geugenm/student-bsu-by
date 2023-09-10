@@ -13,48 +13,57 @@ private const val PREF_SETTINGS_isInSystemTheme = "PREF_SETTINGS_isInSystemTheme
 private const val PREF_SETTINGS_isInDarkThemeForced = "PREF_SETTINGS_isInDarkThemeForced"
 
 class ThemeSelectorImpl private constructor(
-    private val preferences: SharedPreferences,
-    initialTheme : Theme
-    ) : ThemeSelector{
+    private val preferences: SharedPreferences, initialTheme: Theme
+                                           ) : ThemeSelector
+{
 
     override val currentTheme = mutableStateOf(initialTheme)
 
 
-    override fun setTheme(theme: Theme) {
+    override fun setTheme(theme: Theme)
+    {
         setInSystemTheme(preferences, theme == Theme.System)
         currentTheme.value = theme
 
-        if (theme == Dark){
-            setInDarkTheme(preferences,true)
+        if (theme == Dark)
+        {
+            setInDarkTheme(preferences, true)
         }
-        if (theme == Theme.Light){
-            setInDarkTheme(preferences,false)
+        if (theme == Theme.Light)
+        {
+            setInDarkTheme(preferences, false)
         }
     }
 
-    companion object {
+    companion object
+    {
 
-        fun create(context: Context) : ThemeSelectorImpl {
+        fun create(context: Context): ThemeSelectorImpl
+        {
             val prefs = PreferenceManager.getDefaultSharedPreferences(context)
             val inSystem = isInSystemTheme(prefs)
-            val theme = when {
-                inSystem -> Theme.System
+            val theme = when
+            {
+                inSystem                                                   -> Theme.System
                 prefs.getBoolean(PREF_SETTINGS_isInDarkThemeForced, false) -> Dark
-                else -> Theme.Light
+                else                                                       -> Theme.Light
             }
             return ThemeSelectorImpl(prefs, theme)
         }
 
-        private fun isInSystemTheme(prefs: SharedPreferences) : Boolean =
+        private fun isInSystemTheme(prefs: SharedPreferences): Boolean =
             prefs.getBoolean(PREF_SETTINGS_isInSystemTheme, true)
 
-        private fun setInSystemTheme(preferences: SharedPreferences, inSystemTheme : Boolean) {
+        private fun setInSystemTheme(preferences: SharedPreferences, inSystemTheme: Boolean)
+        {
             preferences.edit().putBoolean(PREF_SETTINGS_isInSystemTheme, inSystemTheme).apply()
         }
 
-        private fun setInDarkTheme(preferences: SharedPreferences,isInDarkTheme: Boolean) {
-            if (isInSystemTheme(preferences)) {
-                setInSystemTheme(preferences,false)
+        private fun setInDarkTheme(preferences: SharedPreferences, isInDarkTheme: Boolean)
+        {
+            if (isInSystemTheme(preferences))
+            {
+                setInSystemTheme(preferences, false)
             }
             preferences.edit().putBoolean(PREF_SETTINGS_isInDarkThemeForced, isInDarkTheme).apply()
         }
@@ -63,7 +72,8 @@ class ThemeSelectorImpl private constructor(
 }
 
 @Composable
-fun rememberThemeSelector() : ThemeSelector {
+fun rememberThemeSelector(): ThemeSelector
+{
     val context = LocalContext.current
     return remember {
         ThemeSelectorImpl.create(context)

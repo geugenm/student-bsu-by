@@ -19,13 +19,11 @@ import javax.inject.Inject
 @ExperimentalPagerApi
 class SettingsRepository @Inject constructor(
     preferences: SharedPreferences,
-) {
-    var synchronizationEnabled by sharedPreferences(preferences, true) {
-    }
+                                            )
+{
+    var synchronizationEnabled by sharedPreferences(preferences, true) {}
 
-    var collectStatistics by sharedPreferences(preferences, true) {
-    }
+    var collectStatistics by sharedPreferences(preferences, true) {}
 
-    var collectCrashlytics by sharedPreferences(preferences, true) {
-    }
+    var collectCrashlytics by sharedPreferences(preferences, true) {}
 }

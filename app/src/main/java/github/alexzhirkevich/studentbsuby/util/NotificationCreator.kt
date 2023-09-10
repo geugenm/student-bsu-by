@@ -29,13 +29,13 @@ import me.onebone.toolbar.ExperimentalToolbarApi
 @ExperimentalPagerApi
 class NotificationCreator(
     private val context: Context,
-    private val channelId : String,
-    private val channelName : String,
-    private val channelDescription : String
-) {
+    private val channelId: String,
+    private val channelName: String,
+    private val channelDescription: String
+                         )
+{
     private val manager by lazy {
-        context.getSystemService(Context.NOTIFICATION_SERVICE)
-                as NotificationManager
+        context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
     }
 
     private val intent by lazy {
@@ -43,47 +43,41 @@ class NotificationCreator(
             context, 0, Intent(context, MainActivity::class.java).apply {
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             }, 0
-        )
+                                 )
     }
 
 
     fun sendNotification(
-        id : Int,
-        sub : String,
-        title : String,
-        text : String,
-    ) {
+        id: Int,
+        sub: String,
+        title: String,
+        text: String,
+                        )
+    {
         kotlin.runCatching {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    manager.createNotificationChannel(
-                        NotificationChannel(
-                            channelId,
-                            channelName,
-                            NotificationManager.IMPORTANCE_DEFAULT
-                        ).apply {
-                            enableVibration(true)
-                            enableLights(true)
-                            shouldShowLights()
-                            shouldVibrate()
-                            description = channelDescription
-                            setSound(
-                                Settings.System.DEFAULT_NOTIFICATION_URI,
-                                AudioAttributes.Builder()
-                                    .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
-                                    .setUsage(AudioAttributes.USAGE_NOTIFICATION)
-                                    .build())
-                        }
-                    )
-                }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+            {
+                manager.createNotificationChannel(NotificationChannel(
+                    channelId, channelName, NotificationManager.IMPORTANCE_DEFAULT
+                                                                     ).apply {
+                    enableVibration(true)
+                    enableLights(true)
+                    shouldShowLights()
+                    shouldVibrate()
+                    description = channelDescription
+                    setSound(
+                        Settings.System.DEFAULT_NOTIFICATION_URI,
+                        AudioAttributes.Builder()
+                            .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                            .setUsage(AudioAttributes.USAGE_NOTIFICATION).build()
+                            )
+                })
+            }
             Settings.System.DEFAULT_NOTIFICATION_URI
-            val notification = NotificationCompat.Builder(context, channelId)
-                .setContentIntent(intent)
-                .setDefaults(Notification.DEFAULT_ALL)
-                .setSmallIcon(R.drawable.logo)
-                .setSubText(sub)
-                .setContentTitle(title)
-                .setContentText(text)
-                .build()
+            val notification =
+                NotificationCompat.Builder(context, channelId).setContentIntent(intent)
+                    .setDefaults(Notification.DEFAULT_ALL).setSmallIcon(R.drawable.logo)
+                    .setSubText(sub).setContentTitle(title).setContentText(text).build()
             manager.notify(id, notification)
         }
     }

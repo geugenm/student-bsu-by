@@ -6,18 +6,20 @@ import androidx.room.PrimaryKey
 
 @Entity
 data class HostelAdvert(
-    @PrimaryKey(autoGenerate = true) val id : Int = 0,
-    val number : Int,
-    val phone : String?,
+    @PrimaryKey(autoGenerate = true) val id: Int = 0,
+    val number: Int,
+    val phone: String?,
     val publisher: String?,
-    val address : String?,
-    val conditions : String?,
-    val price : String?,
-    val currency : String?,
-    @ColumnInfo(name = "publish_date")val  publishDate : String,
-    val note : String?,
-) {
-    override fun equals(other: Any?): Boolean {
+    val address: String?,
+    val conditions: String?,
+    val price: String?,
+    val currency: String?,
+    @ColumnInfo(name = "publish_date") val publishDate: String,
+    val note: String?,
+                       )
+{
+    override fun equals(other: Any?): Boolean
+    {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
 
@@ -36,7 +38,8 @@ data class HostelAdvert(
         return true
     }
 
-    override fun hashCode(): Int {
+    override fun hashCode(): Int
+    {
         var result = number
         result = 31 * result + (phone?.hashCode() ?: 0)
         result = 31 * result + (publisher?.hashCode() ?: 0)

@@ -1,6 +1,5 @@
 package github.alexzhirkevich.studentbsuby.di
 
-import github.alexzhirkevich.studentbsuby.util.dispatchers.Dispatchers
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -13,6 +12,7 @@ import github.alexzhirkevich.studentbsuby.repo.UpdateRepository
 import github.alexzhirkevich.studentbsuby.util.SuspendEventHandler
 import github.alexzhirkevich.studentbsuby.util.communication.StateCommunication
 import github.alexzhirkevich.studentbsuby.util.communication.StateFlowCommunication
+import github.alexzhirkevich.studentbsuby.util.dispatchers.Dispatchers
 import ru.mintrocket.lib.mintpermissions.MintPermissionsController
 import javax.inject.Qualifier
 
@@ -21,14 +21,14 @@ annotation class ShowUpdateQualifier
 
 @Module
 @InstallIn(ViewModelComponent::class)
-class MainActivityModule {
+class MainActivityModule
+{
 
     private val showUpdate = StateFlowCommunication(false)
 
     @Provides
     @ShowUpdateQualifier
-    fun provideUpdateCom() : StateCommunication<Boolean> =
-        showUpdate
+    fun provideUpdateCom(): StateCommunication<Boolean> = showUpdate
 
     @Provides
     fun provideEventHandler(
@@ -37,13 +37,12 @@ class MainActivityModule {
         remoteConfigRepository: RemoteConfigRepository,
         updateRepository: UpdateRepository,
         reviewRepository: ReviewRepository
-    ) : SuspendEventHandler<MainActivityEvent> =
-        MainActivityEventHandler(
-            dispatchers = dispatchers,
-            remoteConfigRepository = remoteConfigRepository,
-            updateRepository = updateRepository,
-            reviewRepository = reviewRepository,
-            showUpdateRequired = showUpdate,
-            mintPermissionsController = permissionsController
-        )
+                           ): SuspendEventHandler<MainActivityEvent> = MainActivityEventHandler(
+        dispatchers = dispatchers,
+        remoteConfigRepository = remoteConfigRepository,
+        updateRepository = updateRepository,
+        reviewRepository = reviewRepository,
+        showUpdateRequired = showUpdate,
+        mintPermissionsController = permissionsController
+                                                                                               )
 }

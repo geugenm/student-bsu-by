@@ -1,5 +1,6 @@
 package github.alexzhirkevich.studentbsuby.util.communication
 
-interface Releasable {
+interface Releasable
+{
     fun release()
 }

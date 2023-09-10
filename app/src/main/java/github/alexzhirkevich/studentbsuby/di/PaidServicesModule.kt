@@ -38,62 +38,62 @@ annotation class CommonReceiptsQualifier
 
 @Module
 @InstallIn(ViewModelComponent::class)
-class PaidServicesModule {
+class PaidServicesModule
+{
 
     private val isUpdatingCommunication = StateFlowCommunication(false)
 
     private val paidInfoBillsCommunication = StateFlowCommunication<DataState<List<Bill>>>(
         DataState.Loading
-    )
+                                                                                          )
     private val hostelBillsCommunication = StateFlowCommunication<DataState<List<Bill>>>(
         DataState.Loading
-    )
+                                                                                        )
 
     private val academDebtReceipts = StateFlowCommunication<DataState<List<Receipt>>>(
         DataState.Loading
-    )
+                                                                                     )
     private val commonReceipts = StateFlowCommunication<DataState<List<Receipt>>>(
         DataState.Loading
-    )
+                                                                                 )
 
     private val paidInfoCommunication = StateFlowCommunication<DataState<PaidServicesInfo>>(
         DataState.Loading
-    )
+                                                                                           )
     private val tutionFeeCommunication = StateFlowCommunication<DataState<List<TuitionFeePayment>>>(
         DataState.Loading
-    )
+                                                                                                   )
 
     @Provides
     @IsPaidInfoUpdatingQualifier
-    fun provideIsUpdatingCommunication() : StateCommunication<Boolean> =
-        isUpdatingCommunication
+    fun provideIsUpdatingCommunication(): StateCommunication<Boolean> = isUpdatingCommunication
 
     @Provides
-    fun providePaidInfoCommunication() : StateCommunication<DataState<PaidServicesInfo>> =
+    fun providePaidInfoCommunication(): StateCommunication<DataState<PaidServicesInfo>> =
         paidInfoCommunication
 
     @Provides
     @PaidInfoBillsQualifier
-    fun providePaidInfoBillsCommunication() : StateCommunication<DataState<List<Bill>>> =
+    fun providePaidInfoBillsCommunication(): StateCommunication<DataState<List<Bill>>> =
         paidInfoBillsCommunication
 
     @Provides
     @HostelBillsQualifier
-    fun provideHostelBillsCommunication() : StateCommunication<DataState<List<Bill>>> =
+    fun provideHostelBillsCommunication(): StateCommunication<DataState<List<Bill>>> =
         hostelBillsCommunication
 
     @Provides
     @AcademDebtReceiptsQualifier
-    fun provideAcademDebtReceiptsCommunication() : StateCommunication<DataState<List<Receipt>>> =
+    fun provideAcademDebtReceiptsCommunication(): StateCommunication<DataState<List<Receipt>>> =
         academDebtReceipts
 
     @Provides
     @CommonReceiptsQualifier
-    fun provideCommonReceiptsCommunication() : StateCommunication<DataState<List<Receipt>>> =
+    fun provideCommonReceiptsCommunication(): StateCommunication<DataState<List<Receipt>>> =
         commonReceipts
 
     @Provides
-    fun provideTutionFeeCommunication() : StateCommunication<DataState<List<TuitionFeePayment>>> =
+    fun provideTutionFeeCommunication(): StateCommunication<DataState<List<TuitionFeePayment>>> =
         tutionFeeCommunication
 
     @Provides
@@ -101,17 +101,16 @@ class PaidServicesModule {
         @ApplicationContext context: Context,
         paidServicesRepository: PaidServicesRepository,
         connectivityManager: ConnectivityManager,
-    ) : SuspendEventHandler<PaidServicesEvent> =
-        PaidServicesEventHandler(
-            context = context,
-            paidServicesRepository = paidServicesRepository,
-            isUpdatingMapper  = isUpdatingCommunication,
-            paidInfoBillsMapper = paidInfoBillsCommunication,
-            hostelBillsMapper = hostelBillsCommunication,
-            academDebtReceiptsMapper = academDebtReceipts,
-            commonReceiptsMapper = commonReceipts,
-            paidInfoMapper = paidInfoCommunication,
-            tutionFeePaymentsMapper = tutionFeeCommunication,
-            connectivityManager = connectivityManager
-        )
+                           ): SuspendEventHandler<PaidServicesEvent> = PaidServicesEventHandler(
+        context = context,
+        paidServicesRepository = paidServicesRepository,
+        isUpdatingMapper = isUpdatingCommunication,
+        paidInfoBillsMapper = paidInfoBillsCommunication,
+        hostelBillsMapper = hostelBillsCommunication,
+        academDebtReceiptsMapper = academDebtReceipts,
+        commonReceiptsMapper = commonReceipts,
+        paidInfoMapper = paidInfoCommunication,
+        tutionFeePaymentsMapper = tutionFeeCommunication,
+        connectivityManager = connectivityManager
+                                                                                               )
 }

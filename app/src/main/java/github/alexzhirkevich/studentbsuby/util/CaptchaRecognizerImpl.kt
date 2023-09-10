@@ -8,12 +8,13 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
-class CaptchaRecognizerImpl : CaptchaRecognizer {
+class CaptchaRecognizerImpl : CaptchaRecognizer
+{
 
-    private val recognizer = TextRecognition
-        .getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
+    private val recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
 
-    override suspend fun recognize(bitmap: Bitmap): String {
+    override suspend fun recognize(bitmap: Bitmap): String
+    {
         return kotlin.runCatching {
             val image = InputImage.fromBitmap(bitmap, 0)
 //        return ""
@@ -22,7 +23,7 @@ class CaptchaRecognizerImpl : CaptchaRecognizer {
                 recognizer.process(image).addOnSuccessListener {
                     cont.resume(
                         it.textBlocks.firstOrNull()?.text.orEmpty()
-                    )
+                               )
                 }.addOnFailureListener {
                     cont.resumeWithException(it)
                 }

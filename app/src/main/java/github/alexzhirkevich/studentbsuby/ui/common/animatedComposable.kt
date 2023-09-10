@@ -1,6 +1,10 @@
 package github.alexzhirkevich.studentbsuby.ui.common
 
-import androidx.compose.animation.*
+import androidx.compose.animation.AnimatedContentScope
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavDeepLink
@@ -15,7 +19,7 @@ fun NavGraphBuilder.animatedComposable(
     enterTransition: (AnimatedContentScope<NavBackStackEntry>.() -> EnterTransition?)? = {
         slideIntoContainer(AnimatedContentScope.SlideDirection.Left)
     },
-    exitTransition: (AnimatedContentScope<NavBackStackEntry>.() -> ExitTransition?)? ={
+    exitTransition: (AnimatedContentScope<NavBackStackEntry>.() -> ExitTransition?)? = {
         slideOutOfContainer(AnimatedContentScope.SlideDirection.Left)
     },
     popEnterTransition: (AnimatedContentScope<NavBackStackEntry>.() -> EnterTransition?)? = {
@@ -26,7 +30,8 @@ fun NavGraphBuilder.animatedComposable(
 
     },
     content: @Composable AnimatedVisibilityScope.(NavBackStackEntry) -> Unit
-) {
+                                      )
+{
     composable(
         route.route,
         route.navArguments,
@@ -36,5 +41,5 @@ fun NavGraphBuilder.animatedComposable(
         popEnterTransition = popEnterTransition,
         popExitTransition = popExitTransition,
         content = content
-    )
+              )
 }

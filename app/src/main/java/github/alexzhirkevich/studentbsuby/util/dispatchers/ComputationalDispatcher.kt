@@ -7,8 +7,9 @@ import kotlinx.coroutines.Job
 /**
  * Dispatcher for
  * */
-interface ComputationalDispatcher {
-    
+interface ComputationalDispatcher
+{
+
     /**
      * Launches given [block] in [scope] with dispatcher defined as Computation.
      * Launching with non-null [key] cancels previous job with the same [key] if it is in progress.
@@ -19,13 +20,12 @@ interface ComputationalDispatcher {
         key: Any? = null,
         exceptionHandler: CoroutineExceptionHandler? = null,
         block: suspend CoroutineScope.() -> Unit,
-    ): Job
+                         ): Job
 
     /**
      * Switches dispatcher to Computational.
      * */
     suspend fun <T> runOnComputational(
-        exceptionHandler: CoroutineExceptionHandler? = null,
-        block: suspend CoroutineScope.() -> T
-    ): T
+        exceptionHandler: CoroutineExceptionHandler? = null, block: suspend CoroutineScope.() -> T
+                                      ): T
 }

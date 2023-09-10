@@ -75,11 +75,12 @@ fun TimetableScreen(
     isTablet: Boolean,
     timetableViewModel: TimetableViewModel = hiltViewModel(),
     onMenuClicked: () -> Unit = {},
-) {
+                   )
+{
 
     val scaffoldState = rememberCollapsingToolbarScaffoldState(
         toolbarState = rememberCollapsingToolbarState(0)
-    )
+                                                              )
 
     val pagerState = rememberPagerState()
 
@@ -88,13 +89,11 @@ fun TimetableScreen(
         scaffoldState.toolbarState.expand(500)
     }
 
-    CollapsingToolbarScaffold(
-        modifier = Modifier
-            .fillMaxSize()
-            .bsuBackgroundPattern(
-                MaterialTheme.colors.primary.copy(alpha = .05f),
-                true
-            ),
+    CollapsingToolbarScaffold(modifier = Modifier
+        .fillMaxSize()
+        .bsuBackgroundPattern(
+            MaterialTheme.colors.primary.copy(alpha = .05f), true
+                             ),
         state = scaffoldState,
         scrollStrategy = ScrollStrategy.ExitUntilCollapsed,
         toolbar = {
@@ -104,9 +103,8 @@ fun TimetableScreen(
                 viewModel = timetableViewModel,
                 onMenuClicked = onMenuClicked,
                 pagerState = pagerState,
-            )
-        }
-    ) {
+                   )
+        }) {
         val swipeDownEnabled by remember {
             derivedStateOf {
                 scaffoldState.toolbarState.progress >= 1f - Float.MIN_VALUE
@@ -116,7 +114,7 @@ fun TimetableScreen(
             viewModel = timetableViewModel,
             pagerState = pagerState,
             swipeDownEnabled = swipeDownEnabled
-        )
+            )
     }
 }
 
@@ -129,7 +127,8 @@ private fun CollapsingToolbarScope.Toolbar(
     pagerState: PagerState,
     viewModel: TimetableViewModel,
     onMenuClicked: () -> Unit
-) {
+                                          )
+{
 
     val scope = rememberCoroutineScope()
 
@@ -141,7 +140,7 @@ private fun CollapsingToolbarScope.Toolbar(
             .zIndex(1f)
             .statusBarsPadding(),
         backgroundColor = Color.Transparent
-    ) {
+             ) {
         val status = LocalWindowInsets.current.statusBars.bottom
         val density = LocalDensity.current
 
@@ -150,12 +149,11 @@ private fun CollapsingToolbarScope.Toolbar(
                 toolbarState.height > 3 * TabsHeight * density.density + status
             }
         }
-        AnimatedVisibility(
-            visible = iconVisible,
+        AnimatedVisibility(visible = iconVisible,
             enter = slideInVertically { -2 * it },
-            exit = slideOutVertically { -2 * it }
-        ) {
-            if (!isTablet) {
+            exit = slideOutVertically { -2 * it }) {
+            if (!isTablet)
+            {
                 NavigationMenuButton(onClick = onMenuClicked)
             }
         }
@@ -170,38 +168,34 @@ private fun CollapsingToolbarScope.Toolbar(
                 alpha = toolbarState.progress
             }
             .animatedSquaresBackground(
-                color = MaterialTheme.colors.primary.copy(alpha = .05f),
-                count = 10,
-                size = 200.dp
-            )
-    ) {
+                color = MaterialTheme.colors.primary.copy(alpha = .05f), count = 10, size = 200.dp
+                                      )) {
         Row(
             Modifier
                 .align(Alignment.Center)
                 .padding(top = 30.dp + TabsHeight.dp / 2, bottom = 30.dp + TabsHeight.dp / 2),
             verticalAlignment = Alignment.CenterVertically
-        ) {
+           ) {
 
             Text(
                 text = viewModel.dayOfMonth.toString(),
                 style = MaterialTheme.typography.h1,
                 modifier = Modifier.padding(10.dp),
                 color = MaterialTheme.colors.primary
-            )
+                )
             Column {
                 Text(
-                    text = stringArrayResource(id = R.array.weekdays)
-                        [viewModel.dayOfWeek],
+                    text = stringArrayResource(id = R.array.weekdays)[viewModel.dayOfWeek],
                     style = MaterialTheme.typography.h2,
                     color = MaterialTheme.colors.primary
 
-                )
+                    )
                 Text(
                     text = "${stringArrayResource(id = R.array.months)[viewModel.month]} ${viewModel.year}".uppercase(),
                     style = MaterialTheme.typography.subtitle1,
                     color = MaterialTheme.colors.primary
 
-                )
+                    )
             }
         }
     }
@@ -210,17 +204,15 @@ private fun CollapsingToolbarScope.Toolbar(
         Modifier
             .zIndex(2f)
             .road(
-                whenExpanded = Alignment.BottomCenter,
-                whenCollapsed = Alignment.BottomCenter
-            )
+                whenExpanded = Alignment.BottomCenter, whenCollapsed = Alignment.BottomCenter
+                 )
 
-    ) {
+       ) {
 
         Spacer(modifier = Modifier.statusBarsHeight(TabsHeight.dp))
-        TabRow(
-            modifier = Modifier
-                .height(TabsHeight.dp)
-                .align(Alignment.BottomCenter),
+        TabRow(modifier = Modifier
+            .height(TabsHeight.dp)
+            .align(Alignment.BottomCenter),
             selectedTabIndex = pagerState.currentPage,
             backgroundColor = Color.Transparent,
             indicator = { tabs ->
@@ -231,26 +223,25 @@ private fun CollapsingToolbarScope.Toolbar(
                             .height(2.dp)
                             .background(MaterialTheme.colors.primary)
                             .align(Alignment.BottomCenter)
-                    )
+                          )
                 }
-            }
-        ) {
+            }) {
             val weekdays = stringArrayResource(id = R.array.weekdays_short)
-            for (i in 0..5) {
-                Tab(
-                    selected = pagerState.currentPage == i,
-                    onClick = {
-                        if (timetable is DataState.Success<*>) {
-                            scope.launch {
-                                kotlin.runCatching {
-                                    pagerState.scrollToPage(i)
-                                }
+            for (i in 0..5)
+            {
+                Tab(selected = pagerState.currentPage == i, onClick = {
+                    if (timetable is DataState.Success<*>)
+                    {
+                        scope.launch {
+                            kotlin.runCatching {
+                                pagerState.scrollToPage(i)
                             }
                         }
-                    }) {
+                    }
+                }) {
                     Text(
                         text = weekdays[i],
-                    )
+                        )
                 }
             }
         }
@@ -266,13 +257,14 @@ private fun Body(
     viewModel: TimetableViewModel,
     pagerState: PagerState,
     swipeDownEnabled: Boolean,
-) {
+                )
+{
 
     val timetable by viewModel.timetableCommunication.collectAsState()
 
     val refreshState = rememberSwipeRefreshState(
         isRefreshing = viewModel.isUpdating.collectAsState().value
-    )
+                                                )
 
 
     SwipeRefresh(
@@ -282,77 +274,79 @@ private fun Body(
             BsuProgressBarSwipeRefreshIndicator(state, trigger)
         },
         swipeEnabled = swipeDownEnabled && timetable !is DataState.Loading,
-        modifier = Modifier
-            .fillMaxSize()
-    ) {
-        when (val tt = timetable) {
-            is DataState.Success -> {
-                HorizontalPager(
-                    modifier = Modifier.fillMaxSize(),
-                    state = pagerState,
-                    count = tt.value.size
+        modifier = Modifier.fillMaxSize()
                 ) {
+        when (val tt = timetable)
+        {
+            is DataState.Success ->
+            {
+                HorizontalPager(
+                    modifier = Modifier.fillMaxSize(), state = pagerState, count = tt.value.size
+                               ) {
 
-                    if (tt.value[it].isNotEmpty()) {
-                        TimetableWidget(
-                            list = tt.value[it],
+                    if (tt.value[it].isNotEmpty())
+                    {
+                        TimetableWidget(list = tt.value[it],
                             modifier = Modifier
                                 .fillMaxSize()
                                 .graphicsLayer {
                                     translationY = refreshState.indicatorOffset
-                                }
-                        )
-                    } else {
+                                })
+                    } else
+                    {
                         Box(
                             modifier = Modifier
                                 .fillMaxSize()
                                 .verticalScroll(rememberScrollState())
-                        ) {
+                           ) {
                             ErrorWidget(
                                 modifier = Modifier
                                     .padding(top = 70.dp)
                                     .align(Alignment.TopCenter),
                                 title = stringResource(id = R.string.empty),
                                 error = stringResource(id = R.string.timetable_empty_for_day)
-                            )
+                                       )
                         }
                     }
                 }
             }
 
-            DataState.Empty -> {
+            DataState.Empty      ->
+            {
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
                         .verticalScroll(rememberScrollState())
-                ) {
+                   ) {
                     ErrorWidget(
                         modifier = Modifier
                             .align(Alignment.TopCenter)
                             .padding(top = 70.dp),
                         title = stringResource(id = R.string.empty),
                         error = stringResource(id = R.string.timetable_empty)
-                    )
+                               )
                 }
             }
 
-            is DataState.Error -> {
+            is DataState.Error   ->
+            {
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
                         .verticalScroll(rememberScrollState())
-                ) {
+                   ) {
                     ErrorWidget(
                         modifier = Modifier
                             .align(Alignment.TopCenter)
                             .padding(top = 70.dp),
                         title = stringResource(id = R.string.something_gone_wrong),
                         error = stringResource(id = tt.message)
-                    )
+                               )
                 }
             }
 
-            DataState.Loading -> {
+            DataState.Loading    ->
+            {
                 Box(Modifier.fillMaxSize()) {
                     BsuProgressBar(
                         Modifier
@@ -360,7 +354,7 @@ private fun Body(
                             .padding(top = 100.dp),
                         size = 100.dp,
                         tint = MaterialTheme.colors.primary
-                    )
+                                  )
                 }
             }
         }

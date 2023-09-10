@@ -4,11 +4,12 @@ import github.alexzhirkevich.studentbsuby.util.communication.StateCommunication
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-interface Updatable {
+interface Updatable
+{
 
-    val isUpdating : StateCommunication<Boolean>
+    val isUpdating: StateCommunication<Boolean>
 
     fun update()
 }
 
-suspend fun setState(block : () -> Unit) = withContext(Dispatchers.Main){block()}
+suspend fun setState(block: () -> Unit) = withContext(Dispatchers.Main) { block() }

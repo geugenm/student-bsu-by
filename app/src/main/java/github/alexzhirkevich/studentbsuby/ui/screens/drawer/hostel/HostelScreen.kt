@@ -69,7 +69,8 @@ import me.onebone.toolbar.rememberCollapsingToolbarScaffoldState
 @ExperimentalToolbarApi
 @ExperimentalMaterialApi
 @Composable
-fun HostelScreen(isTablet: Boolean, onMenuClicked: () -> Unit, hostelViewModel: HostelViewModel = hiltViewModel()
+fun HostelScreen(
+    isTablet: Boolean, onMenuClicked: () -> Unit, hostelViewModel: HostelViewModel = hiltViewModel()
                 )
 {
 
@@ -82,18 +83,26 @@ fun HostelScreen(isTablet: Boolean, onMenuClicked: () -> Unit, hostelViewModel: 
             when (val value = state.valueOrNull())
             {
                 is HostelState.Provided -> ProvidedHostelScreen(
-                    isTablet = isTablet, address = value.address, onMenuClicked = onMenuClicked, onShowOnMapClicked = {
+                    isTablet = isTablet,
+                    address = value.address,
+                    onMenuClicked = onMenuClicked,
+                    onShowOnMapClicked = {
                         hostelViewModel.handle(
                             HostelEvent.ShowHostelOnMapClicked(
                                 value
                                                               )
                                               )
 
-                    }, image = hostelViewModel.getHostelImage(value), updater = hostelViewModel
+                    },
+                    image = hostelViewModel.getHostelImage(value),
+                    updater = hostelViewModel
                                                                )
 
                 is HostelState.NotProvided -> NonProvidedHostelScreen(
-                    isTablet, ads = value.adverts, viewModel = hostelViewModel, onMenuClicked = onMenuClicked
+                    isTablet,
+                    ads = value.adverts,
+                    viewModel = hostelViewModel,
+                    onMenuClicked = onMenuClicked
                                                                      )
 
                 else ->
@@ -126,7 +135,8 @@ fun HostelScreen(isTablet: Boolean, onMenuClicked: () -> Unit, hostelViewModel: 
 }
 
 @Composable
-fun LoadingHostelScreen(isTablet: Boolean, onMenuClicked: () -> Unit = {}
+fun LoadingHostelScreen(
+    isTablet: Boolean, onMenuClicked: () -> Unit = {}
                        )
 {
 
@@ -166,12 +176,13 @@ fun LoadingHostelScreen(isTablet: Boolean, onMenuClicked: () -> Unit = {}
 
 @ExperimentalToolbarApi
 @Composable
-private fun ProvidedHostelScreen(isTablet: Boolean,
-                                 address: String,
-                                 onMenuClicked: () -> Unit,
-                                 onShowOnMapClicked: () -> Unit,
-                                 image: String? = null,
-                                 updater: Updatable
+private fun ProvidedHostelScreen(
+    isTablet: Boolean,
+    address: String,
+    onMenuClicked: () -> Unit,
+    onShowOnMapClicked: () -> Unit,
+    image: String? = null,
+    updater: Updatable
                                 )
 {
 
@@ -216,7 +227,8 @@ private fun ProvidedHostelScreen(isTablet: Boolean,
                         .alpha(scaffoldState.toolbarState.progress),
                     loading = {
                         BsuProgressBar(
-                            modifier = Modifier.align(Alignment.Center), tint = MaterialTheme.colors.primary
+                            modifier = Modifier.align(Alignment.Center),
+                            tint = MaterialTheme.colors.primary
                                       )
                     })
             }
@@ -264,7 +276,9 @@ private fun ProvidedHostelScreen(isTablet: Boolean,
                             )
                         Spacer(modifier = Modifier.height(10.dp))
                         Text(
-                            text = address, textAlign = TextAlign.Center, style = MaterialTheme.typography.subtitle1
+                            text = address,
+                            textAlign = TextAlign.Center,
+                            style = MaterialTheme.typography.subtitle1
                             )
                     }
                 }
@@ -281,7 +295,8 @@ private fun ProvidedHostelScreen(isTablet: Boolean,
                             )
                         Spacer(modifier = Modifier.width(10.dp))
                         Text(
-                            text = stringResource(id = R.string.show_on_map), color = MaterialTheme.colors.onPrimary
+                            text = stringResource(id = R.string.show_on_map),
+                            color = MaterialTheme.colors.onPrimary
                             )
                     }
                 }
@@ -331,7 +346,8 @@ private fun NonProvidedHostelScreen(
                         onClick = { needShowDialog = false }, modifier = Modifier.fillMaxWidth()
                               ) {
                         Text(
-                            text = stringResource(id = R.string.close), color = MaterialTheme.colors.onSecondary
+                            text = stringResource(id = R.string.close),
+                            color = MaterialTheme.colors.onSecondary
                             )
                     }
                 }
@@ -396,11 +412,15 @@ private fun NonProvidedHostelScreen(
 
                           ) {
                     items(ads.size) {
-                        HostelAdWidget(modifier = Modifier.padding(5.dp), ad = ads[it], onLocateClicked = {
-                            viewModel.handle(HostelEvent.ShowAdOnMapClicked(ads[it]))
-                        }, onCallClicked = {
-                            viewModel.handle(HostelEvent.CallClicked(ads[it]))
-                        })
+                        HostelAdWidget(
+                            modifier = Modifier.padding(5.dp),
+                            ad = ads[it],
+                            onLocateClicked = {
+                                viewModel.handle(HostelEvent.ShowAdOnMapClicked(ads[it]))
+                            },
+                            onCallClicked = {
+                                viewModel.handle(HostelEvent.CallClicked(ads[it]))
+                            })
                     }
                     item { Spacer(modifier = Modifier.navigationBarsWithImePadding()) }
                 }

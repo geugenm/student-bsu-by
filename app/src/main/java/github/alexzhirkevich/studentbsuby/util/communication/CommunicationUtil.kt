@@ -9,20 +9,22 @@ import kotlin.coroutines.EmptyCoroutineContext
 
 @Composable
 fun <T> Communication<T>.collectAsState(
-    initial : T,
-    context: CoroutineContext = EmptyCoroutineContext
-)= produceState(initial, this, context) {
-    if (context == EmptyCoroutineContext) {
+    initial: T, context: CoroutineContext = EmptyCoroutineContext
+                                       ) = produceState(initial, this, context) {
+    if (context == EmptyCoroutineContext)
+    {
         collect { value = it }
     } else withContext(context) {
         collect { value = it }
     }
 }
+
 @Composable
 fun <T> StateCommunication<T>.collectAsState(
     context: CoroutineContext = EmptyCoroutineContext
-): State<T> = produceState(current, this, context) {
-    if (context == EmptyCoroutineContext) {
+                                            ): State<T> = produceState(current, this, context) {
+    if (context == EmptyCoroutineContext)
+    {
         collect { value = it }
     } else withContext(context) {
         collect { value = it }

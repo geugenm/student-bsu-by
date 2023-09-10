@@ -6,7 +6,8 @@ import androidx.room.Query
 import github.alexzhirkevich.studentbsuby.data.models.HostelAdvert
 
 @Dao
-interface HostelDao  {
+interface HostelDao
+{
 
     @Insert
     suspend fun insert(value: HostelAdvert)

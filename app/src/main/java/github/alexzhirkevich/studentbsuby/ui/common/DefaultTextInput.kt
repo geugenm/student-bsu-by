@@ -27,7 +27,7 @@ fun DefaultTextInput(
     value: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
-    textInputModifier : Modifier = Modifier,
+    textInputModifier: Modifier = Modifier,
     enabled: Boolean = true,
     readOnly: Boolean = false,
     textStyle: TextStyle = LocalTextStyle.current,
@@ -40,13 +40,14 @@ fun DefaultTextInput(
     singleLine: Boolean = false,
     maxLines: Int = Int.MAX_VALUE,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
-) {
+                    )
+{
     Row(
         modifier = modifier
             .clip(MaterialTheme.shapes.medium)
             .background(MaterialTheme.colors.background),
         verticalAlignment = Alignment.CenterVertically
-    ) {
+       ) {
 
         leadingIcon?.let {
             Box(
@@ -54,15 +55,16 @@ fun DefaultTextInput(
                     top = 10.dp,
                     start = 15.dp,
                     bottom = 10.dp,
-                )
-            ) {
+                                           )
+               ) {
                 it.invoke()
             }
         }
-        Box(modifier = Modifier
-            .weight(1f)
-            .padding(10.dp)
-        ) {
+        Box(
+            modifier = Modifier
+                .weight(1f)
+                .padding(10.dp)
+           ) {
 
             BasicTextField(
                 value = value,
@@ -78,9 +80,10 @@ fun DefaultTextInput(
                 interactionSource = interactionSource,
                 modifier = textInputModifier.fillMaxWidth(),
                 cursorBrush = SolidColor(MaterialTheme.colors.onBackground)
-            )
+                          )
 
-            if (value.isEmpty()) {
+            if (value.isEmpty())
+            {
                 placeholder?.invoke()
             }
         }
@@ -89,12 +92,10 @@ fun DefaultTextInput(
                 modifier = Modifier
                     .clip(CircleShape)
                     .padding(
-                        top = 10.dp,
-                        bottom = 10.dp,
-                        end = 15.dp
-                    )
+                        top = 10.dp, bottom = 10.dp, end = 15.dp
+                            )
 
-            ) {
+               ) {
 
                 it.invoke()
             }

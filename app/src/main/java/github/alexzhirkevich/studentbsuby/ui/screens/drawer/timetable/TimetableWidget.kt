@@ -26,12 +26,15 @@ import github.alexzhirkevich.studentbsuby.util.applyIf
 
 
 private const val HorizontalPadding = 10
+
 @ExperimentalMaterialApi
 @Composable
 fun TimetableWidget(
-    list: List<Pair<Lesson,LessonState>>,
-    backgroundColor : Color = MaterialTheme.colors.background,
-    modifier: Modifier = Modifier) {
+    list: List<Pair<Lesson, LessonState>>,
+    backgroundColor: Color = MaterialTheme.colors.background,
+    modifier: Modifier = Modifier
+                   )
+{
 
     val lineColor = MaterialTheme.colors.primary.copy(alpha = .5f)
     val density = LocalDensity.current.density
@@ -45,48 +48,43 @@ fun TimetableWidget(
 
     val state = rememberLazyListState()
 
-    LazyColumn(
-        state = state,
-        modifier = modifier
-            .applyIf(list.size>1) {
-                it.drawBehind {
-                    drawLine(
-                        color = lineColor,
-                        strokeWidth = 1 * density,
-                        start = Offset(
-                            x = density * (LessonTimeLineOffsetX + HorizontalPadding),
-                            y = if (state.firstVisibleItemIndex == 0)
-                                timelineStart - state.firstVisibleItemScrollOffset
-                            else 0f
-                        ),
-                        end = Offset(
-                            x = density * (LessonTimeLineOffsetX + HorizontalPadding),
-                            y = timelineEnd
-                        ),
-                    )
-                }
+    LazyColumn(state = state, modifier = modifier.applyIf(list.size > 1) {
+            it.drawBehind {
+                drawLine(
+                    color = lineColor,
+                    strokeWidth = 1 * density,
+                    start = Offset(
+                        x = density * (LessonTimeLineOffsetX + HorizontalPadding),
+                        y = if (state.firstVisibleItemIndex == 0) timelineStart - state.firstVisibleItemScrollOffset
+                        else 0f
+                                  ),
+                    end = Offset(
+                        x = density * (LessonTimeLineOffsetX + HorizontalPadding),
+                        y = timelineEnd
+                                ),
+                        )
             }
-    ) {
-        items(list.size){ idx ->
-            LessonWidget(
-                lesson = list[idx].first,
+        }) {
+        items(list.size) { idx ->
+            LessonWidget(lesson = list[idx].first,
                 state = list[idx].second,
                 backgroundColor = backgroundColor,
                 modifier = Modifier.padding(
-                    horizontal = HorizontalPadding.dp,
-                    vertical = 15.dp
-                ).let {
-                    when(idx){
+                    horizontal = HorizontalPadding.dp, vertical = 15.dp
+                                           ).let {
+                    when (idx)
+                    {
                         0 -> it.onSizeChanged {
-                            timelineStart = it.height.toFloat() /2
+                            timelineStart = it.height.toFloat() / 2
                         }
-                        list.size-1 -> it.onGloballyPositioned {
-                            timelineEnd = it.positionInParent().y + it.size.height.toFloat()/2
+
+                        list.size - 1 -> it.onGloballyPositioned {
+                            timelineEnd = it.positionInParent().y + it.size.height.toFloat() / 2
                         }
+
                         else -> it
                     }
-                }
-            )
+                })
         }
         item {
             Spacer(modifier = Modifier.navigationBarsHeight())

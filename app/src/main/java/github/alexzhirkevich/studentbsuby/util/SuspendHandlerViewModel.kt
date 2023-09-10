@@ -9,9 +9,11 @@ open class SuspendHandlerViewModel<T : Event>(
     private val dispatchers: Dispatchers,
     private val suspendEventHandler: SuspendEventHandler<T>,
     private val errorHandler: ErrorHandler
-) : ViewModel(), EventHandler<T> {
+                                             ) : ViewModel(), EventHandler<T>
+{
 
-    init {
+    init
+    {
         launch {
             suspendEventHandler.launch()
         }
@@ -21,17 +23,19 @@ open class SuspendHandlerViewModel<T : Event>(
         suspendEventHandler.handle(event)
     }
 
-    override fun onCleared() {
+    override fun onCleared()
+    {
         super.onCleared()
         suspendEventHandler.release()
     }
 
 
-    private fun launch(block : suspend CoroutineScope.() -> Unit){
+    private fun launch(block: suspend CoroutineScope.() -> Unit)
+    {
         dispatchers.launchIO(
             viewModelScope,
             exceptionHandler = errorHandler.toCoroutineExceptionHandler(),
             block = block
-        )
+                            )
     }
 }

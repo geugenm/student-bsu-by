@@ -1,7 +1,11 @@
 package github.alexzhirkevich.studentbsuby.ui.screens
 
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
-import androidx.compose.animation.*
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.material.ExperimentalMaterialApi
@@ -33,7 +37,8 @@ import me.onebone.toolbar.ExperimentalToolbarApi
 @ExperimentalComposeUiApi
 @ExperimentalAnimationApi
 @Composable
-fun MainScreen() {
+fun MainScreen()
+{
 
     val navController = rememberAnimatedNavController()
 
@@ -53,58 +58,40 @@ fun MainScreen() {
     AnimatedNavHost(
         modifier = Modifier.background(color = MaterialTheme.colors.background),
         navController = navController,
-        startDestination = if (loginVm.skipLogin)
-            Route.DrawerScreen.route else Route.AuthScreen.route,
-    ) {
-        animatedComposable(
-            Route.AuthScreen,
-            enterTransition = {
-                fadeIn()
-            },
-            popEnterTransition = {
-                fadeIn()
-            },
-            popExitTransition = {
-                fadeOut()
-            },
-            exitTransition = {
-                fadeOut()
-            }) {
+        startDestination = if (loginVm.skipLogin) Route.DrawerScreen.route else Route.AuthScreen.route,
+                   ) {
+        animatedComposable(Route.AuthScreen, enterTransition = {
+            fadeIn()
+        }, popEnterTransition = {
+            fadeIn()
+        }, popExitTransition = {
+            fadeOut()
+        }, exitTransition = {
+            fadeOut()
+        }) {
 
             LoginScreen(navController)
         }
-        animatedComposable(
-            Route.DrawerScreen,
-            enterTransition = {
-                fadeIn()
-            },
-            popEnterTransition = {
-                fadeIn()
-            },
-            popExitTransition = {
-                fadeOut()
-            },
-            exitTransition = {
-                fadeOut()
-            }
-        ) {
+        animatedComposable(Route.DrawerScreen, enterTransition = {
+            fadeIn()
+        }, popEnterTransition = {
+            fadeIn()
+        }, popExitTransition = {
+            fadeOut()
+        }, exitTransition = {
+            fadeOut()
+        }) {
             DrawerScreen(navController)
         }
-        animatedComposable(
-            Route.SettingsScreen,
-            enterTransition = {
-                slideInHorizontally { it / 2 } + fadeIn()
-            },
-            popEnterTransition = {
-                slideInHorizontally { it / 2 } + fadeIn()
-            },
-            popExitTransition = {
-                slideOutHorizontally { it / 2 } + fadeOut()
-            },
-            exitTransition = {
-                slideOutHorizontally { it / 2 } + fadeOut()
-            }
-        ) {
+        animatedComposable(Route.SettingsScreen, enterTransition = {
+            slideInHorizontally { it / 2 } + fadeIn()
+        }, popEnterTransition = {
+            slideInHorizontally { it / 2 } + fadeIn()
+        }, popExitTransition = {
+            slideOutHorizontally { it / 2 } + fadeOut()
+        }, exitTransition = {
+            slideOutHorizontally { it / 2 } + fadeOut()
+        }) {
             SettingsScreen()
         }
     }

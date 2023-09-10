@@ -21,7 +21,8 @@ import github.alexzhirkevich.studentbsuby.ui.theme.values.Colors
 @Composable
 fun NewsDetailsScreen(
     viewModel: NewsViewModel = hiltViewModel(), id: Int
-) {
+                     )
+{
 
     val bgColor = Colors.GrayBackground
 
@@ -30,20 +31,19 @@ fun NewsDetailsScreen(
             .fillMaxSize()
             .background(bgColor)
             .verticalScroll(rememberScrollState())
-    ) {
+       ) {
 
         BsuProgressBar(
             tint = MaterialTheme.colors.primary,
             size = 100.dp,
             modifier = Modifier.align(Alignment.Center)
-        )
+                      )
 
 
-        AndroidView(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(bgColor)
-                .navigationBarsWithImePadding(),
+        AndroidView(modifier = Modifier
+            .fillMaxSize()
+            .background(bgColor)
+            .navigationBarsWithImePadding(),
             factory = {
                 WebView(it).apply {
                     setBackgroundColor(bgColor.toArgb())

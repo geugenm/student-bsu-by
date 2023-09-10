@@ -4,7 +4,17 @@ import androidx.annotation.StringRes
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.selection.SelectionContainer
@@ -40,22 +50,23 @@ import github.alexzhirkevich.studentbsuby.util.valueOrNull
 @Composable
 internal fun InfoPage(
     viewModel: PaidServicesViewModel
-) {
+                     )
+{
 
 
     @Composable
     fun ColumnScope.InfoBlock(
         @StringRes title: Int,
         @StringRes text: Int,
-    ) {
+                             )
+    {
 
         var visible by rememberSaveable {
             mutableStateOf(true)
         }
         Column {
 
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
+            Row(verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween,
                 modifier = Modifier
                     .clip(CircleShape)
@@ -64,22 +75,21 @@ internal fun InfoPage(
                     }
 
 
-            ) {
+               ) {
                 Text(
                     modifier = Modifier.padding(
-                        horizontal = 5.dp,
-                        vertical = 3.dp
-                    ),
+                        horizontal = 5.dp, vertical = 3.dp
+                                               ),
                     text = stringResource(id = title),
                     style = MaterialTheme.typography.subtitle1,
-                )
+                    )
                 Icon(
-                    imageVector = if (visible)
-                        Icons.Default.ExpandLess else Icons.Default.ExpandMore,
+                    imageVector = if (visible) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
                     contentDescription = "More",
-                )
+                    )
             }
-            if (visible) {
+            if (visible)
+            {
                 Spacer(modifier = Modifier.height(5.dp))
                 HtmlText(
                     modifier = Modifier.padding(horizontal = 5.dp),
@@ -88,8 +98,8 @@ internal fun InfoPage(
                     urlSpanStyle = SpanStyle(
                         color = MaterialTheme.colors.primary,
                         textDecoration = TextDecoration.Underline
-                    )
-                )
+                                            )
+                        )
             }
         }
     }
@@ -98,7 +108,7 @@ internal fun InfoPage(
         R.string.paidservices_phones to R.string.paidservices_phones_text,
         R.string.paidservices_requisites to R.string.paidservices_requisites_text,
         R.string.paidservices_fine to R.string.paidservices_fine_text,
-    )
+                       )
 
 
     val scrollstate = rememberScrollState()
@@ -109,16 +119,15 @@ internal fun InfoPage(
             Modifier
                 .fillMaxSize()
                 .verticalScroll(scrollstate)
-        ) {
+           ) {
 
             Column(
                 Modifier
                     .padding(10.dp)
                     .animateContentSize()
-            ) {
+                  ) {
 
-                val paidInfo by viewModel.paidInfoCommunication
-                    .collectAsState()
+                val paidInfo by viewModel.paidInfoCommunication.collectAsState()
 
                 paidInfo.valueOrNull()?.let {
 
@@ -126,24 +135,22 @@ internal fun InfoPage(
                         R.string.contract_number to it.contractNumber,
                         R.string.debt to it.debt,
                         R.string.fine to it.fine
-                    ).forEach {
+                          ).forEach {
                         val title = stringResource(it.first)
                         val value = it.second.toString()
                         Text(
                             modifier = Modifier.padding(horizontal = 5.dp),
                             text = AnnotatedString(
-                                text = "$title: $value",
-                                spanStyles = listOf(
+                                text = "$title: $value", spanStyles = listOf(
                                     AnnotatedString.Range(
                                         item = SpanStyle(fontWeight = FontWeight.SemiBold),
                                         start = 0,
                                         end = title.length + 1
-                                    )
-                                )
-                            ),
-                            style = MaterialTheme.typography.subtitle1
-                                .copy(fontWeight = FontWeight.Normal),
-                        )
+                                                         )
+                                                                            )
+                                                  ),
+                            style = MaterialTheme.typography.subtitle1.copy(fontWeight = FontWeight.Normal),
+                            )
                         Spacer(modifier = Modifier.height(5.dp))
                     }
                     Spacer(
@@ -152,35 +159,33 @@ internal fun InfoPage(
                             .height(.5.dp)
                             .fillMaxWidth()
                             .background(MaterialTheme.colors.onBackground)
-                    )
+                          )
                 }
 
                 blocks.forEach {
                     InfoBlock(
-                        title = it.first,
-                        text = it.second
-                    )
+                        title = it.first, text = it.second
+                             )
                     Spacer(modifier = Modifier.height(10.dp))
                 }
 
                 Box(Modifier.fillMaxWidth()) {
                     Button(
                         onClick = {
-                              viewModel.handle(PaidServicesEvent.EripHelpClicked)
-                        },
-                        modifier = Modifier.align(Alignment.Center)
-                    ) {
+                            viewModel.handle(PaidServicesEvent.EripHelpClicked)
+                        }, modifier = Modifier.align(Alignment.Center)
+                          ) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Icon(
                                 imageVector = Icons.Default.HelpOutline,
                                 tint = MaterialTheme.colors.onPrimary,
                                 contentDescription = "Payment help"
-                            )
+                                )
                             Spacer(modifier = Modifier.width(5.dp))
                             Text(
                                 text = stringResource(id = R.string.erip_help),
                                 color = MaterialTheme.colors.onPrimary
-                            )
+                                )
                         }
                     }
                 }

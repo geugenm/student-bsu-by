@@ -15,7 +15,6 @@ import dagger.hilt.android.HiltAndroidApp
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import ru.mintrocket.lib.mintpermissions.ext.initMintPermissions
-import javax.inject.Inject
 
 @HiltAndroidApp
 @ExperimentalCoroutinesApi
@@ -24,25 +23,24 @@ import javax.inject.Inject
 @ExperimentalAnimationApi
 @ExperimentalComposeUiApi
 @ExperimentalMaterialApi
-class MainApplication : Application(), Configuration.Provider {
+class MainApplication : Application(), Configuration.Provider
+{
 
-    override fun onCreate() {
+    override fun onCreate()
+    {
         super.onCreate()
         initMintPermissions()
     }
 
-    override fun getWorkManagerConfiguration() =
-        Configuration.Builder()
-            .setWorkerFactory(
-                EntryPointAccessors
-                    .fromApplication(this, WorkManagerInitializerEntryPoint::class.java)
-                    .hiltWorkerFactory()
-            )
-            .build()
+    override fun getWorkManagerConfiguration() = Configuration.Builder().setWorkerFactory(
+            EntryPointAccessors.fromApplication(this, WorkManagerInitializerEntryPoint::class.java)
+                .hiltWorkerFactory()
+                                                                                         ).build()
 
     @InstallIn(SingletonComponent::class)
     @EntryPoint
-    interface WorkManagerInitializerEntryPoint {
+    interface WorkManagerInitializerEntryPoint
+    {
         fun hiltWorkerFactory(): HiltWorkerFactory
     }
 }

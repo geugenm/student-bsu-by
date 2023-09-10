@@ -13,13 +13,13 @@ import github.alexzhirkevich.studentbsuby.util.SuspendEventHandler
 
 @Module
 @InstallIn(ViewModelComponent::class)
-class AboutModule {
+class AboutModule
+{
 
     @Provides
     fun provideEventHandler(
-        @ApplicationContext context: Context,
-        remoteConfigRepository: RemoteConfigRepository
-    ) : SuspendEventHandler<AboutEvent> = AboutEventHandler(
+        @ApplicationContext context: Context, remoteConfigRepository: RemoteConfigRepository
+                           ): SuspendEventHandler<AboutEvent> = AboutEventHandler(
         context = context, configRepository = remoteConfigRepository
-    )
+                                                                                 )
 }

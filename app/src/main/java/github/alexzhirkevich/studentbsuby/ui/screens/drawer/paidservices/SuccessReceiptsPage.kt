@@ -2,7 +2,12 @@ package github.alexzhirkevich.studentbsuby.ui.screens.drawer.paidservices
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.foundation.lazy.LazyListScope
@@ -19,11 +24,13 @@ import com.google.accompanist.insets.navigationBarsWithImePadding
 import github.alexzhirkevich.studentbsuby.R
 
 @Composable
-fun LazyItemScope.Header(text: String) {
+fun LazyItemScope.Header(text: String)
+{
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(5.dp)) {
+            .padding(5.dp)
+       ) {
 
         Box(
             Modifier
@@ -31,15 +38,16 @@ fun LazyItemScope.Header(text: String) {
                 .clip(MaterialTheme.shapes.medium)
                 .background(MaterialTheme.colors.background.copy(alpha = .9f))
                 .padding(vertical = 5.dp, horizontal = 10.dp)
-        ) {
+           ) {
             Text(
                 text = text,
                 style = MaterialTheme.typography.body1,
 //                fontWeight = FontWeight.,
-            )
+                )
         }
     }
 }
+
 @ExperimentalFoundationApi
 @Composable
 fun <T> SuccessReceiptsPage(
@@ -47,10 +55,12 @@ fun <T> SuccessReceiptsPage(
     header: ((T) -> String)? = null,
     complete: (T) -> Boolean,
     widget: @Composable (T) -> Unit
-) {
+                           )
+{
     SelectionContainer {
 
-        fun LazyListScope.Items(items: List<T>) {
+        fun LazyListScope.Items(items: List<T>)
+        {
             header?.let {
                 items.groupBy(header).forEach {
                     stickyHeader {
@@ -66,9 +76,8 @@ fun <T> SuccessReceiptsPage(
         }
 
         LazyColumn(
-            Modifier
-                .fillMaxSize()
-        ) {
+            Modifier.fillMaxSize()
+                  ) {
 
             receipts.groupBy(complete).let {
                 it[false]?.let { receipts ->

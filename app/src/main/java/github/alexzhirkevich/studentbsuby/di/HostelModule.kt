@@ -22,18 +22,19 @@ annotation class IsHostelUpdatingQualifier
 
 @Module
 @InstallIn(ViewModelComponent::class)
-class HostelModule {
+class HostelModule
+{
 
     private val isUpdatingCommunication = StateFlowCommunication(false)
-    private val hostelStateCommunication = StateFlowCommunication<DataState<HostelState>>(DataState.Loading)
+    private val hostelStateCommunication =
+        StateFlowCommunication<DataState<HostelState>>(DataState.Loading)
 
     @IsHostelUpdatingQualifier
     @Provides
-    fun provideIsUpdatingCommunication() : StateCommunication<Boolean> =
-        isUpdatingCommunication
+    fun provideIsUpdatingCommunication(): StateCommunication<Boolean> = isUpdatingCommunication
 
     @Provides
-    fun provideHostelStateCommunication() : StateCommunication<DataState<HostelState>> =
+    fun provideHostelStateCommunication(): StateCommunication<DataState<HostelState>> =
         hostelStateCommunication
 
     @Provides
@@ -41,12 +42,11 @@ class HostelModule {
         @ApplicationContext context: Context,
         hostelRepository: HostelRepository,
         connectivityManager: ConnectivityManager,
-    ) : SuspendEventHandler<HostelEvent> =
-        HostelEventHandler(
-            context = context,
-            hostelRepository = hostelRepository,
-            isUpdatingMapper = isUpdatingCommunication,
-            hostelStateMapper = hostelStateCommunication,
-            connectivityManager = connectivityManager,
-        )
+                           ): SuspendEventHandler<HostelEvent> = HostelEventHandler(
+        context = context,
+        hostelRepository = hostelRepository,
+        isUpdatingMapper = isUpdatingCommunication,
+        hostelStateMapper = hostelStateCommunication,
+        connectivityManager = connectivityManager,
+                                                                                   )
 }

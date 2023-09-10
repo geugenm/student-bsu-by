@@ -10,15 +10,13 @@ import androidx.compose.ui.unit.dp
 import github.alexzhirkevich.studentbsuby.ui.common.BsuProgressBar
 
 @Composable
-fun PaidServicesLoadingPage() {
+fun PaidServicesLoadingPage()
+{
     Box(
-        modifier = Modifier
-            .fillMaxSize()
-    ) {
+        modifier = Modifier.fillMaxSize()
+       ) {
         BsuProgressBar(
-            Modifier.align(Alignment.Center),
-            size = 100.dp,
-            tint = MaterialTheme.colors.primary
-        )
+            Modifier.align(Alignment.Center), size = 100.dp, tint = MaterialTheme.colors.primary
+                      )
     }
 }

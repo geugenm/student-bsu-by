@@ -13,26 +13,29 @@ import javax.inject.Inject
 class PhotoRepository @Inject constructor(
     private val profileApi: ProfileApi,
     private val usernameProvider: UsernameProvider,
-    @ApplicationContext context : Context
-    ) : CacheWebRepository<Bitmap>() {
+    @ApplicationContext context: Context
+                                         ) : CacheWebRepository<Bitmap>()
+{
 
     private val cacheDir = context.cacheDir
 
     override suspend fun getFromCache(): Bitmap? = kotlin.runCatching {
-            usernameProvider.username.takeIf(String::isNotBlank)?.let {
-                getCachedPhotoLocation(it).takeIf(File::exists)?.let {
-                    BitmapFactory.decodeFile(it.path)
-                }
+        usernameProvider.username.takeIf(String::isNotBlank)?.let {
+            getCachedPhotoLocation(it).takeIf(File::exists)?.let {
+                BitmapFactory.decodeFile(it.path)
             }
-        }.getOrNull()
+        }
+    }.getOrNull()
 
-    override suspend fun getFromWeb(): Bitmap? {
+    override suspend fun getFromWeb(): Bitmap?
+    {
         profileApi.photo().bytes().let {
             return (BitmapFactory.decodeByteArray(it, 0, it.size))
         }
     }
 
-    override suspend fun saveToCache(value: Bitmap) {
+    override suspend fun saveToCache(value: Bitmap)
+    {
         kotlin.runCatching {
             usernameProvider.username.takeIf(String::isNotBlank)?.let { username ->
                 FileOutputStream(getCachedPhotoLocation(username)).use {
@@ -42,7 +45,8 @@ class PhotoRepository @Inject constructor(
         }
     }
 
-    private fun getCachedPhotoLocation(username: String): File {
+    private fun getCachedPhotoLocation(username: String): File
+    {
         return File(cacheDir, username.filter(Char::isLetterOrDigit))
     }
 }

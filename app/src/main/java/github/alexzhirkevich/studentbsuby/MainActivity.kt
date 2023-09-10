@@ -7,11 +7,26 @@ import androidx.activity.viewModels
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.text.ClickableText
-import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.material.Button
+import androidx.compose.material.Card
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
+import androidx.compose.material.TextButton
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -40,11 +55,13 @@ import me.onebone.toolbar.ExperimentalToolbarApi
 @ExperimentalFoundationApi
 @ExperimentalPagerApi
 @AndroidEntryPoint
-class MainActivity : ComponentActivity() {
+class MainActivity : ComponentActivity()
+{
 
     private val mainActivityViewModel by viewModels<MainActivityViewModel>()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreate(savedInstanceState: Bundle?)
+    {
         super.onCreate(savedInstanceState)
         mainActivityViewModel.handle(MainActivityEvent.Initialized(this))
         WindowCompat.setDecorFitsSystemWindows(window, false)
@@ -52,7 +69,8 @@ class MainActivity : ComponentActivity() {
         setContent {
             StudentbsubyTheme {
                 MainScreen()
-                if (mainActivityViewModel.showUpdateDialog.collectAsState().value){
+                if (mainActivityViewModel.showUpdateDialog.collectAsState().value)
+                {
                     UpdateRequiredDialog()
                 }
             }
@@ -61,7 +79,8 @@ class MainActivity : ComponentActivity() {
 
 
     @Composable
-    fun UpdateRequiredDialog() {
+    fun UpdateRequiredDialog()
+    {
 
         UpdateDialog(
             title = stringResource(id = R.string.update_required),
@@ -72,13 +91,14 @@ class MainActivity : ComponentActivity() {
                 usePlatformDefaultWidth = false,
                 dismissOnBackPress = false,
                 dismissOnClickOutside = false
-            ),
+                                         ),
             buttonClose = stringResource(id = R.string.exit)
-        )
+                    )
     }
 
     @Composable
-    fun UpdateProposalDialog(applicationVersion: ApplicationVersion) {
+    fun UpdateProposalDialog(applicationVersion: ApplicationVersion)
+    {
         UpdateDialog(
             title = stringResource(id = R.string.update_proposal),
             text = stringResource(R.string.update_proposal_text),
@@ -86,7 +106,7 @@ class MainActivity : ComponentActivity() {
             destText = applicationVersion.desc,
             properties = DialogProperties(usePlatformDefaultWidth = false),
             buttonClose = stringResource(id = R.string.exit)
-        )
+                    )
     }
 
     @Composable
@@ -97,7 +117,8 @@ class MainActivity : ComponentActivity() {
         destText: String,
         properties: DialogProperties,
         buttonClose: String,
-    ) {
+                    )
+    {
         var descVisible by rememberSaveable {
             mutableStateOf(false)
         }
@@ -106,62 +127,64 @@ class MainActivity : ComponentActivity() {
             mutableStateOf(true)
         }
 
-        if (dialogVisible) {
+        if (dialogVisible)
+        {
             Dialog(
-                onDismissRequest = {  },
-                properties = properties
-            ) {
+                onDismissRequest = { }, properties = properties
+                  ) {
                 Card(
                     backgroundColor = MaterialTheme.colors.background,
                     modifier = Modifier
                         .padding(30.dp)
                         .fillMaxWidth()
                         .wrapContentHeight()
-                ) {
+                    ) {
                     Column(
                         modifier = Modifier.padding(10.dp),
                         horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
+                          ) {
 
                         Text(
                             text = title,
                             style = MaterialTheme.typography.subtitle1,
                             textAlign = TextAlign.Center,
-                        )
+                            )
                         Spacer(modifier = Modifier.height(10.dp))
 
                         AnimatedContent(targetState = descVisible) {
                             Column(
                                 horizontalAlignment = Alignment.CenterHorizontally,
-                            ) {
-                                if (!it) {
+                                  ) {
+                                if (!it)
+                                {
                                     Text(
                                         text = text,
                                         style = MaterialTheme.typography.body1,
                                         textAlign = TextAlign.Center,
-                                    )
+                                        )
                                     Spacer(modifier = Modifier.height(5.dp))
                                     ClickableText(
                                         style = MaterialTheme.typography.body1.copy(
                                             color = MaterialTheme.colors.primary
-                                        ),
+                                                                                   ),
                                         text = AnnotatedString(desc)
-                                    ) {
+                                                 ) {
                                         descVisible = true
                                     }
-                                } else {
+                                } else
+                                {
                                     Text(
                                         text = destText,
                                         style = MaterialTheme.typography.body1,
                                         textAlign = TextAlign.Center,
-                                    )
+                                        )
                                     Spacer(modifier = Modifier.height(5.dp))
                                     ClickableText(
                                         style = MaterialTheme.typography.body1.copy(
                                             color = MaterialTheme.colors.primary
-                                        ),
+                                                                                   ),
                                         text = AnnotatedString(stringResource(id = R.string.back))
-                                    ) {
+                                                 ) {
                                         descVisible = false
                                     }
                                 }
@@ -170,15 +193,12 @@ class MainActivity : ComponentActivity() {
 
                         Spacer(modifier = Modifier.height(10.dp))
                         Row {
-                            TextButton(
-                                modifier = Modifier.weight(1f),
-                                onClick = {
-                                    mainActivityViewModel.handle(
-                                        MainActivityEvent.ExitClicked(this@MainActivity)
-                                    )
-                                    dialogVisible = false
-                                }
-                            ) {
+                            TextButton(modifier = Modifier.weight(1f), onClick = {
+                                mainActivityViewModel.handle(
+                                    MainActivityEvent.ExitClicked(this@MainActivity)
+                                                            )
+                                dialogVisible = false
+                            }) {
                                 Text(text = buttonClose)
                             }
                             Spacer(modifier = Modifier.width(10.dp))
@@ -186,13 +206,14 @@ class MainActivity : ComponentActivity() {
                                 modifier = Modifier.weight(1f),
                                 onClick = {
                                     mainActivityViewModel.handle(
-                                        MainActivityEvent.UpdateClicked(this@MainActivity))
+                                        MainActivityEvent.UpdateClicked(this@MainActivity)
+                                                                )
                                 },
-                            ) {
+                                  ) {
                                 Text(
                                     text = stringResource(id = R.string.update),
                                     color = MaterialTheme.colors.onPrimary
-                                )
+                                    )
                             }
                         }
                     }

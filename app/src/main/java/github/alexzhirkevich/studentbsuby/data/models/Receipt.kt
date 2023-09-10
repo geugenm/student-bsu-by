@@ -5,22 +5,25 @@ import androidx.room.PrimaryKey
 
 @Entity
 open class Receipt(
-    @PrimaryKey(autoGenerate = true) val id:Int = 0,
+    @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val owner: String,
     val deadline: Long,
     val date: Long?,
     val price: Float?,
     val left: Float?,
-    val info : String?,
-    val receiptType : Int
-){
+    val info: String?,
+    val receiptType: Int
+                  )
+{
 
-    companion object{
+    companion object
+    {
         const val TYPE_COMMON = 0
         const val TYPE_ACADEM_DEBT = 1
     }
 
-    override fun equals(other: Any?): Boolean {
+    override fun equals(other: Any?): Boolean
+    {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
 
@@ -36,7 +39,8 @@ open class Receipt(
         return true
     }
 
-    override fun hashCode(): Int {
+    override fun hashCode(): Int
+    {
         var result = owner.hashCode()
         result = 31 * result + deadline.hashCode()
         result = 31 * result + (date?.hashCode() ?: 0)
@@ -46,7 +50,8 @@ open class Receipt(
         return result
     }
 
-    override fun toString(): String {
+    override fun toString(): String
+    {
         return "Receipt(id=$id, owner='$owner', deadline=$deadline, date=$date, price=$price, left=$left, info=$info)"
     }
 

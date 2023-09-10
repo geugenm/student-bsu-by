@@ -8,19 +8,20 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.LayoutDirection
 
-class ProfileRoundShape : Shape {
+class ProfileRoundShape : Shape
+{
     override fun createOutline(
-        size: Size,
-        layoutDirection: LayoutDirection,
-        density: Density
-    ): Outline {
-        val r =20*density.density
-       return Outline.Rounded(
-           RoundRect(0f,0f,size.width,size.height,
-               bottomRightCornerRadius = CornerRadius(r,r),
-               bottomLeftCornerRadius = CornerRadius(r,r),
-           )
-        )
+        size: Size, layoutDirection: LayoutDirection, density: Density
+                              ): Outline
+    {
+        val r = 20 * density.density
+        return Outline.Rounded(
+            RoundRect(
+                0f, 0f, size.width, size.height,
+                bottomRightCornerRadius = CornerRadius(r, r),
+                bottomLeftCornerRadius = CornerRadius(r, r),
+                     )
+                              )
     }
 
 }

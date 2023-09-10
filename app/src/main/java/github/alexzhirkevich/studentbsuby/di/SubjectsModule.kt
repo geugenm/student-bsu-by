@@ -39,7 +39,8 @@ annotation class VisibleSubjectsQualifier
 
 @Module
 @InstallIn(ViewModelComponent::class)
-class SubjectsModule {
+class SubjectsModule
+{
 
     private val isUpdatingCommunication = StateFlowCommunication(false)
     private val semesterCommunication = StateFlowCommunication(0)
@@ -48,46 +49,42 @@ class SubjectsModule {
     private val withCreditCommunication = StateFlowCommunication(false)
     private val subjectsCommunication = StateFlowCommunication<DataState<List<List<Subject>>>>(
         DataState.Loading
-    )
-    private val visibleSubjectsCommunication = StateFlowCommunication<DataState<List<List<Subject>>>>(
-        DataState.Loading
-    )
+                                                                                              )
+    private val visibleSubjectsCommunication =
+        StateFlowCommunication<DataState<List<List<Subject>>>>(
+            DataState.Loading
+                                                              )
 
     @Provides
     @IsSubjectsUpdatingQualifier
-    fun provideIsUpdatingCommunication() : StateCommunication<Boolean> =
-        isUpdatingCommunication
+    fun provideIsUpdatingCommunication(): StateCommunication<Boolean> = isUpdatingCommunication
 
     @Provides
     @SemesterQualifier
-    fun provideSemesterCommunication() : StateCommunication<Int> =
-        semesterCommunication
+    fun provideSemesterCommunication(): StateCommunication<Int> = semesterCommunication
 
     @Provides
     @SearchQualifier
-    fun provideSearchCommunication() : StateCommunication<String> =
-        searchCommunication
+    fun provideSearchCommunication(): StateCommunication<String> = searchCommunication
 
     @Provides
     @ExamQualifier
-    fun provideExamCommunication() : StateCommunication<Boolean> =
-        withExamCommunication
+    fun provideExamCommunication(): StateCommunication<Boolean> = withExamCommunication
 
 
     @Provides
     @CreditQualifier
-    fun provideCreditCommunication() : StateCommunication<Boolean> =
-        withCreditCommunication
+    fun provideCreditCommunication(): StateCommunication<Boolean> = withCreditCommunication
 
 
     @Provides
     @SubjectsQualifier
-    fun provideSubjectsCommunication() : StateCommunication<DataState<List<List<Subject>>>> =
+    fun provideSubjectsCommunication(): StateCommunication<DataState<List<List<Subject>>>> =
         subjectsCommunication
 
     @Provides
     @VisibleSubjectsQualifier
-    fun provideVisibleSubjectsCommunication() : StateCommunication<DataState<List<List<Subject>>>> =
+    fun provideVisibleSubjectsCommunication(): StateCommunication<DataState<List<List<Subject>>>> =
         visibleSubjectsCommunication
 
     @Provides
@@ -95,7 +92,7 @@ class SubjectsModule {
         subjectsRepository: SubjectsRepository,
         currentSemesterRepository: CurrentSemesterRepository,
         connectivityManager: ConnectivityManager,
-    ) : SuspendEventHandler<SubjectsEvent> = SubjectsEventHandler(
+                           ): SuspendEventHandler<SubjectsEvent> = SubjectsEventHandler(
         subjectRepository = subjectsRepository,
         currentSemesterRepository = currentSemesterRepository,
         connectivityManager = connectivityManager,
@@ -106,5 +103,5 @@ class SubjectsModule {
         withCreditMapper = withCreditCommunication,
         subjectsMapper = subjectsCommunication,
         visibleSubjectsMapper = visibleSubjectsCommunication
-    )
+                                                                                       )
 }

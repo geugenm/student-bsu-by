@@ -4,15 +4,18 @@ import androidx.navigation.NavController
 import androidx.navigation.NavOptionsBuilder
 
 fun NavController.navigate(
-    route: Route,
-    options : NavOptionsBuilder.() -> Unit = {}) {
+    route: Route, options: NavOptionsBuilder.() -> Unit = {}
+                          )
+{
 
-    navigate(route.route,options)
+    navigate(route.route, options)
 }
 
-fun NavController.popToRoute(route: Route, inclusive: Boolean) {
+fun NavController.popToRoute(route: Route, inclusive: Boolean)
+{
 
-    if (!popBackStack(route.route, inclusive)) {
+    if (!popBackStack(route.route, inclusive))
+    {
         popBackStack()
         navigate(route.route)
         //  this.disableFor(animLen)

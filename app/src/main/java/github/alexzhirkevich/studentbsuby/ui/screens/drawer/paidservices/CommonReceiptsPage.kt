@@ -12,18 +12,18 @@ import github.alexzhirkevich.studentbsuby.util.DataState
 @Composable
 fun CommonReceiptsPage(
     viewModel: PaidServicesViewModel,
-    emptyErrorMsg : String,
-    receipts : @Composable (PaidServicesViewModel) -> DataState<List<Receipt>>){
+    emptyErrorMsg: String,
+    receipts: @Composable (PaidServicesViewModel) -> DataState<List<Receipt>>
+                      )
+{
     ReceiptsPage(
         receipts = receipts(viewModel),
-        complete = {it.date != null},
+        complete = { it.date != null },
         emptyErrorMsg = emptyErrorMsg
-    ) {
+                ) {
         ReceiptWidget(
-            receipt = it,
-            dateFormat = viewModel.dateFormat,
-            modifier = Modifier.padding(5.dp)
-        )
+            receipt = it, dateFormat = viewModel.dateFormat, modifier = Modifier.padding(5.dp)
+                     )
     }
 }
 

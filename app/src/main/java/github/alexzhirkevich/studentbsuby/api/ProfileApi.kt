@@ -4,7 +4,7 @@ import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.*
 
-val ProfileApi.AllSubjectsRequest : FormUrlEncodedBody
+val ProfileApi.AllSubjectsRequest: FormUrlEncodedBody
     get() = mapOf(
         "ctl00%24ctl00%24ContentPlaceHolder0%24ContentPlaceHolder1%24ctlStudProgress1%24ScriptManager1" to "ctl00%24ctl00%24ContentPlaceHolder0%24ContentPlaceHolder1%24ctlStudProgress1%24UpdatePanel1%7Cctl00%24ctl00%24ContentPlaceHolder0%24ContentPlaceHolder1%24ctlStudProgress1%24selSemester",
         "__EVENTTARGET" to "ctl00%24ctl00%24ContentPlaceHolder0%24ContentPlaceHolder1%24ctlStudProgress1%24selSemester",
@@ -14,13 +14,14 @@ val ProfileApi.AllSubjectsRequest : FormUrlEncodedBody
         "__EVENTVALIDATION" to "%2FwEdAA8aA1dTk1mI0qHq2cWHuAX0uANDprxA9HupiwJWIpYTdhQdutRiZ%2FLTn4Mka6ETO2i2RziiPuZr2eU64bYcxS9FKF4OnhBxwP4fhl1lRE3aOSIAP%2FaYJhBsXRIrQyPdHZmZapxzn2aqKpUNs4OcstQtbUJ3ThzZBUk9RXwMyFtZCnGZrP87pOhw12KtU4lbdov8%2FxtrIqZi18sjUwGvf5sc8FAHVG7rNEhT97HHjTgvcof5j6YHrBXu2NGUtQ7dQYKDtwDTLUJNmzM%2BbRHvQgUr4e97YuQ%2FMJCYwyRhyG%2BcdCPAxn6wNsBGgLmKmXfIG3dl9zaWNmpk3Sfikcbtf3mAVcBZ9po87HmV%2FYMBtbJ0PA%3D%3D",
         "ctl00%24ctl00%24ContentPlaceHolder0%24Poll1%24rbAnswers" to "1",
         "__ASYNCPOST" to "true"
-    )
+                 )
 
-interface ProfileApi {
+interface ProfileApi
+{
 
     @Streaming
     @GET("Photo/Photo.aspx")
-    suspend fun photo() : Response<ResponseBody>
+    suspend fun photo(): Response<ResponseBody>
 
     @GET("PersonalCabinet/StudProgress")
     suspend fun studProgress(): Response<ResponseBody>
@@ -28,10 +29,12 @@ interface ProfileApi {
     @FormUrlEncoded
     @Headers("User-Agent: Mozilla")
     @POST("PersonalCabinet/StudProgress")
-    suspend fun subjects(@FieldMap(encoded = true) request : FormUrlEncodedBody) : Response<ResponseBody>
+    suspend fun subjects(
+        @FieldMap(encoded = true) request: FormUrlEncodedBody
+                        ): Response<ResponseBody>
 
     @GET(URL_NEWS)
-    suspend fun newsItem(@Query(value = "id") id : Int) : Response<ResponseBody>
+    suspend fun newsItem(@Query(value = "id") id: Int): Response<ResponseBody>
 
     @GET(URL_NEWS)
     suspend fun news(): Response<ResponseBody>
@@ -39,12 +42,13 @@ interface ProfileApi {
     @GET("PersonalCabinet/Hostel")
     suspend fun hostel(): Response<ResponseBody>
 
-     @GET("PersonalCabinet/stb")
+    @GET("PersonalCabinet/stb")
     suspend fun studentTicket(): Response<ResponseBody>
 
-    suspend fun exit() : Response<ResponseBody>
+    suspend fun exit(): Response<ResponseBody>
 
-    companion object{
+    companion object
+    {
         const val URL_NEWS = "PersonalCabinet/News"
     }
 }

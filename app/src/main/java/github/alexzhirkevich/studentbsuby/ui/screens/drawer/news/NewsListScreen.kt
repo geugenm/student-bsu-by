@@ -44,43 +44,38 @@ import github.alexzhirkevich.studentbsuby.util.communication.collectAsState
 @ExperimentalMaterialApi
 @Composable
 fun NewsListScreen(
-    viewModel: NewsViewModel,
-    navController: NavController
-) {
+    viewModel: NewsViewModel, navController: NavController
+                  )
+{
     val refreshState = rememberSwipeRefreshState(
         isRefreshing = viewModel.isUpdating.collectAsState().value
-    )
+                                                )
 
 
-    val news by viewModel.newsCommunication
-        .collectAsState()
+    val news by viewModel.newsCommunication.collectAsState()
 
-    SwipeRefresh(
-        state = refreshState,
+    SwipeRefresh(state = refreshState,
         onRefresh = viewModel::update,
         indicator = { state, trigger ->
             BsuProgressBarSwipeRefreshIndicator(state = state, trigger = trigger)
-        }
-    ) {
-        when (val n = news) {
-            is DataState.Success -> Body(
-                news = n.value,
-                modifier = Modifier.graphicsLayer {
-                    translationY = refreshState.indicatorOffset
-                }
-            ) {
+        }) {
+        when (val n = news)
+        {
+            is DataState.Success -> Body(news = n.value, modifier = Modifier.graphicsLayer {
+                translationY = refreshState.indicatorOffset
+            }) {
                 navController.navigate(Route.DrawerScreen.News.NewsDetail(it.id.toString()))
             }
 
-            is DataState.Empty -> Error(
+            is DataState.Empty   -> Error(
                 title = stringResource(id = R.string.empty),
                 error = stringResource(id = R.string.news_empty)
-            )
+                                         )
 
-            is DataState.Error -> Error(
+            is DataState.Error   -> Error(
                 title = stringResource(id = R.string.something_gone_wrong),
                 error = stringResource(id = n.message)
-            )
+                                         )
 
             is DataState.Loading -> Loading()
         }
@@ -88,46 +83,46 @@ fun NewsListScreen(
 }
 
 @Composable
-private fun Toolbar(isTablet: Boolean, onMenuClicked: () -> Unit) {
+private fun Toolbar(isTablet: Boolean, onMenuClicked: () -> Unit)
+{
     Column {
         TopAppBar(
             modifier = Modifier.zIndex(1f),
             elevation = 0.dp,
             backgroundColor = MaterialTheme.colors.secondary
-        ) {
-            if (!isTablet) {
+                 ) {
+            if (!isTablet)
+            {
                 NavigationMenuButton(onClick = onMenuClicked)
             }
             Text(
                 text = stringResource(id = R.string.news),
                 color = MaterialTheme.colors.onSecondary,
                 style = MaterialTheme.typography.subtitle1
-            )
+                )
         }
         Spacer(
             modifier = Modifier
                 .height(1f.dp)
                 .fillMaxWidth()
                 .background(LocalContentColor.current.copy(.1f))
-        )
+              )
     }
 }
 
 @ExperimentalMaterialApi
 @Composable
 private fun Body(
-    news: List<News>,
-    modifier: Modifier = Modifier,
-    onClick: (News) -> Unit = {}
-) {
+    news: List<News>, modifier: Modifier = Modifier, onClick: (News) -> Unit = {}
+                )
+{
     LazyColumn(
         modifier.fillMaxSize(),
-    ) {
+              ) {
         items(news.size) {
             NewsWidget(
-                news = news[it],
-                modifier = Modifier.padding(5.dp)
-            ) {
+                news = news[it], modifier = Modifier.padding(5.dp)
+                      ) {
                 onClick(news[it])
             }
         }
@@ -137,66 +132,63 @@ private fun Body(
 
 @ExperimentalMaterialApi
 @Composable
-private fun NewsWidget(news: News, modifier: Modifier = Modifier, onClick: () -> Unit) {
+private fun NewsWidget(news: News, modifier: Modifier = Modifier, onClick: () -> Unit)
+{
     Card(
-        backgroundColor = MaterialTheme.colors.secondary,
-        modifier = modifier,
-        onClick = onClick
-    ) {
+        backgroundColor = MaterialTheme.colors.secondary, modifier = modifier, onClick = onClick
+        ) {
         Column(
             Modifier
                 .fillMaxWidth()
                 .padding(10.dp)
-        ) {
+              ) {
             Text(
                 text = news.title,
                 style = MaterialTheme.typography.body1,
                 fontWeight = FontWeight.SemiBold
-            )
+                )
             news.preview?.let {
                 Spacer(modifier = Modifier.height(5.dp))
                 Text(
                     text = it,
                     style = MaterialTheme.typography.caption,
                     color = MaterialTheme.colors.onSecondary
-                )
+                    )
             }
         }
     }
 }
 
 @Composable
-private fun Loading() {
+private fun Loading()
+{
     Box(
-        modifier = Modifier
-            .fillMaxSize()
-    ) {
+        modifier = Modifier.fillMaxSize()
+       ) {
         BsuProgressBar(
-            Modifier.align(Alignment.Center),
-            size = 100.dp,
-            tint = MaterialTheme.colors.primary
-        )
+            Modifier.align(Alignment.Center), size = 100.dp, tint = MaterialTheme.colors.primary
+                      )
     }
 }
 
 @Composable
 private fun Error(
-    title: String,
-    error: String
-) {
+    title: String, error: String
+                 )
+{
 
     Box(
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
 
-    ) {
+       ) {
         ErrorWidget(
             title = title,
             error = error,
             modifier = Modifier
                 .align(Alignment.TopCenter)
                 .padding(top = 100.dp)
-        )
+                   )
     }
 }

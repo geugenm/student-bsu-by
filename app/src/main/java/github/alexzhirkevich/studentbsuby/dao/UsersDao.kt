@@ -7,11 +7,12 @@ import androidx.room.Query
 import github.alexzhirkevich.studentbsuby.data.models.User
 
 @Dao
-interface UsersDao {
+interface UsersDao
+{
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(user: User)
 
     @Query("SELECT * FROM User WHERE username = :username limit 1")
-    suspend fun get(username : String) : User?
+    suspend fun get(username: String): User?
 }

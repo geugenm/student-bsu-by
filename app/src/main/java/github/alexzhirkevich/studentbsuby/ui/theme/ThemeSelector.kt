@@ -2,7 +2,8 @@ package github.alexzhirkevich.studentbsuby.ui.theme
 
 import androidx.compose.runtime.State
 
-interface ThemeSelector {
+interface ThemeSelector
+{
 
     val currentTheme: State<Theme>
 

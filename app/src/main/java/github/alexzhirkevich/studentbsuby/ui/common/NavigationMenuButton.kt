@@ -13,18 +13,16 @@ import androidx.compose.ui.unit.dp
 
 @Composable
 fun NavigationMenuButton(
-    icon : ImageVector = Icons.Default.Menu,
-    contentDescription : String = "Menu",
-    onClick :() -> Unit) {
+    icon: ImageVector = Icons.Default.Menu, contentDescription: String = "Menu", onClick: () -> Unit
+                        )
+{
     IconButton(
-        onClick = onClick,
-        modifier = Modifier
-            .padding(3.dp)
-    ) {
+        onClick = onClick, modifier = Modifier.padding(3.dp)
+              ) {
         Icon(
             imageVector = icon,
             tint = MaterialTheme.colors.onSecondary,
             contentDescription = contentDescription
-        )
+            )
     }
 }

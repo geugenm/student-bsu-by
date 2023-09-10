@@ -36,30 +36,28 @@ fun BsuProgressBar(
     size: Dp = 50.dp,
     enabled: Boolean = true,
     tint: Color = Color.Unspecified
-) {
+                  )
+{
     val transition = rememberInfiniteTransition()
     val angle = if (enabled) transition.animateFloat(
-        initialValue = 0F,
-        targetValue = 360F,
-        animationSpec = infiniteRepeatable(
+        initialValue = 0F, targetValue = 360F, animationSpec = infiniteRepeatable(
             animation = tween(1000, easing = FastOutLinearInEasing)
-        )
-    ).value else 0f
+                                                                                 )
+                                                    ).value else 0f
 
-    Icon(
-        painter = painterResource(id = R.drawable.logo),
+    Icon(painter = painterResource(id = R.drawable.logo),
         contentDescription = "Loading",
         tint = tint,
         modifier = modifier
             .size(size)
             .graphicsLayer {
                 rotationY = angle
-            }
-    )
+            })
 }
 
 @Composable
-fun BsuProgressBarSwipeRefreshIndicator(state: SwipeRefreshState, trigger: Dp) {
+fun BsuProgressBarSwipeRefreshIndicator(state: SwipeRefreshState, trigger: Dp)
+{
     val size = 35.dp
     val density = LocalDensity.current.density
 
@@ -69,13 +67,13 @@ fun BsuProgressBarSwipeRefreshIndicator(state: SwipeRefreshState, trigger: Dp) {
     val animatedOffsetY by animateFloatAsState(targetValue = offsetY)
 
     LaunchedEffect(state.isRefreshing) {
-        offsetY = (if (state.isRefreshing)
-            (trigger.value * density)
+        offsetY = (if (state.isRefreshing) (trigger.value * density)
         else (state.indicatorOffset)) - (size.value + 10) * density
     }
 
     LaunchedEffect(state.indicatorOffset) {
-        if (!state.isRefreshing) {
+        if (!state.isRefreshing)
+        {
             offsetY = state.indicatorOffset - (size.value + 10) * density
         }
     }
@@ -85,17 +83,15 @@ fun BsuProgressBarSwipeRefreshIndicator(state: SwipeRefreshState, trigger: Dp) {
         backgroundColor = MaterialTheme.colors.secondary,
         shape = CircleShape,
         elevation = 5.dp,
-        modifier = Modifier
-            .graphicsLayer {
-                translationY = if (state.isSwipeInProgress)
-                    offsetY else animatedOffsetY
+        modifier = Modifier.graphicsLayer {
+                translationY = if (state.isSwipeInProgress) offsetY else animatedOffsetY
             },
-    ) {
+        ) {
 
         val progress = minOf(
             1f, if (state.isRefreshing) 1f
             else (state.indicatorOffset / (trigger.value * density))
-        )
+                            )
 
         BsuProgressBar(
             modifier = Modifier
@@ -105,6 +101,6 @@ fun BsuProgressBarSwipeRefreshIndicator(state: SwipeRefreshState, trigger: Dp) {
             size = size,
             tint = MaterialTheme.colors.primary,
             enabled = state.isRefreshing
-        )
+                      )
     }
 }

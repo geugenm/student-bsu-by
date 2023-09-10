@@ -1,6 +1,11 @@
 package github.alexzhirkevich.studentbsuby.ui.screens.drawer.paidservices
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.Card
@@ -18,46 +23,46 @@ import github.alexzhirkevich.studentbsuby.data.models.Bill
 import github.alexzhirkevich.studentbsuby.util.DataState
 import github.alexzhirkevich.studentbsuby.util.communication.collectAsState
 import java.text.DateFormat
-import java.util.*
+import java.util.Date
 
 @Composable
-fun HostelBillsPage(viewModel : PaidServicesViewModel){
+fun HostelBillsPage(viewModel: PaidServicesViewModel)
+{
     val bills by viewModel.hostelBillsCommunication.collectAsState()
 
-    when (val b = bills) {
+    when (val b = bills)
+    {
         is DataState.Success -> SuccessHostelBillsPage(
-            bills = b.value,
-            dateFormat = viewModel.dateFormat
-        )
+            bills = b.value, dateFormat = viewModel.dateFormat
+                                                      )
+
         is DataState.Loading -> PaidServicesLoadingPage()
-        is DataState.Error -> PaidServicesErrorPage(
+        is DataState.Error   -> PaidServicesErrorPage(
             title = stringResource(id = R.string.something_gone_wrong),
             error = stringResource(id = b.message)
-        )
-        is DataState.Empty -> PaidServicesErrorPage(
+                                                     )
+
+        is DataState.Empty   -> PaidServicesErrorPage(
             title = stringResource(id = R.string.empty),
             error = stringResource(id = R.string.hostel_bills_empty)
-        )
+                                                     )
     }
 }
 
 @Composable
 private fun SuccessHostelBillsPage(
-    bills: List<Bill>,
-    dateFormat: DateFormat
-) {
+    bills: List<Bill>, dateFormat: DateFormat
+                                  )
+{
     SelectionContainer {
 
         LazyColumn(
-            Modifier
-                .fillMaxSize()
-        ) {
+            Modifier.fillMaxSize()
+                  ) {
             items(bills.size) {
                 HostelBillWidget(
-                    bill = bills[it],
-                    dateFormat = dateFormat,
-                    modifier = Modifier.padding(5.dp)
-                )
+                    bill = bills[it], dateFormat = dateFormat, modifier = Modifier.padding(5.dp)
+                                )
             }
             item { Spacer(modifier = Modifier.navigationBarsWithImePadding()) }
         }
@@ -66,9 +71,9 @@ private fun SuccessHostelBillsPage(
 
 @Composable
 private fun HostelBillWidget(
-    bill : Bill,
-    dateFormat: DateFormat,
-    modifier: Modifier = Modifier) {
+    bill: Bill, dateFormat: DateFormat, modifier: Modifier = Modifier
+                            )
+{
     Card(
         modifier = modifier,
         backgroundColor = MaterialTheme.colors.secondary,
@@ -76,9 +81,8 @@ private fun HostelBillWidget(
         Row(
             Modifier
                 .fillMaxWidth()
-                .padding(10.dp),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
+                .padding(10.dp), horizontalArrangement = Arrangement.SpaceBetween
+           ) {
             ProvideTextStyle(value = MaterialTheme.typography.body1) {
                 Text(text = dateFormat.format(Date(bill.deadline)))
                 Text(text = bill.price.toString() + " BYN")

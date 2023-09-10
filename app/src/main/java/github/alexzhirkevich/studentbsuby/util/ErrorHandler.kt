@@ -4,22 +4,26 @@ import github.alexzhirkevich.studentbsuby.util.logger.Logger
 import github.alexzhirkevich.studentbsuby.util.logger.TaggedException
 import kotlinx.coroutines.CoroutineExceptionHandler
 
-interface ErrorHandler {
+interface ErrorHandler
+{
 
-    fun handle(error : Throwable)
+    fun handle(error: Throwable)
 
-    class Ignore : ErrorHandler {
+    class Ignore : ErrorHandler
+    {
         override fun handle(error: Throwable) = Unit
     }
 
-    class ReThrow : ErrorHandler {
+    class ReThrow : ErrorHandler
+    {
         override fun handle(error: Throwable) = throw error
     }
 
-    class Log(private val logger: Logger) : ErrorHandler {
-        override fun handle(error: Throwable) {
-            val (tag,cause) = if (error is TaggedException)
-                error.message.orEmpty() to error.cause
+    class Log(private val logger: Logger) : ErrorHandler
+    {
+        override fun handle(error: Throwable)
+        {
+            val (tag, cause) = if (error is TaggedException) error.message.orEmpty() to error.cause
             else "" to error
 
             logger.log(
@@ -27,12 +31,12 @@ interface ErrorHandler {
                 tag = tag,
                 cause = cause,
                 logLevel = Logger.LogLevel.Error
-            )
+                      )
         }
     }
 }
 
-fun ErrorHandler.toCoroutineExceptionHandler() : CoroutineExceptionHandler =
+fun ErrorHandler.toCoroutineExceptionHandler(): CoroutineExceptionHandler =
     CoroutineExceptionHandler { _, throwable ->
         handle(throwable)
     }

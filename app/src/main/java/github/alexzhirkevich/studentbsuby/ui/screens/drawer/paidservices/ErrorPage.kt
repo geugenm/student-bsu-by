@@ -13,22 +13,22 @@ import github.alexzhirkevich.studentbsuby.ui.common.ErrorWidget
 
 @Composable
 fun PaidServicesErrorPage(
-    title: String,
-    error: String
-) {
+    title: String, error: String
+                         )
+{
 
     Box(
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
 
-    ) {
+       ) {
         ErrorWidget(
             title = title,
             error = error,
             modifier = Modifier
                 .align(Alignment.TopCenter)
                 .padding(top = 100.dp)
-        )
+                   )
     }
 }

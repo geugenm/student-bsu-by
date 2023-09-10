@@ -3,7 +3,8 @@ package github.alexzhirkevich.studentbsuby.ui.theme.values
 import androidx.compose.ui.graphics.Color
 
 
-object Colors {
+object Colors
+{
     val Blue by lazy {
         Color(0xff0A3470)
     }

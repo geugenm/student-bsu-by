@@ -5,7 +5,7 @@ import okio.IOException
 
 open class NetworkResponseException : IOException()
 
-class FailResponseException(val code : Int) : NetworkResponseException()
+class FailResponseException(val code: Int) : NetworkResponseException()
 
 class EmptyResponseException : NetworkResponseException()
 

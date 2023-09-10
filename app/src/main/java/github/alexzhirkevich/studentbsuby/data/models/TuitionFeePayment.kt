@@ -6,7 +6,7 @@ import androidx.room.PrimaryKey
 
 @Entity
 class TuitionFeePayment(
-    @PrimaryKey(autoGenerate = true) val id:Int = 0,
+    @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val owner: String,
     val deadline: Long,
     val date: Long?,
@@ -17,9 +17,11 @@ class TuitionFeePayment(
     @ColumnInfo(name = "fine_days") val fineDays: Int,
     @ColumnInfo(name = "fine_size") val fineSize: Float,
     val debt: Float?
-){
+                       )
+{
 
-    override fun equals(other: Any?): Boolean {
+    override fun equals(other: Any?): Boolean
+    {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
         if (!super.equals(other)) return false
@@ -35,7 +37,8 @@ class TuitionFeePayment(
         return true
     }
 
-    override fun hashCode(): Int {
+    override fun hashCode(): Int
+    {
         var result = super.hashCode()
         result = 31 * result + year.hashCode()
         result = 31 * result + fullPrice.hashCode()
@@ -45,7 +48,8 @@ class TuitionFeePayment(
         return result
     }
 
-    override fun toString(): String {
+    override fun toString(): String
+    {
         return "TuitionFeeReceipt(id=$id, year='$year', fullPrice=$fullPrice, fineDays=$fineDays, fineSize=$fineSize, debt=$debt)"
     }
 }

@@ -169,7 +169,10 @@ fun DrawerScreen(
                 val animOut = scaleOut(targetScale = .95f) + fadeOut()
 
 
-                animatedComposable(DrawerRoute.News.route, enterTransition = { animIn }, exitTransition = { animOut }) {
+                animatedComposable(
+                    DrawerRoute.News.route,
+                    enterTransition = { animIn },
+                    exitTransition = { animOut }) {
                     NewsScreen(isTablet, onMenuClicked = ::onMenuClicked)
                 }
                 animatedComposable(DrawerRoute.Subjects.route,
@@ -208,7 +211,8 @@ fun DrawerScreen(
 
 @ExperimentalAnimationApi
 @Composable
-fun ConnectivitySnackBar(connection: ConnectivityUi, onRelogin: () -> Unit
+fun ConnectivitySnackBar(
+    connection: ConnectivityUi, onRelogin: () -> Unit
                         )
 {
     if (connection != ConnectivityUi.Connected)
@@ -289,11 +293,12 @@ fun ConnectivitySnackBar(connection: ConnectivityUi, onRelogin: () -> Unit
 @ExperimentalMaterialApi
 @ExperimentalCoroutinesApi
 @Composable
-private fun DrawerContent(navController: NavController,
-                          childNavController: NavController,
-                          routes: List<DrawerRoute>,
-                          profileViewModel: ProfileViewModel,
-                          onRouteSelected: () -> Unit = {}
+private fun DrawerContent(
+    navController: NavController,
+    childNavController: NavController,
+    routes: List<DrawerRoute>,
+    profileViewModel: ProfileViewModel,
+    onRouteSelected: () -> Unit = {}
                          )
 {
 
@@ -342,27 +347,34 @@ private fun DrawerContent(navController: NavController,
                         .fillMaxWidth()
                         .background(MaterialTheme.typography.caption.color)
                       )
-                DrawerButton(icon = Icons.Default.Settings, text = stringResource(id = R.string.settings), onClick = {
-                    onRouteSelected()
-                    profileViewModel.handle(ProfileEvent.SettingsClicked(navController))
-                })
+                DrawerButton(
+                    icon = Icons.Default.Settings,
+                    text = stringResource(id = R.string.settings),
+                    onClick = {
+                        onRouteSelected()
+                        profileViewModel.handle(ProfileEvent.SettingsClicked(navController))
+                    })
 
             }
             Spacer(modifier = Modifier.weight(1f))
 
-            DrawerButton(icon = Icons.Default.Logout, text = stringResource(id = R.string.logout), onClick = {
-                profileViewModel.handle(ProfileEvent.Logout(navController))
-            })
+            DrawerButton(
+                icon = Icons.Default.Logout,
+                text = stringResource(id = R.string.logout),
+                onClick = {
+                    profileViewModel.handle(ProfileEvent.Logout(navController))
+                })
         }
     }
 }
 
 @Composable
-private fun DrawerButton(icon: ImageVector,
-                         text: String,
-                         onClick: () -> Unit,
-                         modifier: Modifier = Modifier,
-                         content: @Composable RowScope.() -> Unit = {}
+private fun DrawerButton(
+    icon: ImageVector,
+    text: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    content: @Composable RowScope.() -> Unit = {}
                         )
 {
 
@@ -398,7 +410,8 @@ private fun DrawerButton(icon: ImageVector,
 }
 
 @Composable
-private fun ProfileCard(photo: DataState<ImageBitmap>, user: DataState<User>, modifier: Modifier = Modifier
+private fun ProfileCard(
+    photo: DataState<ImageBitmap>, user: DataState<User>, modifier: Modifier = Modifier
                        )
 {
 
@@ -437,18 +450,19 @@ private fun ProfileCard(photo: DataState<ImageBitmap>, user: DataState<User>, mo
                                     .fillMaxSize()
                                     .padding(10.dp)
 
-                                    .draggable(state = dragState, orientation = Orientation.Vertical, onDragStopped = {
-                                        if (offsetY.absoluteValue > 75 * dencity.density)
-                                        {
-                                            dialogVisible = false
-                                        }
-                                        else
-                                        {
-                                            animate(offsetY, 0f) { a, _ ->
-                                                offsetY = a
+                                    .draggable(state = dragState,
+                                        orientation = Orientation.Vertical,
+                                        onDragStopped = {
+                                            if (offsetY.absoluteValue > 75 * dencity.density)
+                                            {
+                                                dialogVisible = false
+                                            } else
+                                            {
+                                                animate(offsetY, 0f) { a, _ ->
+                                                    offsetY = a
+                                                }
                                             }
-                                        }
-                                    })
+                                        })
                                ) {
 
                                 Image(bitmap = photoValue,
@@ -476,12 +490,11 @@ private fun ProfileCard(photo: DataState<ImageBitmap>, user: DataState<User>, mo
                             .clickable {
                                 dialogVisible = true
                             })
-                }
-                else Spacer(
+                } else Spacer(
                     modifier = Modifier
                         .width(AvatarWidth)
                         .height(AvatarHeight)
-                           )
+                             )
             }
             Box(
                 Modifier
@@ -543,7 +556,9 @@ private fun ProfileCard(photo: DataState<ImageBitmap>, user: DataState<User>, mo
                     style = MaterialTheme.typography.body1,
                     )
                 Text(
-                    text = userValue.avgGrade, color = MaterialTheme.colors.onSecondary, fontWeight = FontWeight.Bold
+                    text = userValue.avgGrade,
+                    color = MaterialTheme.colors.onSecondary,
+                    fontWeight = FontWeight.Bold
                     )
             }
         }

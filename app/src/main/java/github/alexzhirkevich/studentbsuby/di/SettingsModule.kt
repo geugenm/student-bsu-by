@@ -30,18 +30,20 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 @ExperimentalMaterialApi
 @Module
 @InstallIn(ViewModelComponent::class)
-class SettingsModule {
+class SettingsModule
+{
 
-    private var communication : StateFlowCommunication<SettingsState>? = null
+    private var communication: StateFlowCommunication<SettingsState>? = null
 
-    private fun communication(repo: SettingsRepository) : StateFlowCommunication<SettingsState> {
+    private fun communication(repo: SettingsRepository): StateFlowCommunication<SettingsState>
+    {
         return communication ?: StateFlowCommunication(
             initial = SettingsState(
                 notificationsEnabled = repo.synchronizationEnabled,
                 collectStatistic = repo.collectCrashlytics,
                 collectCrashlytics = repo.collectCrashlytics
-            )
-        ).also {
+                                   )
+                                                      ).also {
             communication = it
         }
     }
@@ -49,23 +51,20 @@ class SettingsModule {
     @Provides
     fun provideCommunication(
         repo: SettingsRepository
-    ) : StateCommunication<SettingsState> = communication(repo)
+                            ): StateCommunication<SettingsState> = communication(repo)
 
     @Provides
     fun provideMapper(
         repo: SettingsRepository
-    ) : StateMapper<SettingsState> = communication(repo)
+                     ): StateMapper<SettingsState> = communication(repo)
 
     @Provides
     fun provideEventHandler(
         @ApplicationContext context: Context,
-        repo : SettingsRepository,
+        repo: SettingsRepository,
         mapper: StateMapper<SettingsState>,
         logger: Logger
-    ) : EventHandler<SettingsEvent> = SettingsEventHandler(
-        settingsRepository = repo,
-        mapper = mapper,
-        logger = logger,
-        context = context
-    )
+                           ): EventHandler<SettingsEvent> = SettingsEventHandler(
+        settingsRepository = repo, mapper = mapper, logger = logger, context = context
+                                                                                )
 }

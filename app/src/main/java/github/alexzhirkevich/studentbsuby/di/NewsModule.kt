@@ -1,6 +1,5 @@
 package github.alexzhirkevich.studentbsuby.di
 
-import github.alexzhirkevich.studentbsuby.util.dispatchers.Dispatchers
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,6 +14,7 @@ import github.alexzhirkevich.studentbsuby.util.LoginCookieManager
 import github.alexzhirkevich.studentbsuby.util.SuspendEventHandler
 import github.alexzhirkevich.studentbsuby.util.communication.StateCommunication
 import github.alexzhirkevich.studentbsuby.util.communication.StateFlowCommunication
+import github.alexzhirkevich.studentbsuby.util.dispatchers.Dispatchers
 import javax.inject.Qualifier
 
 @Qualifier
@@ -22,21 +22,21 @@ annotation class IsNewsUpdatingQualifier
 
 @Module
 @InstallIn(ViewModelComponent::class)
-class NewsModule {
+class NewsModule
+{
 
     private val newsCommunication = StateFlowCommunication<DataState<List<News>>>(
-        DataState.Loading)
+        DataState.Loading
+                                                                                 )
 
     private val isUpdatingCommunication = StateFlowCommunication(false)
 
     @Provides
     @IsNewsUpdatingQualifier
-    fun provideIsUpdatingCommunication() : StateCommunication<Boolean> =
-        isUpdatingCommunication
+    fun provideIsUpdatingCommunication(): StateCommunication<Boolean> = isUpdatingCommunication
 
     @Provides
-    fun provideNewsCommunication() : StateCommunication<DataState<List<News>>> =
-        newsCommunication
+    fun provideNewsCommunication(): StateCommunication<DataState<List<News>>> = newsCommunication
 
     @Provides
     fun provideEventHandler(
@@ -44,12 +44,12 @@ class NewsModule {
         newsRepository: NewsRepository,
         connectivityManager: ConnectivityManager,
         loginCookieManager: LoginCookieManager,
-    ) : SuspendEventHandler<NewsEvent> = NewsEventHandler(
+                           ): SuspendEventHandler<NewsEvent> = NewsEventHandler(
         newsRepository = newsRepository,
         connectivityManager = connectivityManager,
         loginCookieManager = loginCookieManager,
         isUpdatingMapper = isUpdatingCommunication,
         newsMapper = newsCommunication,
-         dispatchers = dispatchers
-    )
+        dispatchers = dispatchers
+                                                                               )
 }

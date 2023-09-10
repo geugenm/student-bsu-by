@@ -1,3 +1,3 @@
 package github.alexzhirkevich.studentbsuby.api
 
-typealias FormUrlEncodedBody = Map<String,String>
+typealias FormUrlEncodedBody = Map<String, String>

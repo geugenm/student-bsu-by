@@ -125,7 +125,9 @@ private fun Toolbar(isTablet: Boolean, inDetail: Boolean, onMenuClicked: () -> U
 
     Column {
         TopAppBar(
-            modifier = Modifier.zIndex(1f), elevation = 0.dp, backgroundColor = MaterialTheme.colors.secondary
+            modifier = Modifier.zIndex(1f),
+            elevation = 0.dp,
+            backgroundColor = MaterialTheme.colors.secondary
                  ) {
             AnimatedContent(targetState = inDetail, transitionSpec = {
                 (scaleIn() + fadeIn() with scaleOut() + fadeOut())
@@ -133,10 +135,11 @@ private fun Toolbar(isTablet: Boolean, inDetail: Boolean, onMenuClicked: () -> U
                 if (inDetail)
                 {
                     NavigationMenuButton(
-                        icon = Icons.Default.ArrowBack, contentDescription = "Back", onClick = activity::onBackPressed
+                        icon = Icons.Default.ArrowBack,
+                        contentDescription = "Back",
+                        onClick = activity::onBackPressed
                                         )
-                }
-                else
+                } else
                 {
                     if (!isTablet)
                     {
