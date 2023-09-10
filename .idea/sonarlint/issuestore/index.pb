@@ -25,3 +25,9 @@ Oapp/src/main/java/github/alexzhirkevich/studentbsuby/repo/SettingsRepository.kt
 build.gradle,f\0\f07866736216be0ee2aba49e392191aeae700a35
 t
 Dapp/src/main/java/github/alexzhirkevich/studentbsuby/api/LoginApi.kt,1\2\1275ed3840a7c6558d7b91cca1c3b9323cbd6107
+p
+@app/src/main/java/github/alexzhirkevich/studentbsuby/api/util.kt,6\5\655879a330933830bad06150b4535516eb54c02a
+x
+Happ/src/main/java/github/alexzhirkevich/studentbsuby/api/TimetableApi.kt,1\0\1039edd5011f830333d802c4432d90d42df3c445
+{
+Kapp/src/main/java/github/alexzhirkevich/studentbsuby/api/PaidServicesApi.kt,c\0\c0e0db8d8c93dd093b43aa9259ccdd13243c9a33
