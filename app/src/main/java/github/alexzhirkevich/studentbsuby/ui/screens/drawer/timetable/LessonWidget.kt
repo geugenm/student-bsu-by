@@ -44,10 +44,10 @@ const val LessonTimeLineOffsetX = LessonTimeWidth + 12
 @ExperimentalMaterialApi
 @Composable
 fun LessonWidget(
+    modifier: Modifier = Modifier,
     lesson: Lesson,
     state: LessonState,
-    backgroundColor: Color = MaterialTheme.colors.background,
-    modifier: Modifier = Modifier
+    backgroundColor: Color = MaterialTheme.colors.background
                 )
 {
 

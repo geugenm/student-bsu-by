@@ -247,7 +247,10 @@ fun SubjectWidget(
 }
 
 @Composable
-private fun HoursPanel(subject: Subject, modifier: Modifier = Modifier)
+private fun HoursPanel(
+    modifier: Modifier = Modifier,
+    subject: Subject
+                      )
 {
     Column(
         modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally
