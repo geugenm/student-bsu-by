@@ -281,10 +281,7 @@ private fun HoursPanel(subject: Subject, modifier: Modifier = Modifier)
                 horizontalArrangement = SpaceEvenly,
                ) {
                 group.forEach {
-                    if (it.second != 0)
-                    {
-                        HoursItem(name = it.first, hrs = it.second)
-                    }
+                    HoursItem(name = it.first, hrs = it.second)
                 }
             }
         }
