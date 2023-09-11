@@ -146,7 +146,7 @@ fun DrawerScreen(
             }
         }
 
-        Row {
+        Row(modifier = Modifier.padding(it)) {
             if (isTablet)
             {
                 Card(
