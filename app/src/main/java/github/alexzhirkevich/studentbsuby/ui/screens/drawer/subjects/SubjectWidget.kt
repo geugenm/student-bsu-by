@@ -89,8 +89,6 @@ fun SubjectWidget(
                     modifier = Modifier.fillMaxWidth()
                     )
             }
-
-
             AnimatedVisibility(
                 modifier = Modifier.zIndex(1f),
                 visible = isOpened,
@@ -99,8 +97,7 @@ fun SubjectWidget(
                     subject = subject, modifier = Modifier
                         .fillMaxWidth()
                         .animateEnterExit(
-                            enter = if (animationEnabled) slideInVertically() else EnterTransition.None,
-                            exit = if (animationEnabled) slideOutVertically() else ExitTransition.None
+                            enter = slideInVertically(), exit = slideOutVertically()
                                          )
                           )
             }
