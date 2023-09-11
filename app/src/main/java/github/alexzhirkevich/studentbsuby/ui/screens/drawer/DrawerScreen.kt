@@ -5,7 +5,6 @@ package github.alexzhirkevich.studentbsuby.ui.screens.drawer
 import androidx.activity.ComponentActivity
 import androidx.compose.animation.*
 import androidx.compose.animation.core.animate
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.*
 import androidx.compose.foundation.gestures.DraggableState
 import androidx.compose.foundation.gestures.Orientation
@@ -141,7 +140,7 @@ fun DrawerScreen(
         {
             scope.launch {
                 scaffoldState.drawerState.let {
-                    if (it.isClosed) it.animateTo(DrawerValue.Open, tween())
+                    if (it.isClosed) it.open()
                     else it.close()
                 }
             }
