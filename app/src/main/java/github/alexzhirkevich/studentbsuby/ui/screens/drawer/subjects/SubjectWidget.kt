@@ -40,6 +40,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import github.alexzhirkevich.studentbsuby.R
@@ -110,134 +111,83 @@ fun SubjectWidget(
                 Column(
                     Modifier.padding(10.dp)
                       ) {
-                    if (subject.hasCredit)
-                    {
-                        Row(
-                            verticalAlignment = CenterVertically,
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            modifier = Modifier.fillMaxWidth()
-                           ) {
-
-                            Text(
-                                text = stringResource(R.string.zachet),
-                                )
-
-                            val (icon, color) = when
-                            {
-                                subject.creditPassed != null -> if (subject.creditPassed) Icons.Default.TaskAlt to Colors.Green
-                                else Icons.Default.HighlightOff to MaterialTheme.colors.error
-
-                                else                         -> Icons.Default.Schedule to MaterialTheme.colors.onSecondary
-                            }
-
-                            Row(verticalAlignment = CenterVertically) {
-
-                                if (subject.creditRetakes != 0)
-                                {
-                                    Box {
-                                        Icon(
-                                            imageVector = Icons.Default.Repeat,
-                                            contentDescription = "",
-                                            tint = MaterialTheme.colors.error,
-                                            modifier = Modifier
-                                                .align(Center)
-                                                .size(28.dp)
-                                            )
-                                        Text(
-                                            text = subject.creditRetakes.toString(),
-                                            style = MaterialTheme.typography.caption,
-                                            color = MaterialTheme.colors.error,
-                                            modifier = Modifier.align(Center)
-                                            )
-                                    }
-                                }
-
-                                Spacer(modifier = Modifier.width(5.dp))
-
-
-                                if (subject.creditMark == null)
-                                {
-                                    Icon(imageVector = icon, tint = color, contentDescription = "")
-                                } else
-                                {
-                                    Text(
-                                        text = subject.creditMark.toString(),
-                                        style = MaterialTheme.typography.subtitle1,
-                                        color = when
-                                        {
-                                            subject.creditMark in 1..3 -> MaterialTheme.colors.error
-                                            subject.creditMark > 3     -> Colors.Green
-                                            else                       -> MaterialTheme.colors.onSecondary
-                                        },
-                                        modifier = Modifier.padding(end = 5.dp)
-                                        )
-                                }
-
-                            }
-                        }
-                    }
-
-                    if (subject.hasExam)
-                    {
-                        Row(
-                            verticalAlignment = CenterVertically,
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            modifier = Modifier.fillMaxWidth()
-                           ) {
-
-                            Text(
-                                text = stringResource(R.string.exam),
-                                style = MaterialTheme.typography.body1
-                                )
-
-                            Spacer(modifier = Modifier.width(5.dp))
-
-                            Row(verticalAlignment = CenterVertically) {
-
-                                if (subject.examRetakes != 0)
-                                {
-                                    Box {
-                                        Icon(
-                                            imageVector = Icons.Default.Repeat,
-                                            contentDescription = "",
-                                            modifier = Modifier
-                                                .align(Center)
-                                                .size(28.dp)
-                                            )
-                                        Text(
-                                            text = subject.examMark.toString(),
-                                            style = MaterialTheme.typography.caption,
-                                            color = MaterialTheme.typography.body1.color,
-                                            modifier = Modifier.align(Center)
-                                            )
-                                    }
-                                }
-
-                                if (subject.examMark != null)
-                                {
-                                    Text(
-                                        text = subject.examMark.toString(),
-                                        style = MaterialTheme.typography.subtitle1,
-                                        color = when
-                                        {
-                                            subject.examMark in 1..3 -> MaterialTheme.colors.error
-                                            subject.examMark > 3     -> Colors.Green
-                                            else                     -> MaterialTheme.colors.onSecondary
-                                        },
-                                        modifier = Modifier.padding(end = 5.dp)
-                                        )
-                                } else
-                                {
-                                    Icon(
-                                        imageVector = Icons.Default.Schedule,
-                                        tint = MaterialTheme.colors.onSecondary,
-                                        contentDescription = ""
-                                        )
-                                }
-                            }
-                        }
-                    }
+                    if (subject.hasCredit) ExamRow(
+                        title = stringResource(id = R.string.zachet),
+                        isPassed = subject.creditPassed,
+                        retakes = subject.creditRetakes,
+                        mark = subject.creditMark
+                                                  )
+                    if (subject.hasExam) ExamRow(
+                        title = stringResource(id = R.string.exam),
+                        retakes = subject.examRetakes,
+                        mark = subject.examMark
+                                                )
                 }
+            }
+        }
+    }
+}
+
+
+
+@Composable
+fun ExamRow(
+    title: String, isPassed: Boolean? = false, retakes: Int, mark: Int?
+           )
+{
+    Row(
+        verticalAlignment = CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween,
+        modifier = Modifier.fillMaxWidth()
+       ) {
+
+        Text(text = title)
+
+        val (icon, color) = when
+        {
+            (isPassed == true) -> Icons.Default.TaskAlt to Colors.Green
+            (mark == null)     -> Icons.Default.HighlightOff to MaterialTheme.colors.error
+            else               -> Icons.Default.Schedule to MaterialTheme.colors.onSecondary
+        }
+
+        Row(verticalAlignment = CenterVertically) {
+            if (retakes != 0)
+            {
+                Box {
+                    Icon(
+                        imageVector = Icons.Default.Repeat,
+                        contentDescription = "",
+                        tint = MaterialTheme.colors.error,
+                        modifier = Modifier
+                            .align(Center)
+                            .size(28.dp)
+                        )
+                    Text(
+                        text = retakes.toString(),
+                        style = MaterialTheme.typography.caption,
+                        color = MaterialTheme.colors.error,
+                        modifier = Modifier.align(Center)
+                        )
+                }
+            }
+
+            Spacer(modifier = Modifier.width(5.dp))
+
+            if (mark == null)
+            {
+                Icon(imageVector = icon, tint = color, contentDescription = "")
+            } else
+            {
+                Text(
+                    text = mark.toString(),
+                    style = MaterialTheme.typography.subtitle1,
+                    color = when (mark)
+                    {
+                        in 1..3 -> MaterialTheme.colors.error
+                        else    -> Colors.Green
+                    },
+                    modifier = Modifier.padding(end = 5.dp)
+                    )
             }
         }
     }
