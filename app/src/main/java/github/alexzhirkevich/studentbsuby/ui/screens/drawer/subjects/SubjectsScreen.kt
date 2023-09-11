@@ -469,7 +469,7 @@ private fun AllSemesters(
     Scaffold(backgroundColor = Color.Transparent, topBar = {
         AllTermsTopBar(state, subjects, scope)
     }) {
-        SubjectsPager(isRefreshing, updater, subjects, state, visibleSubjects)
+        SubjectsPager(Modifier.padding(it), isRefreshing, updater, subjects, state, visibleSubjects)
     }
 }
 
@@ -479,6 +479,7 @@ private fun AllSemesters(
 @ExperimentalPagerApi
 @Composable
 private fun SubjectsPager(
+    modifier: Modifier = Modifier,
     isRefreshing: Boolean,
     updater: Updatable,
     subjects: List<List<Subject>>,
