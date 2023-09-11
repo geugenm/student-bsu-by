@@ -45,7 +45,6 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -53,7 +52,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -426,7 +424,6 @@ private fun SearchSubjects(
                     {
                         Page(
                             subjects = list,
-                            opened = openedSubject,
                             modifier = Modifier.fillMaxWidth()
                             )
                     }
@@ -489,9 +486,6 @@ private fun SubjectsPager(
         isRefreshing = isRefreshing
                                                 )
 
-    val openedSubjects = remember {
-        mutableStateListOf<Subject>()
-    }
     SwipeRefresh(
         modifier = Modifier.fillMaxSize(),
         indicator = { state, trigger ->
@@ -514,7 +508,6 @@ private fun SubjectsPager(
                             translationY = refreshState.indicatorOffset
                         },
                     subjects = visibleSubjects[page],
-                    opened = openedSubjects,
                     withBottomPadding = true,
                     )
             } else
@@ -580,7 +573,6 @@ private fun AllTermsTopBar(
 @Composable
 private fun Page(
     subjects: List<Subject>,
-    opened: SnapshotStateList<Subject>,
     modifier: Modifier = Modifier,
     withBottomPadding: Boolean = false,
                 )
@@ -589,17 +581,9 @@ private fun Page(
         elementWidth = 180.dp, modifier = modifier
            ) {
         subjects.forEach {
-            val isOpened by derivedStateOf {
-                it in opened
-            }
             SubjectWidget(
-                subject = it, isOpened = isOpened, modifier = Modifier.padding(5.dp)
-                         ) {
-                if (isOpened)
-                {
-                    opened.remove(it)
-                } else opened.add(it)
-            }
+                subject = it, modifier = Modifier.padding(5.dp)
+                         )
         }
         if (withBottomPadding)
         {
