@@ -283,6 +283,14 @@ private fun HoursPanel(
     }
 }
 
+@Preview
+@Composable
+private fun HoursPanelPreview()
+{
+    HoursPanel(
+        subject = testSubject
+              )
+}
 
 @Composable
 private fun HoursItem(name: String, hrs: Int)
@@ -309,3 +317,31 @@ private fun HoursItem(name: String, hrs: Int)
         Text(text = name, style = MaterialTheme.typography.caption)
     }
 }
+
+@Preview
+@Composable
+private fun HoursItemPreview()
+{
+    HoursItem(name = "Serena Hawkins", hrs = 9100)
+}
+
+
+val testSubject = Subject(
+    id = 2178,
+    owner = "facilis",
+    name = "Jeremiah Shields Jeremiah Shields Jeremiah Shields Jeremiah Shields Jeremiah Shields Jeremiah Shields Jeremiah Shields Jeremiah Shields",
+    lectures = 30,
+    practice = 15,
+    labs = 30,
+    seminars = 10,
+    facults = 62,
+    ksr = 8,
+    hasCredit = true,
+    creditPassed = null,
+    creditMark = null,
+    creditRetakes = 2,
+    hasExam = true,
+    examMark = null,
+    examRetakes = 0,
+    semester = 6931
+                         )
