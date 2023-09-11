@@ -54,14 +54,10 @@ import github.alexzhirkevich.studentbsuby.util.bsuBackgroundPattern
 @ExperimentalMaterialApi
 @Composable
 fun SubjectWidget(
-    subject: Subject,
-    modifier: Modifier = Modifier,
-    isOpened: Boolean = false,
-    onClick: () -> Unit = {}
+    modifier: Modifier = Modifier, subject: Subject
                  )
 {
-
-    var animationEnabled by rememberSaveable {
+    var isOpened by rememberSaveable {
         mutableStateOf(false)
     }
 
@@ -69,8 +65,7 @@ fun SubjectWidget(
         elevation = 3.dp,
         backgroundColor = MaterialTheme.colors.secondary,
         onClick = {
-            animationEnabled = true
-            onClick()
+            isOpened = !isOpened
         }) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
