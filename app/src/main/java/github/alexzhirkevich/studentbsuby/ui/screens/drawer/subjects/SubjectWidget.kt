@@ -148,9 +148,9 @@ fun ExamRow(
 
         val (icon, color) = when
         {
-            (isPassed == true) -> Icons.Default.TaskAlt to Colors.Green
-            (mark == null)     -> Icons.Default.HighlightOff to MaterialTheme.colors.error
-            else               -> Icons.Default.Schedule to MaterialTheme.colors.onSecondary
+            (isPassed == true)         -> Icons.Default.TaskAlt to Colors.Green
+            (mark != null && mark < 4) -> Icons.Default.HighlightOff to MaterialTheme.colors.error
+            else                       -> Icons.Default.Schedule to MaterialTheme.colors.onSecondary
         }
 
         Row(verticalAlignment = CenterVertically) {
