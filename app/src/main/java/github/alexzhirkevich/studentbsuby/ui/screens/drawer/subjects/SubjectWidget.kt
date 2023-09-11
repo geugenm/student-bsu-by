@@ -128,7 +128,14 @@ fun SubjectWidget(
     }
 }
 
-
+@OptIn(ExperimentalAnimationApi::class, ExperimentalMaterialApi::class)
+@Preview
+@Composable
+fun SubjectWidgetPreview()
+{
+    val subject = testSubject
+    SubjectWidget(subject = subject)
+}
 
 @Composable
 fun ExamRow(
