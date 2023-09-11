@@ -488,7 +488,7 @@ private fun SubjectsPager(
                                                 )
 
     SwipeRefresh(
-        modifier = Modifier.fillMaxSize(),
+        modifier = modifier.fillMaxSize(),
         indicator = { state, trigger ->
             BsuProgressBarSwipeRefreshIndicator(state = state, trigger = trigger)
         },
