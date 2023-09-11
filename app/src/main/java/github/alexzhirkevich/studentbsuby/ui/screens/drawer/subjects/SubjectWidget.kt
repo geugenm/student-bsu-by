@@ -77,7 +77,6 @@ fun SubjectWidget(
                                          )
                     .padding(vertical = 10.dp, horizontal = 5.dp)
                     .zIndex(2f)
-                    .animateContentSize()
                ) {
 
                 Text(
