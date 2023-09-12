@@ -7,15 +7,6 @@ buildscript {
         mavenCentral()
     }
 
-    ext {
-        compose_version = '1.2.0-beta01'
-        kotlin_version = '1.6.21'
-        hilt_version = '2.40.1'
-        hilt_lifecycle = "1.0.0-alpha03"
-        hilt_navigation = "1.0.0-alpha03"
-        work_version = "2.7.1"
-        room_version = "2.4.1"
-    }
     dependencies {
         classpath 'com.android.tools.build:gradle:8.1.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.9.10"
