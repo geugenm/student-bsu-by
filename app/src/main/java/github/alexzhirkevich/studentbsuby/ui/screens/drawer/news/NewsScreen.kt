@@ -33,9 +33,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.insets.statusBarsHeight
-import com.google.accompanist.navigation.animation.AnimatedNavHost
-import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import github.alexzhirkevich.studentbsuby.R
 import github.alexzhirkevich.studentbsuby.navigation.Route
 import github.alexzhirkevich.studentbsuby.ui.common.NavigationMenuButton
@@ -56,7 +56,7 @@ fun NewsScreen(
               )
 {
 
-    val navController = rememberAnimatedNavController()
+    val navController = rememberNavController()
 
     val items = remember {
         listOf(
@@ -93,7 +93,7 @@ fun NewsScreen(
                     onMenuClicked
                        )
             }) {
-            AnimatedNavHost(navController = navController, startDestination = items[0].route) {
+            NavHost(navController = navController, startDestination = items[0].route) {
 
                 animatedComposable(Route.DrawerScreen.News.NewsList) {
                     currentRoute = Route.DrawerScreen.News.NewsList.route

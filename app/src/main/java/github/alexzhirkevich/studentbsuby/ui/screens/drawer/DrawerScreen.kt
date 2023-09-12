@@ -5,7 +5,6 @@ package github.alexzhirkevich.studentbsuby.ui.screens.drawer
 import androidx.activity.ComponentActivity
 import androidx.compose.animation.*
 import androidx.compose.animation.core.animate
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.*
 import androidx.compose.foundation.gestures.DraggableState
 import androidx.compose.foundation.gestures.Orientation
@@ -37,10 +36,10 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.insets.navigationBarsWithImePadding
 import com.google.accompanist.insets.statusBarsPadding
-import com.google.accompanist.navigation.animation.AnimatedNavHost
-import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import com.google.accompanist.pager.ExperimentalPagerApi
 import github.alexzhirkevich.studentbsuby.R
 import github.alexzhirkevich.studentbsuby.data.models.User
@@ -85,7 +84,7 @@ fun DrawerScreen(
                                              )
     val scope = rememberCoroutineScope()
 
-    val childNavController = rememberAnimatedNavController()
+    val childNavController = rememberNavController()
     val initial = DrawerRoute.Timetable
 
     val activity = LocalContext.current as ComponentActivity
@@ -141,13 +140,13 @@ fun DrawerScreen(
         {
             scope.launch {
                 scaffoldState.drawerState.let {
-                    if (it.isClosed) it.animateTo(DrawerValue.Open, tween())
+                    if (it.isClosed) it.open()
                     else it.close()
                 }
             }
         }
 
-        Row {
+        Row(modifier = Modifier.padding(it)) {
             if (isTablet)
             {
                 Card(
@@ -161,7 +160,7 @@ fun DrawerScreen(
                                  )
                 }
             }
-            AnimatedNavHost(
+            NavHost(
                 navController = childNavController, startDestination = initial.route.route
                            ) {
 
@@ -443,7 +442,7 @@ private fun ProfileCard(
                                     offsetY += it
                                 }
                             }
-                            val dencity = LocalDensity.current
+                            val density = LocalDensity.current
 
                             Box(
                                 Modifier
@@ -453,7 +452,7 @@ private fun ProfileCard(
                                     .draggable(state = dragState,
                                         orientation = Orientation.Vertical,
                                         onDragStopped = {
-                                            if (offsetY.absoluteValue > 75 * dencity.density)
+                                            if (offsetY.absoluteValue > 75 * density.density)
                                             {
                                                 dialogVisible = false
                                             } else
