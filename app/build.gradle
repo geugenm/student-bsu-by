@@ -70,7 +70,7 @@ android {
         compose true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion compose_version
+        kotlinCompilerExtensionVersion "1.5.3"
     }
     packagingOptions {
         resources {
@@ -83,27 +83,27 @@ android {
 
 dependencies {
     // AndroidX Core and UI
-    implementation 'androidx.core:core-ktx:1.7.0'
+    implementation 'androidx.core:core-ktx:1.12.0'
     implementation 'com.google.android.material:material:1.9.0'
 
     // Jetpack Compose
-    implementation "androidx.compose.ui:ui:$compose_version"
-    implementation "androidx.compose.material:material:$compose_version"
-    implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
-    implementation "androidx.compose.material:material-icons-extended:$compose_version"
+    implementation "androidx.compose.ui:ui:1.5.1"
+    implementation "androidx.compose.material:material:1.5.1"
+    implementation "androidx.compose.ui:ui-tooling-preview:1.5.1"
+    implementation "androidx.compose.material:material-icons-extended:1.5.1"
 
     // AndroidX Lifecycle
-    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.4.0'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0'
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.6.2'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2'
 
     // AndroidX Activity Compose
-    implementation 'androidx.activity:activity-compose:1.4.0'
+    implementation 'androidx.activity:activity-compose:1.7.2'
 
     // Testing
-    testImplementation 'junit:junit:4.+'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
-    androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
+    androidTestImplementation "androidx.compose.ui:ui-test-junit4:1.5.1"
 
     // Retrofit and OkHttp
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
@@ -114,9 +114,8 @@ dependencies {
     implementation 'com.google.android.gms:play-services-mlkit-text-recognition:19.0.0'
 
     // Navigation Compose
-    implementation 'androidx.navigation:navigation-runtime-ktx:2.3.5'
-    implementation "androidx.navigation:navigation-compose:2.4.0-beta01"
-    implementation "com.google.accompanist:accompanist-navigation-animation:0.21.2-beta"
+    implementation 'androidx.navigation:navigation-runtime-ktx:2.7.2'
+    implementation "androidx.navigation:navigation-compose:2.7.2"
 
     // Preferences
     implementation "androidx.preference:preference-ktx:1.2.1"
@@ -125,18 +124,16 @@ dependencies {
     implementation 'com.github.franmontiel:PersistentCookieJar:v1.0.1'
 
     // Dependency Injection (Dagger Hilt)
-    implementation "com.google.dagger:hilt-android:$hilt_version"
-    kapt "com.google.dagger:hilt-compiler:$hilt_version"
-    implementation "androidx.hilt:hilt-lifecycle-viewmodel:$hilt_lifecycle"
-    kapt "androidx.hilt:hilt-compiler:1.0.0"
-    implementation "androidx.hilt:hilt-navigation-compose:$hilt_navigation"
+    implementation "com.google.dagger:hilt-android:2.48"
+    kapt  "com.google.dagger:hilt-compiler:2.48"
+    implementation "androidx.hilt:hilt-navigation-compose:1.1.0-alpha01"
 
     // HTML Parsing
     implementation 'org.jsoup:jsoup:1.7.2'
 
     // Room Database
-    implementation "androidx.room:room-ktx:$room_version"
-    kapt "androidx.room:room-compiler:$room_version"
+    implementation "androidx.room:room-ktx:2.6.0-beta01"
+    ksp "androidx.room:room-compiler:2.6.0-beta01"
 
     // Toolbar Compose
     implementation "me.onebone:toolbar-compose:2.3.0"
@@ -155,11 +152,11 @@ dependencies {
     implementation "com.github.skydoves:landscapist-glide:1.4.5"
 
     // WorkManager
-    implementation "androidx.work:work-runtime-ktx:$work_version"
+    implementation "androidx.work:work-runtime-ktx:2.8.1"
     implementation 'androidx.hilt:hilt-work:1.0.0'
 
     // Security
-    implementation("androidx.security:security-crypto:1.1.0-alpha03")
+    implementation("androidx.security:security-crypto:1.1.0-alpha06")
 
     // Google Play Core
     implementation 'com.google.android.play:core-ktx:1.8.1'
