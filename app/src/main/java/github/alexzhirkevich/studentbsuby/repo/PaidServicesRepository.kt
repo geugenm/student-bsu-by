@@ -77,7 +77,7 @@ private class CommonReceiptsRepository(
         return Jsoup.parse(api.common().html()).getElementsByTag("tbody").lastOrNull()
             ?.getElementsByTag("tr")?.toList()?.drop(1)?.dropLast(1)?.mapNotNull { elem ->
                 kotlin.runCatching {
-                    elem.getElementsByTag("td")?.takeIf { it.size == 5 }?.mapNotNull(Element::text)
+                    elem.getElementsByTag("td").takeIf { it.size == 5 }?.mapNotNull(Element::text)
                         ?.let {
                             Receipt(
                                 owner = usernameProvider.username,
@@ -121,7 +121,7 @@ private class HostelBillsRepository(
         return Jsoup.parse(api.hostelBills().html()).getElementsByTag("tbody").lastOrNull()
             ?.getElementsByTag("tr")?.toList()?.drop(1)?.dropLast(1)?.mapNotNull { elem ->
                 kotlin.runCatching {
-                    elem.getElementsByTag("td")?.takeIf { it.size == 2 }?.mapNotNull(Element::text)
+                    elem.getElementsByTag("td").takeIf { it.size == 2 }?.mapNotNull(Element::text)
                         ?.let {
                             Bill(
                                 owner = usernameProvider.username,
@@ -161,7 +161,7 @@ private class AcademDebtRepository(
         return Jsoup.parse(api.academicDebt().html()).getElementsByTag("tbody").lastOrNull()
             ?.getElementsByTag("tr")?.toList()?.drop(1)?.dropLast(1)?.mapNotNull { elem ->
                 kotlin.runCatching {
-                    elem.getElementsByTag("td")?.takeIf { it.size == 5 }?.mapNotNull(Element::text)
+                    elem.getElementsByTag("td").takeIf { it.size == 5 }?.mapNotNull(Element::text)
                         ?.let {
                             Receipt(owner = usernameProvider.username,
                                 deadline = dateFormat.parse(it[0])!!.time,
@@ -222,7 +222,7 @@ private class InfoAndBillsRepository(
 
         val billsData =
             jsoup.getElementById("ctl00_ctl00_ctl00_ContentPlaceHolder0_ContentPlaceHolder1_ContentPlaceHolder1_gv")
-                ?.getElementsByAttributeValue("valign", "middle")?.filter { !it.hasAttr("scope") }
+                ?.getElementsByAttributeValue("valign", "middle")?.filterNot { it.hasAttr("scope") }
                 ?.map { it.text() }?.chunked(3)
 
         val billsAndTotal = billsData?.take(billsData.size - 1)?.mapNotNull {
@@ -275,7 +275,7 @@ private class TuitionFeeReceiptsRepository(
         Jsoup.parse(api.tuitionFee().html()).getElementsByTag("tbody").lastOrNull()
             ?.getElementsByTag("tr")?.toList()?.drop(2)?.dropLast(1)?.mapNotNull { elem ->
                 kotlin.runCatching {
-                    elem.getElementsByTag("td")?.takeIf { it.size == 9 }?.mapNotNull(Element::text)
+                    elem.getElementsByTag("td").takeIf { it.size == 9 }?.mapNotNull(Element::text)
                         ?.let {
                             TuitionFeePayment(owner = usernameProvider.username,
                                 year = it[0],
