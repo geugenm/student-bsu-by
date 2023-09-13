@@ -74,27 +74,27 @@ class HostelRepository @Inject constructor(
         val table =
             jsoup.getElementById("ctl00_ctl00_ContentPlaceHolder0_ContentPlaceHolder1_GridView1")
         val numbers =
-            table.getElementsByAttributeValue("align", "center")?.filter { it.hasAttr("nowrap") }
+            table?.getElementsByAttributeValue("align", "center")?.filter { it.hasAttr("nowrap") }
                 ?.map { it.text() }
 
         val other =
-            table.getElementsByAttributeValue("align", "left")?.filter { !it.hasAttr("scope") }
+            table?.getElementsByAttributeValue("align", "left")?.filter { !it.hasAttr("scope") }
                 ?.map { it.text() }?.chunked(8)
 
         val ads = other?.mapIndexedNotNull { index, it ->
-                if (it.size == 8) HostelAdvert(
-                    number = numbers?.getOrNull(index)?.toIntOrNull() ?: 0,
-                    phone = it[0].takeIf { "nbsp" !in it && it.isNotBlank() },
-                    publisher = it[1].takeIf { "nbsp" !in it && it.isNotBlank() },
-                    address = it[2].takeIf { "nbsp" !in it && it.isNotBlank() },
-                    conditions = it[3].takeIf { "nbsp" !in it && it.isNotBlank() },
-                    price = it[4].takeIf { "nbsp" !in it && it.isNotBlank() },
-                    currency = it[5].takeIf { "nbsp" !in it && it.isNotBlank() },
-                    publishDate = it[6].takeIf { "nbsp" !in it && it.isNotBlank() } ?: "",
-                    note = it[7].takeIf { "nbsp" !in it && it.isNotBlank() },
-                                              )
-                else null
-            } ?: throw IncorrectResponseException()
+            if (it.size == 8) HostelAdvert(
+                number = numbers?.getOrNull(index)?.toIntOrNull() ?: 0,
+                phone = it[0].takeIf { "nbsp" !in it && it.isNotBlank() },
+                publisher = it[1].takeIf { "nbsp" !in it && it.isNotBlank() },
+                address = it[2].takeIf { "nbsp" !in it && it.isNotBlank() },
+                conditions = it[3].takeIf { "nbsp" !in it && it.isNotBlank() },
+                price = it[4].takeIf { "nbsp" !in it && it.isNotBlank() },
+                currency = it[5].takeIf { "nbsp" !in it && it.isNotBlank() },
+                publishDate = it[6].takeIf { "nbsp" !in it && it.isNotBlank() } ?: "",
+                note = it[7].takeIf { "nbsp" !in it && it.isNotBlank() },
+                                          )
+            else null
+        } ?: throw IncorrectResponseException()
 
         return HostelState.NotProvided(ads.filter { it.address != null })
     }

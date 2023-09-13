@@ -13,5 +13,5 @@ data class News(
 @Entity
 data class NewsContent(
     @PrimaryKey val id: Int,
-    val content: String,
+    val content: String?,
                       )

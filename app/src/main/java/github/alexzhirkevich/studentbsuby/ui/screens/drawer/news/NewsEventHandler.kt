@@ -74,7 +74,7 @@ private class SetupWebViewHandler(
         newsRepository.getNewsItem(event.newsId, DataSource.Remote).collectLatest {
             dispatchers.runOnUI {
                 event.webview.loadDataWithBaseURL(
-                    newsRepository.newsUrl, it.content, "text/html", "UTF-8", null
+                    newsRepository.newsUrl, it.content.toString(), "text/html", "UTF-8", null
                                                  )
             }
         }
@@ -114,18 +114,18 @@ private class UpdateRequestedHandler(
     private suspend fun update(dataSource: DataSource)
     {
         newsRepository.get(dataSource).onEach {
-                newsMapper.map(DataState.Success(it))
-            }.onEmpty {
-                newsMapper.map(DataState.Empty)
-            }.catch {
-                if (newsMapper.current !is DataState.Success)
-                {
-                    newsMapper.map(
-                        DataState.Error(
-                            R.string.error_load_news, it
-                                       )
-                                  )
-                }
-            }.collect()
+            newsMapper.map(DataState.Success(it))
+        }.onEmpty {
+            newsMapper.map(DataState.Empty)
+        }.catch {
+            if (newsMapper.current !is DataState.Success)
+            {
+                newsMapper.map(
+                    DataState.Error(
+                        R.string.error_load_news, it
+                                   )
+                              )
+            }
+        }.collect()
     }
 }

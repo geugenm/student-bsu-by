@@ -22,16 +22,16 @@ class UserRepository @Inject constructor(
 
         val doc = Jsoup.parse(api.studProgress().html())
 
-        val name = doc.getElementById("ctl00_ctl00_ContentPlaceHolder0_lbFIO1").text()
+        val name = doc.getElementById("ctl00_ctl00_ContentPlaceHolder0_lbFIO1")?.text()
         val faculty =
             doc.getElementById("ctl00_ctl00_ContentPlaceHolder0_ContentPlaceHolder1_ctlStudProgress1_lbStudFacultet")
-                .text()
+                ?.text()
         val info =
             doc.getElementById("ctl00_ctl00_ContentPlaceHolder0_ContentPlaceHolder1_ctlStudProgress1_lbStudKurs")
-                .text()
+                ?.text()
         val avg =
             doc.getElementById("ctl00_ctl00_ContentPlaceHolder0_ContentPlaceHolder1_ctlStudProgress1_lbStudBall")
-                .text()
+                ?.text()
 
         return User(
             username = usernameProvider.username,
