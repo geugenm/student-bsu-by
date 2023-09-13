@@ -141,11 +141,11 @@ dependencies {
     implementation 'de.charlex.compose:html-text:1.0.0'
 
     // Accompanist Libraries
-    implementation "com.google.accompanist:accompanist-pager:0.22.0-rc"
-    implementation "com.google.accompanist:accompanist-pager-indicators:0.22.0-rc"
-    implementation "com.google.accompanist:accompanist-insets-ui:0.22.0-rc"
-    implementation "com.google.accompanist:accompanist-insets:0.22.0-rc"
-    implementation "com.google.accompanist:accompanist-swiperefresh:0.22.0-rc"
+    implementation "com.google.accompanist:accompanist-pager:0.33.1-alpha"
+    implementation "com.google.accompanist:accompanist-pager-indicators:0.33.1-alpha"
+    implementation "com.google.accompanist:accompanist-insets-ui:0.33.1-alpha"
+    implementation "com.google.accompanist:accompanist-insets:0.31.5-beta"
+    implementation "com.google.accompanist:accompanist-swiperefresh:0.33.1-alpha"
 
     // Image Loading (Glide)
     implementation "com.github.skydoves:landscapist-glide:2.2.8"
