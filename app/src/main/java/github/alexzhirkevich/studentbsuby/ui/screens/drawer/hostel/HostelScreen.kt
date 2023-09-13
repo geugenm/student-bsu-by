@@ -220,7 +220,7 @@ private fun ProvidedHostelScreen(
                 }
             }
             image?.let {
-                GlideImage(imageModel = it,
+                GlideImage(imageModel = { it },
                     modifier = Modifier
                         .fillMaxWidth()
                         .aspectRatio(1.4f)
@@ -412,8 +412,7 @@ private fun NonProvidedHostelScreen(
 
                           ) {
                     items(ads.size) {
-                        HostelAdWidget(
-                            modifier = Modifier.padding(5.dp),
+                        HostelAdWidget(modifier = Modifier.padding(5.dp),
                             ad = ads[it],
                             onLocateClicked = {
                                 viewModel.handle(HostelEvent.ShowAdOnMapClicked(ads[it]))

@@ -148,7 +148,7 @@ dependencies {
     implementation "com.google.accompanist:accompanist-swiperefresh:0.22.0-rc"
 
     // Image Loading (Glide)
-    implementation "com.github.skydoves:landscapist-glide:1.4.5"
+    implementation "com.github.skydoves:landscapist-glide:2.2.8"
 
     // WorkManager
     implementation "androidx.work:work-runtime-ktx:2.8.1"
