@@ -135,7 +135,7 @@ dependencies {
     ksp "androidx.room:room-compiler:2.6.0-beta01"
 
     // Toolbar Compose
-    implementation "me.onebone:toolbar-compose:2.3.0"
+    implementation "me.onebone:toolbar-compose:2.3.5"
 
     // HTML Text Compose
     implementation 'de.charlex.compose:html-text:1.0.0'
