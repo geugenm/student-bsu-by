@@ -39,7 +39,7 @@ class ProfileEventHandler(
     ProfileEvent::class,
     LogoutEventHandler(dispatchers, loginRepository),
     RouteSelectedHandler(routeMapper, dispatchers),
-    SettingClickedHandler(),
+    SettingClickedHandler(dispatchers),
     UpdateRequestedHandler(
         connectivityManager = connectivityManager,
         userRepository = userRepository,
@@ -81,13 +81,16 @@ private class RouteSelectedHandler(
     }
 }
 
-private class SettingClickedHandler : BaseSuspendEventHandler<ProfileEvent.SettingsClicked>(
-    ProfileEvent.SettingsClicked::class
-                                                                                           )
+private class SettingClickedHandler(private val dispatchers: Dispatchers) :
+    BaseSuspendEventHandler<ProfileEvent.SettingsClicked>(
+        ProfileEvent.SettingsClicked::class
+                                                         )
 {
     override suspend fun handle(event: ProfileEvent.SettingsClicked)
     {
-        event.navController.navigate(Route.SettingsScreen)
+        dispatchers.runOnUI {
+            event.navController.navigate(Route.SettingsScreen)
+        }
     }
 }
 
