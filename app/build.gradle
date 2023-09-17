@@ -128,7 +128,7 @@ dependencies {
     implementation "androidx.hilt:hilt-navigation-compose:1.1.0-alpha01"
 
     // HTML Parsing
-    implementation 'org.jsoup:jsoup:1.14.3'
+    implementation 'org.jsoup:jsoup:1.16.1'
 
     // Room Database
     implementation "androidx.room:room-ktx:2.6.0-beta01"
