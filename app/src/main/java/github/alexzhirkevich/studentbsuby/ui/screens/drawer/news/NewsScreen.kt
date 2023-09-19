@@ -7,13 +7,17 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
+import androidx.compose.animation.togetherWith
 import androidx.compose.animation.with
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.windowInsetsTopHeight
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.LocalContentColor
 import androidx.compose.material.MaterialTheme
@@ -35,7 +39,6 @@ import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
-import com.google.accompanist.insets.statusBarsHeight
 import github.alexzhirkevich.studentbsuby.R
 import github.alexzhirkevich.studentbsuby.navigation.Route
 import github.alexzhirkevich.studentbsuby.ui.common.NavigationMenuButton
@@ -73,11 +76,8 @@ fun NewsScreen(
 
     Column {
         Spacer(
-            modifier = Modifier
-                .fillMaxWidth()
-                .statusBarsHeight()
-                .background(MaterialTheme.colors.secondary)
-                .zIndex(1f)
+            modifier = Modifier.fillMaxWidth().windowInsetsTopHeight(WindowInsets.statusBars)
+                .background(MaterialTheme.colors.secondary).zIndex(1f)
               )
         CollapsingToolbarScaffold(modifier = Modifier
             .fillMaxSize()
@@ -130,8 +130,8 @@ private fun Toolbar(isTablet: Boolean, inDetail: Boolean, onMenuClicked: () -> U
             backgroundColor = MaterialTheme.colors.secondary
                  ) {
             AnimatedContent(targetState = inDetail, transitionSpec = {
-                (scaleIn() + fadeIn() with scaleOut() + fadeOut())
-            }) { inDetail ->
+                ((scaleIn() + fadeIn()).togetherWith(scaleOut() + fadeOut()))
+            }, label = "") { inDetail ->
                 if (inDetail)
                 {
                     NavigationMenuButton(

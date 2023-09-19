@@ -7,13 +7,18 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.windowInsetsTopHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -44,8 +49,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.google.accompanist.insets.navigationBarsWithImePadding
-import com.google.accompanist.insets.statusBarsHeight
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.skydoves.landscapist.glide.GlideImage
@@ -152,7 +155,7 @@ fun LoadingHostelScreen(
                 .background(MaterialTheme.colors.secondary)
                 .zIndex(2f)
               ) {
-            Spacer(modifier = Modifier.statusBarsHeight())
+            Spacer(modifier = Modifier.windowInsetsTopHeight(WindowInsets.statusBars))
             TopAppBar(
                 elevation = 0.dp, backgroundColor = Color.Transparent
                      ) {
@@ -202,7 +205,7 @@ private fun ProvidedHostelScreen(
         toolbarModifier = Modifier.background(MaterialTheme.colors.secondary),
         toolbar = {
             Column(Modifier.zIndex(2f)) {
-                Spacer(modifier = Modifier.statusBarsHeight())
+                Spacer(modifier = Modifier.windowInsetsTopHeight(WindowInsets.statusBars))
                 TopAppBar(
                     backgroundColor = Color.Transparent, elevation = 0.dp
                          ) {
@@ -362,10 +365,8 @@ private fun NonProvidedHostelScreen(
 
     Column {
         Spacer(
-            modifier = Modifier
-                .zIndex(2f)
-                .fillMaxWidth()
-                .statusBarsHeight()
+            modifier = Modifier.zIndex(2f).fillMaxWidth()
+                .windowInsetsTopHeight(WindowInsets.statusBars)
                 .background(MaterialTheme.colors.secondary)
               )
         CollapsingToolbarScaffold(modifier = Modifier
@@ -421,7 +422,7 @@ private fun NonProvidedHostelScreen(
                                 viewModel.handle(HostelEvent.CallClicked(ads[it]))
                             })
                     }
-                    item { Spacer(modifier = Modifier.navigationBarsWithImePadding()) }
+                    item { Spacer(modifier = Modifier.navigationBarsPadding().imePadding()) }
                 }
             }
         }

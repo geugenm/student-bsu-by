@@ -12,10 +12,17 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.windowInsetsBottomHeight
+import androidx.compose.foundation.layout.windowInsetsTopHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
@@ -60,9 +67,6 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.google.accompanist.insets.navigationBarsHeight
-import com.google.accompanist.insets.navigationBarsWithImePadding
-import com.google.accompanist.insets.statusBarsHeight
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
@@ -167,11 +171,8 @@ private fun SuccessSubjectsScreen(
 
     Column {
         Spacer(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(MaterialTheme.colors.secondary)
-                .statusBarsHeight()
-                .zIndex(2f)
+            modifier = Modifier.fillMaxWidth().background(MaterialTheme.colors.secondary)
+                .windowInsetsTopHeight(WindowInsets.statusBars).zIndex(2f)
               )
 
         CollapsingToolbarScaffold(modifier = Modifier
@@ -403,21 +404,16 @@ private fun SearchSubjects(
             val openedSubject = remember { mutableStateListOf<Subject>() }
 
             LazyColumn(
-                modifier = Modifier
-                    .weight(1f)
-                    .navigationBarsWithImePadding()
+                modifier = Modifier.weight(1f).navigationBarsPadding().imePadding()
                       ) {
                 stickyHeader {
                     Box(
-                        Modifier
-                            .fillMaxWidth()
-                            .padding(5.dp)
+                        Modifier.fillMaxWidth().padding(5.dp)
                        ) {
                         Text(
                             text = stringResource(id = R.string.semester, openedSubject.size + 1),
                             style = MaterialTheme.typography.body1,
-                            modifier = Modifier
-                                .clip(MaterialTheme.shapes.medium)
+                            modifier = Modifier.clip(MaterialTheme.shapes.medium)
                                 .background(MaterialTheme.colors.background.copy(.9f))
                                 .padding(vertical = 5.dp, horizontal = 10.dp)
                                 .align(Alignment.TopCenter)
@@ -437,7 +433,7 @@ private fun SearchSubjects(
                 }
 
                 item {
-                    Spacer(modifier = Modifier.navigationBarsHeight(10.dp))
+                    Spacer(modifier = Modifier.windowInsetsBottomHeight(WindowInsets.navigationBars))
                 }
             }
         }
@@ -513,11 +509,8 @@ private fun SubjectsPager(
             if (visibleSubjects.getOrNull(page)?.isNotEmpty() == true)
             {
                 Page(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .verticalScroll(rememberScrollState())
-                        .navigationBarsWithImePadding()
-                        .graphicsLayer {
+                    modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState())
+                        .navigationBarsPadding().imePadding().graphicsLayer {
                             translationY = refreshState.indicatorOffset
                         },
                     subjects = visibleSubjects[page],
@@ -610,8 +603,8 @@ private fun Page(
         }
         if (withBottomPadding)
         {
-            Spacer(modifier = Modifier.navigationBarsHeight(10.dp))
-            Spacer(modifier = Modifier.navigationBarsHeight(10.dp))
+            Spacer(modifier = Modifier.windowInsetsBottomHeight(WindowInsets.navigationBars))
+            Spacer(modifier = Modifier.windowInsetsBottomHeight(WindowInsets.navigationBars))
         }
     }
 }

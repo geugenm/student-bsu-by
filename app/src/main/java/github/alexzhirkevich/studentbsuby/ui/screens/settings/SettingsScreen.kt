@@ -10,11 +10,16 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.windowInsetsTopHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.verticalScroll
@@ -41,8 +46,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.google.accompanist.insets.navigationBarsWithImePadding
-import com.google.accompanist.insets.statusBarsHeight
 import com.google.accompanist.pager.ExperimentalPagerApi
 import de.charlex.compose.HtmlText
 import de.charlex.compose.toAnnotatedString
@@ -71,16 +74,15 @@ fun SettingsScreen(viewModel: SettingsViewModel = hiltViewModel())
 
     Column {
         Spacer(
-            modifier = Modifier
-                .fillMaxWidth()
-                .statusBarsHeight()
-                .background(animateColorAsState(MaterialTheme.colors.secondary).value)
-                .zIndex(1f)
+            modifier = Modifier.fillMaxWidth().windowInsetsTopHeight(WindowInsets.statusBars)
+                .background(animateColorAsState(MaterialTheme.colors.secondary,
+                    label = ""
+                                               ).value).zIndex(1f)
               )
         CollapsingToolbarScaffold(modifier = Modifier
             .fillMaxSize()
             .background(
-                animateColorAsState(MaterialTheme.colors.background).value
+                animateColorAsState(MaterialTheme.colors.background, label = "").value
                        ),
             state = scaffoldState,
             scrollStrategy = ScrollStrategy.EnterAlways,
@@ -100,7 +102,7 @@ private fun Toolbar()
     Column {
         TopAppBar(
             backgroundColor = animateColorAsState(
-                MaterialTheme.colors.secondary
+                MaterialTheme.colors.secondary, label = ""
                                                  ).value
                  ) {
             NavigationMenuButton(
@@ -110,7 +112,7 @@ private fun Toolbar()
                                 )
             Text(
                 text = stringResource(id = R.string.settings),
-                color = animateColorAsState(MaterialTheme.colors.onSecondary).value,
+                color = animateColorAsState(MaterialTheme.colors.onSecondary, label = "").value,
                 style = MaterialTheme.typography.subtitle1
                 )
         }
@@ -118,7 +120,9 @@ private fun Toolbar()
             modifier = Modifier
                 .height(1.dp)
                 .fillMaxWidth()
-                .background(animateColorAsState(LocalContentColor.current.copy(.05f)).value)
+                .background(animateColorAsState(LocalContentColor.current.copy(.05f),
+                    label = ""
+                                               ).value)
               )
     }
 }
@@ -196,7 +200,7 @@ private fun Body(viewModel: SettingsViewModel)
                 .fillMaxWidth()
                 .padding(vertical = 15.dp)
             )
-        Spacer(modifier = Modifier.navigationBarsWithImePadding())
+        Spacer(modifier = Modifier.navigationBarsPadding().imePadding())
     }
 }
 

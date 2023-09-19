@@ -6,10 +6,13 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.windowInsetsTopHeight
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.ScrollableTabRow
 import androidx.compose.material.Tab
@@ -25,7 +28,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.google.accompanist.insets.statusBarsHeight
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.pagerTabIndicatorOffset
@@ -79,11 +81,8 @@ fun PaidServicesScreen(
 
     Column {
         Spacer(
-            modifier = Modifier
-                .statusBarsHeight()
-                .fillMaxWidth()
-                .background(MaterialTheme.colors.secondary)
-                .zIndex(1f)
+            modifier = Modifier.windowInsetsTopHeight(WindowInsets.statusBars).fillMaxWidth()
+                .background(MaterialTheme.colors.secondary).zIndex(1f)
               )
         CollapsingToolbarScaffold(modifier = Modifier.fillMaxSize(),
             state = scaffoldState,
