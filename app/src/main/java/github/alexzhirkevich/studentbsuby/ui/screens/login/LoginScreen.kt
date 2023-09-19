@@ -15,6 +15,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -87,7 +89,6 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.google.accompanist.insets.navigationBarsWithImePadding
 import com.google.accompanist.pager.ExperimentalPagerApi
 import de.charlex.compose.HtmlText
 import github.alexzhirkevich.studentbsuby.R
@@ -132,15 +133,13 @@ fun LoginScreen(
         backgroundColor = MaterialTheme.colors.background,
         snackbarHost = { snack ->
             SnackbarHost(
-                snack, modifier = Modifier.navigationBarsWithImePadding()
+                snack, modifier = Modifier.navigationBarsPadding().imePadding()
 
                         ) {
                 Card(
                     elevation = 5.dp,
                     backgroundColor = MaterialTheme.colors.error,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(10.dp)
+                    modifier = Modifier.fillMaxWidth().padding(10.dp)
                     ) {
                     Text(
                         modifier = Modifier.padding(10.dp),
@@ -163,12 +162,9 @@ fun LoginScreen(
            ) {
 
             Column(
-                Modifier
-                    .widthIn(max = 400.dp)
-                    .align(Alignment.Center)
-                    .verticalScroll(rememberScrollState())
-                    .padding(bottom = 20.dp)
-                    .navigationBarsWithImePadding()
+                Modifier.widthIn(max = 400.dp).align(Alignment.Center)
+                    .verticalScroll(rememberScrollState()).padding(bottom = 20.dp)
+                    .navigationBarsPadding().imePadding()
 
                   ) {
                 Spacer(
@@ -177,19 +173,14 @@ fun LoginScreen(
 
                 Box {
                     Card(
-                        modifier = Modifier
-                            .align(Alignment.TopCenter)
-                            .offset(y = (-40).dp)
-                            .size(80.dp)
-                            .zIndex(2f),
+                        modifier = Modifier.align(Alignment.TopCenter).offset(y = (-40).dp)
+                            .size(80.dp).zIndex(2f),
                         elevation = 3.dp,
                         backgroundColor = MaterialTheme.colors.secondary,
                         shape = CircleShape
                         ) {
                         Box(
-                            Modifier
-                                .padding(5.dp)
-                                .clip(CircleShape)
+                            Modifier.padding(5.dp).clip(CircleShape)
                            ) {
                             Icon(
                                 painter = painterResource(id = R.drawable.logo),
@@ -202,9 +193,7 @@ fun LoginScreen(
                     Card(
                         elevation = 3.dp,
                         backgroundColor = MaterialTheme.colors.secondary,
-                        modifier = Modifier
-                            .padding(horizontal = 35.dp)
-                            .zIndex(1f)
+                        modifier = Modifier.padding(horizontal = 35.dp).zIndex(1f)
                         ) {
                         Column(
                             horizontalAlignment = Alignment.CenterHorizontally
@@ -239,7 +228,7 @@ fun LoginScreen(
 
                                 Box(
                                     Modifier.padding(
-                                            top = 80.dp, bottom = 20.dp, start = 25.dp, end = 25.dp
+                                        top = 80.dp, bottom = 20.dp, start = 25.dp, end = 25.dp
                                                     )
                                    ) {
                                     LoginForm(
@@ -282,8 +271,7 @@ fun LoginScreen(
                                         keyboard?.hide()
                                     },
                                     enabled = controlsEnabled,
-                                    modifier = Modifier
-                                        .width(ButtonWidth.dp)
+                                    modifier = Modifier.width(ButtonWidth.dp)
                                         .clip(MaterialTheme.shapes.medium)
                                       ) {
                                     Text(

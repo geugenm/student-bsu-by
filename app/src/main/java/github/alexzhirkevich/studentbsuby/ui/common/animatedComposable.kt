@@ -1,6 +1,6 @@
 package github.alexzhirkevich.studentbsuby.ui.common
 
-import androidx.compose.animation.AnimatedContentScope
+import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
@@ -9,24 +9,24 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavDeepLink
 import androidx.navigation.NavGraphBuilder
-import com.google.accompanist.navigation.animation.composable
+import androidx.navigation.compose.composable
 import github.alexzhirkevich.studentbsuby.navigation.Route
 
 @ExperimentalAnimationApi
 fun NavGraphBuilder.animatedComposable(
     route: Route,
     deepLinks: List<NavDeepLink> = emptyList(),
-    enterTransition: (AnimatedContentScope<NavBackStackEntry>.() -> EnterTransition?)? = {
-        slideIntoContainer(AnimatedContentScope.SlideDirection.Left)
+    enterTransition: (AnimatedContentTransitionScope<NavBackStackEntry>.() -> EnterTransition?)? = {
+        slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Left)
     },
-    exitTransition: (AnimatedContentScope<NavBackStackEntry>.() -> ExitTransition?)? = {
-        slideOutOfContainer(AnimatedContentScope.SlideDirection.Left)
+    exitTransition: (AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition?)? = {
+        slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Left)
     },
-    popEnterTransition: (AnimatedContentScope<NavBackStackEntry>.() -> EnterTransition?)? = {
-        slideIntoContainer(AnimatedContentScope.SlideDirection.Right)
+    popEnterTransition: (AnimatedContentTransitionScope<NavBackStackEntry>.() -> EnterTransition?)? = {
+        slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Right)
     },
-    popExitTransition: (AnimatedContentScope<NavBackStackEntry>.() -> ExitTransition?)? = {
-        slideOutOfContainer(AnimatedContentScope.SlideDirection.Right)
+    popExitTransition: (AnimatedContentTransitionScope<NavBackStackEntry>.() -> ExitTransition?)? = {
+        slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.Right)
 
     },
     content: @Composable AnimatedVisibilityScope.(NavBackStackEntry) -> Unit

@@ -16,8 +16,8 @@ import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.google.accompanist.navigation.animation.AnimatedNavHost
-import com.google.accompanist.navigation.animation.rememberAnimatedNavController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.pager.ExperimentalPagerApi
 import github.alexzhirkevich.studentbsuby.navigation.Route
 import github.alexzhirkevich.studentbsuby.ui.common.animatedComposable
@@ -40,7 +40,7 @@ import me.onebone.toolbar.ExperimentalToolbarApi
 fun MainScreen()
 {
 
-    val navController = rememberAnimatedNavController()
+    val navController = rememberNavController()
 
     navController.setLifecycleOwner(LocalLifecycleOwner.current)
     LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher?.let {
@@ -55,7 +55,7 @@ fun MainScreen()
         loginVm.handle(LoginEvent.InitLogin(navController))
     }
 
-    AnimatedNavHost(
+    NavHost(
         modifier = Modifier.background(color = MaterialTheme.colors.background),
         navController = navController,
         startDestination = if (loginVm.skipLogin) Route.DrawerScreen.route else Route.AuthScreen.route,

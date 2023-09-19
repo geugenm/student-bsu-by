@@ -1,7 +1,7 @@
 package github.alexzhirkevich.studentbsuby.dao
 
 import androidx.room.*
-import androidx.room.OnConflictStrategy.REPLACE
+import androidx.room.OnConflictStrategy.Companion.REPLACE
 import github.alexzhirkevich.studentbsuby.data.models.*
 
 @Dao

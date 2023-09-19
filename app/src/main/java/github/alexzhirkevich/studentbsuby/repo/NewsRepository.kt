@@ -24,21 +24,22 @@ class NewsRepository @Inject constructor(
     override suspend fun getFromWeb(): List<News>
     {
         return Jsoup.parse(api.news().html()).getElementsByClass("LineMain").first()
-            .getElementsByTag("tbody").first().getElementsByTag("td").last().children().apply {
+            ?.getElementsByTag("tbody")?.first()?.getElementsByTag("td")?.last()?.children()
+            ?.apply {
                 removeAll {
                     it.tag() == Tag.valueOf("br")
                 }
-            }.drop(1)
+            }?.drop(1)
 
-            .groupUnless {
+            ?.groupUnless {
                 it.tag() == Tag.valueOf("h2")
-            }.filter {
+            }?.filter {
                 it.isNotEmpty() && it[0].getElementsByAttributeValueContaining("href", "id=")
                     .isNotEmpty()
-            }.map {
+            }?.map {
                 News(
                     id = it[0].getElementsByAttributeValueContaining("href", "id=").first()
-                        .attr("href").substringAfter("=", "0").toInt(),
+                        ?.attr("href")?.substringAfter("=", "0")?.toInt() ?: 0,
                     title = it[0].text().trim(),
                     preview = it.filterNot {
                         it.allElements.any {
@@ -47,7 +48,7 @@ class NewsRepository @Inject constructor(
                     }.takeIf(Collection<*>::isNotEmpty)
                         ?.joinToString("\n", transform = Element::text)?.trim()
                     )
-            }
+            } ?: emptyList()
 
     }
 
@@ -92,11 +93,11 @@ class NewsContentRepository constructor(
     {
         return Jsoup.parse(profileApi.newsItem(id).html())
             .getElementById("ctl00_ctl00_ContentPlaceHolder0_ContentPlaceHolder1_frmNewsItem")
-            .apply {
+            ?.apply {
                 select("img").forEach {
                     it.attr("width", "100%")
                 }
-            }.html().let {
+            }?.html().let {
                 NewsContent(id, it)
             }
     }

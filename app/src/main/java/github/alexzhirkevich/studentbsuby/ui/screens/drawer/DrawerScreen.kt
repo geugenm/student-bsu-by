@@ -5,7 +5,6 @@ package github.alexzhirkevich.studentbsuby.ui.screens.drawer
 import androidx.activity.ComponentActivity
 import androidx.compose.animation.*
 import androidx.compose.animation.core.animate
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.*
 import androidx.compose.foundation.gestures.DraggableState
 import androidx.compose.foundation.gestures.Orientation
@@ -37,10 +36,8 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.google.accompanist.insets.navigationBarsWithImePadding
-import com.google.accompanist.insets.statusBarsPadding
-import com.google.accompanist.navigation.animation.AnimatedNavHost
-import com.google.accompanist.navigation.animation.rememberAnimatedNavController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.pager.ExperimentalPagerApi
 import github.alexzhirkevich.studentbsuby.R
 import github.alexzhirkevich.studentbsuby.data.models.User
@@ -85,7 +82,7 @@ fun DrawerScreen(
                                              )
     val scope = rememberCoroutineScope()
 
-    val childNavController = rememberAnimatedNavController()
+    val childNavController = rememberNavController()
     val initial = DrawerRoute.Timetable
 
     val activity = LocalContext.current as ComponentActivity
@@ -141,13 +138,13 @@ fun DrawerScreen(
         {
             scope.launch {
                 scaffoldState.drawerState.let {
-                    if (it.isClosed) it.animateTo(DrawerValue.Open, tween())
+                    if (it.isClosed) it.open()
                     else it.close()
                 }
             }
         }
 
-        Row {
+        Row(modifier = Modifier.padding(it)) {
             if (isTablet)
             {
                 Card(
@@ -161,16 +158,15 @@ fun DrawerScreen(
                                  )
                 }
             }
-            AnimatedNavHost(
+            NavHost(
                 navController = childNavController, startDestination = initial.route.route
-                           ) {
+                   ) {
 
                 val animIn = scaleIn(initialScale = .95f) + fadeIn()
                 val animOut = scaleOut(targetScale = .95f) + fadeOut()
 
 
-                animatedComposable(
-                    DrawerRoute.News.route,
+                animatedComposable(DrawerRoute.News.route,
                     enterTransition = { animIn },
                     exitTransition = { animOut }) {
                     NewsScreen(isTablet, onMenuClicked = ::onMenuClicked)
@@ -218,8 +214,7 @@ fun ConnectivitySnackBar(
     if (connection != ConnectivityUi.Connected)
     {
         Box(
-            modifier = Modifier
-                .navigationBarsWithImePadding()
+            modifier = Modifier.navigationBarsPadding().imePadding()
                 .fillMaxWidth()
            ) {
             Card(
@@ -308,20 +303,15 @@ private fun DrawerContent(
             .widthIn(max = DrawerShape.width.dp)
           ) {
         Column(
-            modifier = Modifier
-                .weight(1f)
-                .verticalScroll(rememberScrollState())
-                .navigationBarsWithImePadding(),
+            modifier = Modifier.weight(1f).verticalScroll(rememberScrollState())
+                .navigationBarsPadding().imePadding(),
               ) {
 
             Box(
-                Modifier
-                    .clip(ProfileRoundShape())
-                    .background(MaterialTheme.colors.primaryVariant)
+                Modifier.clip(ProfileRoundShape()).background(MaterialTheme.colors.primaryVariant)
                     .bsuBackgroundPattern(
                         MaterialTheme.colors.onPrimary.copy(alpha = .1f)
-                                         )
-                    .statusBarsPadding()
+                                         ).statusBarsPadding()
                ) {
 
                 SelectionContainer {
@@ -347,8 +337,7 @@ private fun DrawerContent(
                         .fillMaxWidth()
                         .background(MaterialTheme.typography.caption.color)
                       )
-                DrawerButton(
-                    icon = Icons.Default.Settings,
+                DrawerButton(icon = Icons.Default.Settings,
                     text = stringResource(id = R.string.settings),
                     onClick = {
                         onRouteSelected()
@@ -358,8 +347,7 @@ private fun DrawerContent(
             }
             Spacer(modifier = Modifier.weight(1f))
 
-            DrawerButton(
-                icon = Icons.Default.Logout,
+            DrawerButton(icon = Icons.Default.Logout,
                 text = stringResource(id = R.string.logout),
                 onClick = {
                     profileViewModel.handle(ProfileEvent.Logout(navController))
@@ -443,7 +431,7 @@ private fun ProfileCard(
                                     offsetY += it
                                 }
                             }
-                            val dencity = LocalDensity.current
+                            val density = LocalDensity.current
 
                             Box(
                                 Modifier
@@ -453,7 +441,7 @@ private fun ProfileCard(
                                     .draggable(state = dragState,
                                         orientation = Orientation.Vertical,
                                         onDragStopped = {
-                                            if (offsetY.absoluteValue > 75 * dencity.density)
+                                            if (offsetY.absoluteValue > 75 * density.density)
                                             {
                                                 dialogVisible = false
                                             } else
@@ -534,7 +522,7 @@ private fun ProfileCard(
                       ) {
 
                     Text(
-                        text = userValue.name,
+                        text = userValue.name.toString(),
                         modifier = Modifier.padding(start = AvatarWidth),
                         maxLines = 3,
                         overflow = TextOverflow.Ellipsis,
@@ -543,7 +531,7 @@ private fun ProfileCard(
                         )
                     Spacer(modifier = Modifier.height(5.dp))
                     Text(
-                        text = userValue.faculty,
+                        text = userValue.faculty.toString(),
                         modifier = Modifier.padding(start = AvatarWidth),
                         maxLines = 4,
                         overflow = TextOverflow.Ellipsis,
@@ -551,12 +539,12 @@ private fun ProfileCard(
                         )
                 }
                 Text(
-                    text = userValue.info,
+                    text = userValue.info.toString(),
                     color = MaterialTheme.colors.onSecondary,
                     style = MaterialTheme.typography.body1,
                     )
                 Text(
-                    text = userValue.avgGrade,
+                    text = userValue.avgGrade.toString(),
                     color = MaterialTheme.colors.onSecondary,
                     fontWeight = FontWeight.Bold
                     )

@@ -6,8 +6,8 @@ import androidx.room.PrimaryKey
 @Entity
 data class User(
     @PrimaryKey val username: String = "",
-    val name: String = "",
-    val faculty: String = "",
-    val info: String = "",
-    val avgGrade: String = "",
+    val name: String? = "",
+    val faculty: String? = "",
+    val info: String? = "",
+    val avgGrade: String? = "",
                )

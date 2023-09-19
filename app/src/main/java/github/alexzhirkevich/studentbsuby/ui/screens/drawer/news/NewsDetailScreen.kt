@@ -4,6 +4,8 @@ import android.webkit.WebView
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme
@@ -14,7 +16,6 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.google.accompanist.insets.navigationBarsWithImePadding
 import github.alexzhirkevich.studentbsuby.ui.common.BsuProgressBar
 import github.alexzhirkevich.studentbsuby.ui.theme.values.Colors
 
@@ -40,15 +41,12 @@ fun NewsDetailsScreen(
                       )
 
 
-        AndroidView(modifier = Modifier
-            .fillMaxSize()
-            .background(bgColor)
-            .navigationBarsWithImePadding(),
-            factory = {
-                WebView(it).apply {
-                    setBackgroundColor(bgColor.toArgb())
-                    viewModel.handle(NewsEvent.SetupWebView(id, this@apply))
-                }
-            })
+        AndroidView(modifier = Modifier.fillMaxSize().background(bgColor).navigationBarsPadding()
+            .imePadding(), factory = {
+            WebView(it).apply {
+                setBackgroundColor(bgColor.toArgb())
+                viewModel.handle(NewsEvent.SetupWebView(id, this@apply))
+            }
+        })
     }
 }
