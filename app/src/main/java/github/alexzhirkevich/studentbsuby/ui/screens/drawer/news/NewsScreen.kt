@@ -8,8 +8,8 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.animation.togetherWith
-import androidx.compose.animation.with
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
@@ -73,11 +73,13 @@ fun NewsScreen(
 
     val scaffoldState = rememberCollapsingToolbarScaffoldState()
 
-
     Column {
         Spacer(
-            modifier = Modifier.fillMaxWidth().windowInsetsTopHeight(WindowInsets.statusBars)
-                .background(MaterialTheme.colors.secondary).zIndex(1f)
+            modifier = Modifier
+                .fillMaxWidth()
+                .windowInsetsTopHeight(WindowInsets.statusBars)
+                .background(MaterialTheme.colors.secondary)
+                .zIndex(1f)
               )
         CollapsingToolbarScaffold(modifier = Modifier
             .fillMaxSize()
@@ -92,29 +94,32 @@ fun NewsScreen(
                     inDetail = currentRoute != Route.DrawerScreen.News.NewsList.route,
                     onMenuClicked
                        )
-            }) {
-            NavHost(navController = navController, startDestination = items[0].route) {
+            },
+            body = {
+                Box(modifier = Modifier.fillMaxSize()) {
+                    NavHost(navController = navController, startDestination = items[0].route) {
 
-                animatedComposable(Route.DrawerScreen.News.NewsList) {
-                    currentRoute = Route.DrawerScreen.News.NewsList.route
-                    NewsListScreen(
-                        viewModel = viewModel,
-                        navController = navController,
-                                  )
+                        animatedComposable(Route.DrawerScreen.News.NewsList) {
+                            currentRoute = Route.DrawerScreen.News.NewsList.route
+                            NewsListScreen(
+                                viewModel = viewModel,
+                                navController = navController,
+                                          )
+                        }
 
+                        animatedComposable(Route.DrawerScreen.News.NewsDetail) {
+                            currentRoute = Route.DrawerScreen.News.NewsDetail.route
+                            val id = Route.DrawerScreen.News.NewsDetail.getArguments(it)
+
+                            NewsDetailsScreen(
+                                id = id, viewModel = viewModel
+                                             )
+                        }
+                    }
                 }
-
-                animatedComposable(Route.DrawerScreen.News.NewsDetail) {
-                    currentRoute = Route.DrawerScreen.News.NewsDetail.route
-                    val id = Route.DrawerScreen.News.NewsDetail.getArguments(it)
-
-                    NewsDetailsScreen(
-                        id = id, viewModel = viewModel
-                                     )
-                }
-            }
-        }
+            })
     }
+
 }
 
 @ExperimentalAnimationApi
