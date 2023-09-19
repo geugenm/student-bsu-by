@@ -1,6 +1,6 @@
-# Android client for BSU student's personal account
+# Клиент Android для личного кабинета студента БГУ
 
-## Screenshots
+## Скриншоты
 <table>
   <tr>
     <td><img src="/screenshots/screen0.png" width=250></td>
@@ -10,31 +10,32 @@
   </tr>
 </table>
 
-## Built with
+## Построено с использованием
 
 * UI - Jetpack Compose
-* Network - Retrofit2
-* Database - Room
+* Сеть - Retrofit2
+* База данных - Room
 * DI - Hilt
-* Concurrency - Coroutines, Flow
-* Architecture - MVVM
+* Параллелизм - Coroutines, Flow
+* Архитектура - MVVM
 
-## Installation and Running the Project
+## Установка и запуск проекта
 
-To install and run the project locally, follow these steps:
+Чтобы установить и запустить проект локально, следуйте этим шагам:
 
-1. Clone the repository.
-2. Open the project in Android Studio.
-3. Build and run the project on an Android device or emulator.
+1. Клонируйте репозиторий.
+2. Откройте проект в Android Studio.
+3. Соберите и запустите проект на устройстве Android или эмуляторе.
 
-Make sure you have the required dependencies installed. You can find the list of dependencies in the project's build.gradle file.
+Убедитесь, что у вас установлены необходимые зависимости. Список зависимостей можно найти в файле build.gradle проекта.
 
-## Contributing to the Project
+## Содействие проекту
 
-If you would like to contribute to the project, please follow these guidelines:
+Если вы хотите внести вклад в проект, следуйте этим рекомендациям:
 
-1. Fork the repository.
-2. Create a new branch for your feature or bug fix.
-3. Make your changes and commit them to your branch.
-4. Push your branch to your forked repository.
-5. Submit a pull request to the main repository.
+1. Форкните репозиторий.
+2. Создайте новую ветку для вашей функции или исправления ошибки.
+3. Внесите изменения и закоммитьте их в вашу ветку.
+4. Отправьте вашу ветку в ваш репозиторий-форк.
+5. Создайте pull request в основной репозиторий.
+
