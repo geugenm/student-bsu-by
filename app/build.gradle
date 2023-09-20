@@ -162,5 +162,5 @@ dependencies {
 
     // Other Libraries
     implementation 'io.github.wanghonglin:crom-app-whitelist:0.1.2'
-    implementation 'com.github.mintrocket.MintPermissions:mintpermissions:1.1.1'
+    implementation 'com.github.mintrocket.MintPermissions:mintpermissions:1.1.2'
 }
