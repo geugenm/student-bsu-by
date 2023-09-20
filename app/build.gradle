@@ -33,22 +33,22 @@ android {
     }
     buildTypes {
         release {
-            // TODO: Fix R8 recurse problem
             postprocessing {
                 removeUnusedCode true
                 optimizeCode true
-                obfuscate false
+                obfuscate true
                 removeUnusedResources true
             }
 
-            minifyEnabled false
-            shrinkResources false
+            minifyEnabled true
+            shrinkResources true
 
             signingConfig signingConfigs.release
         }
         debug {
             jniDebuggable true
             renderscriptDebuggable true
+
             signingConfig signingConfigs.debug
         }
     }
