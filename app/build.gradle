@@ -33,14 +33,14 @@ android {
     }
     buildTypes {
         release {
-            // TODO: Fix R8 recurse problem
             postprocessing {
                 removeUnusedCode true
                 optimizeCode true
-                obfuscate false
+                obfuscate true
                 removeUnusedResources true
             }
 
+            // TODO: See issue #15 https://github.com/geugenm/student-bsu-by/issues/15
             minifyEnabled false
             shrinkResources false
 
@@ -49,6 +49,7 @@ android {
         debug {
             jniDebuggable true
             renderscriptDebuggable true
+
             signingConfig signingConfigs.debug
         }
     }
@@ -106,8 +107,8 @@ dependencies {
 
     // Retrofit and OkHttp
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
-    implementation 'com.squareup.okhttp3:logging-interceptor:4.4.1'
-    implementation 'com.github.tomasharkema:RetrofitCurlPrinter:0.0.1'
+    implementation 'com.squareup.okhttp3:logging-interceptor:4.11.0'
+    implementation 'com.github.tomasharkema:RetrofitCurlPrinter:0.0.2'
 
     // Google Play Services
     implementation 'com.google.android.gms:play-services-mlkit-text-recognition:19.0.0'
@@ -148,7 +149,7 @@ dependencies {
     implementation "com.google.accompanist:accompanist-swiperefresh:0.33.1-alpha"
 
     // Image Loading (Glide)
-    implementation "com.github.skydoves:landscapist-glide:2.2.8"
+    implementation 'com.github.skydoves:landscapist-glide:2.2.9'
 
     // WorkManager
     implementation "androidx.work:work-runtime-ktx:2.8.1"
@@ -162,5 +163,5 @@ dependencies {
 
     // Other Libraries
     implementation 'io.github.wanghonglin:crom-app-whitelist:0.1.2'
-    implementation 'com.github.mintrocket.MintPermissions:mintpermissions:1.1.1'
+    implementation 'com.github.mintrocket.MintPermissions:mintpermissions:1.1.2'
 }
