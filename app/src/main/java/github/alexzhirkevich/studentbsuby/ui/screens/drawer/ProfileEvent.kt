@@ -64,7 +64,7 @@ object ConnectivityUiSerializer : Serializer<ConnectivityUi>
 sealed interface ProfileEvent : Event
 {
 
-    object UpdateRequested : ProfileEvent
+    data object UpdateRequested : ProfileEvent
     class Logout(val navController: NavController) : ProfileEvent
     class RouteSelected(
         val route: DrawerRoute, val navController: NavController

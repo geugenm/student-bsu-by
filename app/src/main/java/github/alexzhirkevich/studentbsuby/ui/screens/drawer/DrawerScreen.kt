@@ -13,6 +13,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.Login
+import androidx.compose.material.icons.automirrored.filled.Logout
 import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -131,7 +133,7 @@ fun DrawerScreen(
                 }
             }
         },
-            ) {
+            ) { it ->
 
 
         fun onMenuClicked()
@@ -259,7 +261,7 @@ fun ConnectivitySnackBar(
                         {
                             IconButton(onClick = onRelogin) {
                                 Icon(
-                                    imageVector = Icons.Default.Login, contentDescription = null
+                                    imageVector = Icons.AutoMirrored.Filled.Login, contentDescription = null
                                     )
                             }
                         }
@@ -267,7 +269,7 @@ fun ConnectivitySnackBar(
                     IconButton(onClick = {
                         expanded = !expanded
                     }) {
-                        AnimatedContent(targetState = expanded) {
+                        AnimatedContent(targetState = expanded, label = "") {
                             Icon(
                                 imageVector = if (it) Icons.Default.Close
                                 else Icons.Default.CloudOff, contentDescription = null
@@ -347,7 +349,7 @@ private fun DrawerContent(
             }
             Spacer(modifier = Modifier.weight(1f))
 
-            DrawerButton(icon = Icons.Default.Logout,
+            DrawerButton(icon = Icons.AutoMirrored.Filled.Logout,
                 text = stringResource(id = R.string.logout),
                 onClick = {
                     profileViewModel.handle(ProfileEvent.Logout(navController))
