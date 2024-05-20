@@ -151,7 +151,7 @@ class MainActivity : ComponentActivity()
                             )
                         Spacer(modifier = Modifier.height(10.dp))
 
-                        AnimatedContent(targetState = descVisible) {
+                        AnimatedContent(targetState = descVisible, label = "") {
                             Column(
                                 horizontalAlignment = Alignment.CenterHorizontally,
                                   ) {

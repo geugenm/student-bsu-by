@@ -42,35 +42,29 @@ class TimetableApiWrapper(private val api: TimetableApi) : TimetableApi
     private var __BTNLOGON = ""
     private var __EVENTARGUMENT = ""
 
-    override suspend fun init(): Response<ResponseBody>
-    {
-        val resp = api.init()
+    override suspend fun init(): Response<ResponseBody> {
+        val response = api.init()
+        response.body()?.byteStream()?.use { stream ->
+            val document = Jsoup.parse(stream.readBytes().toString(Charsets.UTF_8))
 
-        val jsoup = resp.body()?.byteStream()?.readBytes()?.let {
-            Jsoup.parse(String(it))
+            __EVENTARGUMENT = document.getElementById("__EVENTARGUMENT")?.attr("value").orEmpty()
+            __VIEWSTATE = document.getElementById("__VIEWSTATE")?.attr("value").orEmpty()
+            __VIEWSTATEGENERATOR = document.getElementById("__VIEWSTATEGENERATOR")?.attr("value").orEmpty()
+            __EVENTVALIDATION = document.getElementById("__EVENTVALIDATION")?.attr("value").orEmpty()
+            __BTNLOGON = document.selectFirst("input[name=ctl00\$ContentPlaceHolder0\$btnLogon]")?.attr("value") ?: "Войти"
         }
-        __EVENTARGUMENT = jsoup?.getElementById("__EVENTARGUMENT")?.attr("value").orEmpty()
-        __VIEWSTATE = jsoup?.getElementById("__VIEWSTATE")?.attr("value").orEmpty()
-        __VIEWSTATEGENERATOR =
-            jsoup?.getElementById("__VIEWSTATEGENERATOR")?.attr("value").orEmpty()
-        __EVENTVALIDATION = jsoup?.getElementById("__EVENTVALIDATION")?.attr("value").orEmpty()
-        __BTNLOGON =
-            jsoup?.getElementsByAttributeValue("name", "ctl00\$ContentPlaceHolder0\$btnLogon")
-                ?.attr("value") ?: "Войти"
-        return resp
+        return response
     }
 
-    override suspend fun timetable(dayOfWeek: FormUrlEncodedBody): Response<ResponseBody>
-    {
-        val map = dayOfWeek.toMutableMap().apply {
-            this["__EVENTARGUMENT"] = __EVENTARGUMENT
-            this["__VIEWSTATE"] = __VIEWSTATE
-            this["__VIEWSTATEGENERATOR"] = __VIEWSTATEGENERATOR
-            this["__EVENTVALIDATION"] = __EVENTVALIDATION
-            this["ctl00\$ContentPlaceHolder0\$btnLogon"] = __BTNLOGON
-            this["__ASYNCPOST"] = "true"
+    override suspend fun timetable(dayOfWeek: FormUrlEncodedBody): Response<ResponseBody> {
+        val form = dayOfWeek.toMutableMap().apply {
+            put("__EVENTARGUMENT", __EVENTARGUMENT)
+            put("__VIEWSTATE", __VIEWSTATE)
+            put("__VIEWSTATEGENERATOR", __VIEWSTATEGENERATOR)
+            put("__EVENTVALIDATION", __EVENTVALIDATION)
+            put("ctl00\$ContentPlaceHolder0\$btnLogon", __BTNLOGON)
+            put("__ASYNCPOST", "true")
         }
-        return api.timetable(map)
+        return api.timetable(form)
     }
-
 }

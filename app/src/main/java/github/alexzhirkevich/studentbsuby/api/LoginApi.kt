@@ -37,15 +37,11 @@ interface LoginApi
 }
 
 val ResponseBody.isSessionExpired: Boolean
-    get()
-    {
-        val responseString = source().buffer.clone().readString(Charset.forName("UTF-8"))
+    get() =  contains("ctl00_ContentPlaceHolder0_cmdLogIn") ||
+            contains("ctl00\$ContentPlaceHolder0\$btnLogon")
 
-        val isCmdLogInPresent = responseString.contains("ctl00_ContentPlaceHolder0_cmdLogIn")
-        val isBtnLogonPresent = responseString.contains("ctl00\$ContentPlaceHolder0\$btnLogon")
-
-        return isCmdLogInPresent || isBtnLogonPresent
-    }
+private fun ResponseBody.contains(text: String): Boolean =
+    source().buffer.clone().readString(Charsets.UTF_8).contains(text)
 
 class LoginApiWrapper(val api: LoginApi) : LoginApi
 {
@@ -57,23 +53,18 @@ class LoginApiWrapper(val api: LoginApi) : LoginApi
     private var __EVENTTARGET = ""
     private var __EVENTARGUMENT = ""
 
-    override suspend fun initialize(): Response<ResponseBody>
-    {
+    override suspend fun initialize(): Response<ResponseBody> {
         val response = api.initialize()
-        val jsoup = response.body()?.byteStream()?.use { stream ->
-            Jsoup.parse(stream.readBytes().toString(Charsets.UTF_8))
+        response.body()?.byteStream()?.use { stream ->
+            val document = Jsoup.parse(stream.readBytes().toString(Charsets.UTF_8))
+
+            __EVENTARGUMENT = document.getElementById("__EVENTARGUMENT")?.attr("value").orEmpty()
+            __EVENTTARGET = document.getElementById("__EVENTTARGET")?.attr("value").orEmpty()
+            __VIEWSTATE = document.getElementById("__VIEWSTATE")?.attr("value").orEmpty()
+            __VIEWSTATEGENERATOR = document.getElementById("__VIEWSTATEGENERATOR")?.attr("value").orEmpty()
+            __EVENTVALIDATION = document.getElementById("__EVENTVALIDATION")?.attr("value").orEmpty()
+            __BTNLOGON = document.selectFirst("input[name=ctl00\$ContentPlaceHolder0\$btnLogon]")?.attr("value") ?: "Войти"
         }
-
-        __EVENTARGUMENT = jsoup?.getElementById("__EVENTARGUMENT")?.attr("value").orEmpty()
-        __EVENTTARGET = jsoup?.getElementById("__EVENTTARGET")?.attr("value").orEmpty()
-        __VIEWSTATE = jsoup?.getElementById("__VIEWSTATE")?.attr("value").orEmpty()
-        __VIEWSTATEGENERATOR =
-            jsoup?.getElementById("__VIEWSTATEGENERATOR")?.attr("value").orEmpty()
-        __EVENTVALIDATION = jsoup?.getElementById("__EVENTVALIDATION")?.attr("value").orEmpty()
-        __BTNLOGON =
-            jsoup?.getElementsByAttributeValue("name", "ctl00\$ContentPlaceHolder0\$btnLogon")
-                ?.attr("value") ?: "Войти"
-
         return response
     }
 
@@ -84,17 +75,15 @@ class LoginApiWrapper(val api: LoginApi) : LoginApi
 
     override suspend fun login(
         @FieldMap(encoded = false) body: FormUrlEncodedBody
-                              ): Response<ResponseBody>
-    {
+                              ): Response<ResponseBody> {
         val form = body.toMutableMap().apply {
-            this["__EVENTTARGET"] = __EVENTTARGET
-            this["__EVENTARGUMENT"] = __EVENTARGUMENT
-            this["__VIEWSTATE"] = __VIEWSTATE
-            this["__VIEWSTATEGENERATOR"] = __VIEWSTATEGENERATOR
-            this["__EVENTVALIDATION"] = __EVENTVALIDATION
-            this["ctl00\$ContentPlaceHolder0\$btnLogon"] = __BTNLOGON
+            put("__EVENTTARGET", __EVENTTARGET)
+            put("__EVENTARGUMENT", __EVENTARGUMENT)
+            put("__VIEWSTATE", __VIEWSTATE)
+            put("__VIEWSTATEGENERATOR", __VIEWSTATEGENERATOR)
+            put("__EVENTVALIDATION", __EVENTVALIDATION)
+            put("ctl00\$ContentPlaceHolder0\$btnLogon", __BTNLOGON)
         }
         return api.login(form)
     }
-
 }

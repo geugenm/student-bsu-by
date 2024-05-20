@@ -11,7 +11,7 @@ sealed class Route(val route: String)
     open val navArguments: List<NamedNavArgument> = emptyList()
     open fun getArguments(entry: NavBackStackEntry): Any? = null
 
-    object AuthScreen : Route("auth")
+    data object AuthScreen : Route("auth")
 
     open class DrawerScreen private constructor(route: String = "drawer") : Route(route)
     {
@@ -46,6 +46,6 @@ sealed class Route(val route: String)
         }
     }
 
-    object SettingsScreen : Route("settings")
+    data object SettingsScreen : Route("settings")
 
 }

@@ -19,37 +19,4 @@ data class Lesson(
     val ends: String
                  )
 {
-    override fun equals(other: Any?): Boolean
-    {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as Lesson
-
-        if (owner != other.owner) return false
-        if (dayOfWeek != other.dayOfWeek) return false
-        if (number != other.number) return false
-        if (name != other.name) return false
-        if (place != other.place) return false
-        if (type != other.type) return false
-        if (teacher != other.teacher) return false
-        if (starts != other.starts) return false
-        if (ends != other.ends) return false
-
-        return true
-    }
-
-    override fun hashCode(): Int
-    {
-        var result = owner.hashCode()
-        result = 31 * result + dayOfWeek
-        result = 31 * result + number
-        result = 31 * result + name.hashCode()
-        result = 31 * result + place.hashCode()
-        result = 31 * result + type.hashCode()
-        result = 31 * result + teacher.hashCode()
-        result = 31 * result + starts.hashCode()
-        result = 31 * result + ends.hashCode()
-        return result
-    }
 }

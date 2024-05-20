@@ -44,7 +44,7 @@ class AppModule
 {
 
     @Provides
-    fun provideCalendar(): Calendar = Calendar.Base()
+    fun provideCalendar(): Calendar = CurrentCalendar
 
     @Provides
     fun providePermController(): MintPermissionsController = MintPermissions.controller
