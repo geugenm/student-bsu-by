@@ -14,5 +14,5 @@ typealias Timetable = List<List<Pair<Lesson, LessonState>>>
 
 sealed interface TimetableEvent : Event
 {
-    object UpdateRequested : TimetableEvent
+    data object UpdateRequested : TimetableEvent
 }

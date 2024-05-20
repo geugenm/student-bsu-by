@@ -18,6 +18,5 @@ fun NavController.popToRoute(route: Route, inclusive: Boolean)
     {
         popBackStack()
         navigate(route.route)
-        //  this.disableFor(animLen)
     }
 }

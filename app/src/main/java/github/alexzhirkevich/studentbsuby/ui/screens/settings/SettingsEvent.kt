@@ -8,8 +8,8 @@ sealed interface SettingsEvent : Event
     class NotificationsEnabled(val enabled: Boolean) : SettingsEvent
     class CollectStatistic(val enabled: Boolean) : SettingsEvent
     class CollectCrashlytics(val enabled: Boolean) : SettingsEvent
-    object ShareLogs : SettingsEvent
-    object DontKillMyApp : SettingsEvent
+    data object ShareLogs : SettingsEvent
+    data object DontKillMyApp : SettingsEvent
     class BackgroundActivityClicked(val activity: Activity) : SettingsEvent
     class AutoStartClicked(val activity: Activity) : SettingsEvent
 }

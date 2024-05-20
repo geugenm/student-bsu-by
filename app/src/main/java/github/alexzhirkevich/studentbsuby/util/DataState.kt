@@ -5,9 +5,9 @@ import androidx.annotation.StringRes
 sealed interface DataState<out T>
 {
 
-    object Empty : DataState<Nothing>
+    data object Empty : DataState<Nothing>
 
-    object Loading : DataState<Nothing>
+    data object Loading : DataState<Nothing>
 
     data class Success<out T>(val value: T) : DataState<T>
 

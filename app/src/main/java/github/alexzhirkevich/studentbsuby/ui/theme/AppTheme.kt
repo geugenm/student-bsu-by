@@ -56,11 +56,7 @@ fun StudentbsubyTheme(
 
     fun update()
     {
-
-        activity.window.apply {
-            decorView.systemUiVisibility = if (!isDark) View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
-            else 0
-        }
+        activity.window.setDecorFitsSystemWindows(!isDark);
     }
 
     LaunchedEffect(key1 = isSystemInDarkTheme()) {

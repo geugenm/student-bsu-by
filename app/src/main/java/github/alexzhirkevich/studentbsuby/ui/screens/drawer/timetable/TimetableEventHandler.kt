@@ -1,6 +1,7 @@
 package github.alexzhirkevich.studentbsuby.ui.screens.drawer.timetable
 
 import github.alexzhirkevich.studentbsuby.R
+import github.alexzhirkevich.studentbsuby.data.models.Lesson
 import github.alexzhirkevich.studentbsuby.repo.DataSource
 import github.alexzhirkevich.studentbsuby.repo.TimetableRepository
 import github.alexzhirkevich.studentbsuby.util.BaseSuspendEventHandler
@@ -11,9 +12,7 @@ import github.alexzhirkevich.studentbsuby.util.SuspendEventHandler
 import github.alexzhirkevich.studentbsuby.util.communication.Mapper
 import github.alexzhirkevich.studentbsuby.util.communication.StateMapper
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.flow.onEmpty
+import kotlinx.coroutines.flow.map
 
 class TimetableEventHandler(
     private val timetableRepository: TimetableRepository,
@@ -62,42 +61,38 @@ private class UpdateRequestedHandler(
         isUpdatingMapper.map(false)
     }
 
-    private suspend fun update(dataSource: DataSource)
-    {
-        if (dataSource == DataSource.Remote || dataSource == DataSource.All)
-        {
+    private suspend fun update(dataSource: DataSource) {
+        if (dataSource == DataSource.Remote || dataSource == DataSource.All) {
             timetableRepository.init()
         }
-        timetableRepository.get(dataSource).onEach {
-                val state = if (it.any { it.isNotEmpty() }) DataState.Success(it.map { day ->
-                    var hasRunning = false
-                    val time = calendar.time()
-                    day.mapIndexed { _, lesson ->
-                        lesson to when
-                        {
-                            lesson.dayOfWeek < calendar.dayOfWeek || lesson.dayOfWeek == calendar.dayOfWeek && lesson.ends <= time -> LessonState.PASSED
-                            !hasRunning && lesson.dayOfWeek == calendar.dayOfWeek && lesson.ends > time                            -> LessonState.RUNNING.also {
-                                hasRunning = true
-                            }
 
-                            else                                                                                                   -> LessonState.INCOMING
+        timetableRepository.get(dataSource)
+            .map { timetable ->
+                if (timetable.any { it.isNotEmpty() }) {
+                    DataState.Success(timetable.map { day ->
+                        day.mapIndexed { _, lesson ->
+                            lesson to getLessonState(lesson)
                         }
-                    }
-                })
-                else DataState.Empty
-
-                timetableMapper.map(state)
-            }.onEmpty {
-                timetableMapper.map(DataState.Empty)
-            }.catch {
-                if (timetableMapper.current !is DataState.Success)
-                {
-                    timetableMapper.map(
-                        DataState.Error(
-                            R.string.error_load_timetable, it
-                                       )
-                                       )
+                    })
+                } else {
+                    DataState.Empty
                 }
-            }.collect()
+            }
+            .catch {
+                if (timetableMapper.current !is DataState.Success) {
+                    timetableMapper.map(DataState.Error(R.string.error_load_timetable, it))
+                }
+            }
+            .collect { state ->
+                timetableMapper.map(state)
+            }
     }
-}
+
+    private fun getLessonState(lesson: Lesson): LessonState {
+        val time = calendar.time()
+        return when {
+            lesson.dayOfWeek < calendar.dayOfWeek || (lesson.dayOfWeek == calendar.dayOfWeek && lesson.ends <= time) -> LessonState.PASSED
+            lesson.dayOfWeek == calendar.dayOfWeek && lesson.ends > time -> LessonState.RUNNING
+            else -> LessonState.INCOMING
+        }
+    }}

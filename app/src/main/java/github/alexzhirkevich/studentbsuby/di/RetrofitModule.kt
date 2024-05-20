@@ -47,7 +47,7 @@ class RetrofitModule
         return OkHttpClient.Builder().cookieJar(cookieJar).followRedirects(false)
             .followSslRedirects(false).retryOnConnectionFailure(false)
             .connectTimeout(30, TimeUnit.SECONDS).writeTimeout(30, TimeUnit.SECONDS)
-            .readTimeout(30, TimeUnit.SECONDS).addInterceptor {
+            .readTimeout(30, TimeUnit.SECONDS).addInterceptor { it ->
                 val cookies = cookieJar.loadForRequest(it.request().url)
                 val sCookies = cookies.joinToString(separator = "; ") { it.name + '=' + it.value }
                 val newReq = it.request().newBuilder().let {

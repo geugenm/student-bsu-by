@@ -26,8 +26,8 @@ interface ConnectivityManager : Releasable
         private var cellCallback: android.net.ConnectivityManager.NetworkCallback? = null
 
         private val service =
-            context.getSystemService(android.net.ConnectivityManager::class.java).also {
-                    wifiCallback = it.register(NetworkCapabilities.TRANSPORT_WIFI) {
+            context.getSystemService(android.net.ConnectivityManager::class.java).also { it ->
+                wifiCallback = it.register(NetworkCapabilities.TRANSPORT_WIFI) {
                         wifiAvailable = it
                         isNetworkConnected.map(wifiAvailable || cellAvailable)
                     }

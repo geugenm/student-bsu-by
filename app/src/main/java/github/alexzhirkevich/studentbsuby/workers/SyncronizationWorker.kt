@@ -84,7 +84,6 @@ class SyncWorkerManager @Inject constructor(
 @ExperimentalComposeUiApi
 @ExperimentalAnimationApi
 @ExperimentalFoundationApi
-@ExperimentalPagerApi
 @HiltWorker
 class SyncWorker @AssistedInject constructor(
     @Assisted context: Context,
@@ -100,13 +99,6 @@ class SyncWorker @AssistedInject constructor(
         const val TAG = "SynchronizationWorker"
     }
 
-    private val notificationCreator = NotificationCreator(
-        context,
-        "CHANNEL_SYNCHRONIZATION",
-        context.getString(R.string.updates),
-        context.getString(R.string.notification_channel_description)
-                                                         )
-
     override suspend fun doWork(): Result
     {
         return Result.success()
@@ -115,7 +107,6 @@ class SyncWorker @AssistedInject constructor(
 
 @ExperimentalCoroutinesApi
 @ExperimentalToolbarApi
-@ExperimentalPagerApi
 @ExperimentalFoundationApi
 @ExperimentalAnimationApi
 @ExperimentalMaterialApi

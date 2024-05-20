@@ -17,7 +17,6 @@ class CaptchaRecognizerImpl : CaptchaRecognizer
     {
         return kotlin.runCatching {
             val image = InputImage.fromBitmap(bitmap, 0)
-//        return ""
             suspendCoroutine<String> { cont ->
 
                 recognizer.process(image).addOnSuccessListener {

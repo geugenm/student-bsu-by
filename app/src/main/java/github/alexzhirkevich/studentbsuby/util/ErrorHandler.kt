@@ -9,16 +9,6 @@ interface ErrorHandler
 
     fun handle(error: Throwable)
 
-    class Ignore : ErrorHandler
-    {
-        override fun handle(error: Throwable) = Unit
-    }
-
-    class ReThrow : ErrorHandler
-    {
-        override fun handle(error: Throwable) = throw error
-    }
-
     class Log(private val logger: Logger) : ErrorHandler
     {
         override fun handle(error: Throwable)

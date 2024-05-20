@@ -19,7 +19,6 @@ interface Serializer<T>
     fun deserialize(bundle: Bundle): T
 }
 
-@Suppress("UNCHECKED_CAST")
 class PrimitiveSerializer<T> : Serializer<T>
 {
     override fun serialize(value: T): Bundle
@@ -29,7 +28,7 @@ class PrimitiveSerializer<T> : Serializer<T>
 
     override fun deserialize(bundle: Bundle): T
     {
-        return bundle.get("value") as T
+        return bundle.getBundle("value") as T
     }
 
 }

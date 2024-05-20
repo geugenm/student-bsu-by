@@ -73,7 +73,7 @@ fun TimetableWidget(
                 backgroundColor = backgroundColor,
                 modifier = Modifier.padding(
                     horizontal = HorizontalPadding.dp, vertical = 15.dp
-                                           ).let {
+                                           ).let { it ->
                     when (idx)
                     {
                         0 -> it.onSizeChanged {

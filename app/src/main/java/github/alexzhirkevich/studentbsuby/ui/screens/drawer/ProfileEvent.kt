@@ -3,6 +3,7 @@ package github.alexzhirkevich.studentbsuby.ui.screens.drawer
 import android.os.Bundle
 import androidx.annotation.StringRes
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.FormatListBulleted
 import androidx.compose.material.icons.filled.Campaign
 import androidx.compose.material.icons.filled.Dashboard
 import androidx.compose.material.icons.filled.FormatListBulleted
@@ -21,21 +22,21 @@ sealed class DrawerRoute(
     val icon: ImageVector, @StringRes val title: Int, val route: Route
                         )
 {
-    object Subjects :
+    data object Subjects :
         DrawerRoute(Icons.Default.Dashboard, R.string.subjects, Route.DrawerScreen.Subjects)
 
-    object Timetable : DrawerRoute(
-        Icons.Default.FormatListBulleted,
+    data object Timetable : DrawerRoute(
+        Icons.AutoMirrored.Filled.FormatListBulleted,
         R.string.timetable,
         Route.DrawerScreen.Timetable
-                                  )
+                                       )
 
-    object About : DrawerRoute(Icons.Default.Info, R.string.about, Route.DrawerScreen.About)
-    object Hostel : DrawerRoute(Icons.Default.House, R.string.hostel, Route.DrawerScreen.Hostel)
-    object PaidServices :
+    data object About : DrawerRoute(Icons.Default.Info, R.string.about, Route.DrawerScreen.About)
+    data object Hostel : DrawerRoute(Icons.Default.House, R.string.hostel, Route.DrawerScreen.Hostel)
+    data object PaidServices :
         DrawerRoute(Icons.Default.Payment, R.string.paidservices, Route.DrawerScreen.PaidServices)
 
-    object News : DrawerRoute(Icons.Default.Campaign, R.string.news, Route.DrawerScreen.News)
+    data object News : DrawerRoute(Icons.Default.Campaign, R.string.news, Route.DrawerScreen.News)
 }
 
 enum class ConnectivityUi
