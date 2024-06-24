@@ -2,8 +2,10 @@ package github.alexzhirkevich.studentbsuby.util.communication
 
 import android.content.BroadcastReceiver
 import android.content.Context
+import android.content.Context.RECEIVER_EXPORTED
 import android.content.Intent
 import android.content.IntentFilter
+import android.os.Build
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.supervisorScope
 import kotlinx.coroutines.suspendCancellableCoroutine
@@ -27,7 +29,14 @@ open class BroadcastReceiverCommunication<T>(
                     }
             }
         }
-        context.registerReceiver(receiver, IntentFilter(action))
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
+        {
+            context.registerReceiver(receiver, IntentFilter(action), RECEIVER_EXPORTED)
+        }
+        else
+        {
+            context.registerReceiver(receiver, IntentFilter(action))
+        }
 
         suspendCancellableCoroutine<T> {
             it.invokeOnCancellation {
