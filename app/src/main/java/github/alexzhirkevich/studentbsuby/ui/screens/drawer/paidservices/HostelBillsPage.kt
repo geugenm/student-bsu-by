@@ -65,9 +65,13 @@ private fun SuccessHostelBillsPage(
                     bill = bills[it], dateFormat = dateFormat, modifier = Modifier.padding(5.dp)
                                 )
             }
-            item { Spacer(modifier = Modifier
-                .navigationBarsPadding()
-                .imePadding()) }
+            item {
+                Spacer(
+                    modifier = Modifier
+                        .navigationBarsPadding()
+                        .imePadding()
+                      )
+            }
         }
     }
 }

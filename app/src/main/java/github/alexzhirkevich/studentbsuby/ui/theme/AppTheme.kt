@@ -13,7 +13,6 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import com.google.accompanist.insets.ProvideWindowInsets
 import github.alexzhirkevich.studentbsuby.ui.theme.values.Colors
 import github.alexzhirkevich.studentbsuby.ui.theme.values.Shapes
 import github.alexzhirkevich.studentbsuby.ui.theme.values.typography
@@ -59,7 +58,7 @@ fun StudentbsubyTheme(
 
     fun update()
     {
-        activity.window.setDecorFitsSystemWindows(!isDark);
+        activity.window.setDecorFitsSystemWindows(!isDark)
     }
 
     LaunchedEffect(key1 = isSystemInDarkTheme()) {
@@ -74,7 +73,7 @@ fun StudentbsubyTheme(
     CompositionLocalProvider(
         LocalThemeSelector provides themeSelector,
                             ) {
-        ProvideWindowInsets {
+        {
             ProvideTextStyle(
                 LocalTextStyle.current.copy(
                     color = if (isDark) Color.White else Color.Black

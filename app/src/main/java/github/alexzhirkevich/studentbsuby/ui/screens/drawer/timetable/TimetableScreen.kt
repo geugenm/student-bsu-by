@@ -14,7 +14,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.windowInsetsTopHeight
+import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.ExperimentalMaterialApi
@@ -23,6 +25,7 @@ import androidx.compose.material.Tab
 import androidx.compose.material.TabRow
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
@@ -40,14 +43,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.insets.LocalWindowInsets
-import com.google.accompanist.insets.statusBarsPadding
 import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.HorizontalPager
-import com.google.accompanist.pager.PagerState
+import com.google.accompanist.pager.PagerScope
 import com.google.accompanist.pager.pagerTabIndicatorOffset
-import com.google.accompanist.pager.rememberPagerState
 import com.google.accompanist.swiperefresh.SwipeRefresh
-import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import github.alexzhirkevich.studentbsuby.R
 import github.alexzhirkevich.studentbsuby.ui.common.BsuProgressBar
 import github.alexzhirkevich.studentbsuby.ui.common.BsuProgressBarSwipeRefreshIndicator
@@ -84,7 +83,7 @@ fun TimetableScreen(
         toolbarState = rememberCollapsingToolbarState(0)
                                                               )
 
-    val pagerState = rememberPagerState()
+    val pagerState = androidx.compose.foundation.pager.rememberPagerState(initialPage = 0)
 
     LaunchedEffect(Unit) {
         scaffoldState.toolbarState.collapse(0)
@@ -138,9 +137,7 @@ private fun CollapsingToolbarScope.Toolbar(
 
     TopAppBar(
         elevation = 0.dp,
-        modifier = Modifier
-            .zIndex(1f)
-            .statusBarsPadding(),
+        modifier = Modifier.zIndex(1f).statusBarsPadding(),
         backgroundColor = Color.Transparent
              ) {
         val status = LocalWindowInsets.current.statusBars.bottom
@@ -264,9 +261,9 @@ private fun Body(
 
     val timetable by viewModel.timetableCommunication.collectAsState()
 
-    val refreshState = rememberSwipeRefreshState(
-        isRefreshing = viewModel.isUpdating.collectAsState().value
-                                                )
+    val refreshState = rememberPullRefreshState(
+        refreshing = viewModel.isUpdating.collectAsState().value, onRefresh =
+                                               )
 
 
     SwipeRefresh(
@@ -282,30 +279,28 @@ private fun Body(
         {
             is DataState.Success ->
             {
-                HorizontalPager(
-                    modifier = Modifier.fillMaxSize(), state = pagerState, count = tt.value.size
-                               ) {
-
+                Modifier.fillMaxSize()
+                PaddingValues(0.dp)
+                PagerDefaults.flingBehavior(
+                    state = state,
+                    endContentPadding = contentPadding.calculateEndPadding(LayoutDirection.Ltr),
+                )
+                fun PagerScope.(it: Int)
+                {
                     if (tt.value[it].isNotEmpty())
                     {
                         TimetableWidget(
                             list = tt.value[it],
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .graphicsLayer {
+                            modifier = Modifier.fillMaxSize().graphicsLayer {
                                     translationY = refreshState.indicatorOffset
                                 })
                     } else
                     {
                         Box(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .verticalScroll(rememberScrollState())
+                            modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState())
                            ) {
                             ErrorWidget(
-                                modifier = Modifier
-                                    .padding(top = 70.dp)
-                                    .align(Alignment.TopCenter),
+                                modifier = Modifier.padding(top = 70.dp).align(Alignment.TopCenter),
                                 title = stringResource(id = R.string.empty),
                                 error = stringResource(id = R.string.timetable_empty_for_day)
                                        )

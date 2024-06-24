@@ -59,8 +59,8 @@ class MainApplication : Application(), Configuration.Provider
 
     override val workManagerConfiguration: Configuration
         get() = Configuration.Builder().setWorkerFactory(
-                EntryPointAccessors.fromApplication(
-                    this, WorkManagerInitializerEntryPoint::class.java
-                                                   ).hiltWorkerFactory()
+            EntryPointAccessors.fromApplication(
+                this, WorkManagerInitializerEntryPoint::class.java
+                                               ).hiltWorkerFactory()
                                                         ).build()
 }

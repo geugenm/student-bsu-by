@@ -160,9 +160,6 @@ dependencies {
     // Security
     implementation("androidx.security:security-crypto:1.1.0-alpha06")
 
-    // Google Play Core
-    implementation 'com.google.android.play:core-ktx:1.8.1'
-
     // Other Libraries
     implementation 'io.github.wanghonglin:crom-app-whitelist:0.1.2'
     implementation 'com.github.mintrocket.MintPermissions:mintpermissions:1.1.2'

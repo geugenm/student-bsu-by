@@ -32,7 +32,6 @@ import androidx.compose.material.SwitchDefaults
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -111,7 +110,7 @@ private fun Toolbar()
                                                  ).value
                  ) {
             NavigationMenuButton(
-                icon = Icons.Default.ArrowBack,
+                icon = Icons.AutoMirrored.Filled.ArrowBack,
                 contentDescription = "Back",
                 onClick = activity::onBackPressed
                                 )
@@ -207,9 +206,11 @@ private fun Body(viewModel: SettingsViewModel)
                 .fillMaxWidth()
                 .padding(vertical = 15.dp)
             )
-        Spacer(modifier = Modifier
-            .navigationBarsPadding()
-            .imePadding())
+        Spacer(
+            modifier = Modifier
+                .navigationBarsPadding()
+                .imePadding()
+              )
     }
 }
 

@@ -28,9 +28,9 @@ abstract class DefaultLogger : Logger
     }
 }
 
-class FileLogger constructor(
+class FileLogger(
     context: Context
-                            ) : DefaultLogger()
+                ) : DefaultLogger()
 {
 
     private val logDir = File(context.getExternalFilesDir(null), "Debug")

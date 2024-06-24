@@ -80,9 +80,9 @@ fun <T> List<T>.groupUnless(predicate: (T) -> Boolean): List<List<T>>
     return result
 }
 
-class NewsContentRepository constructor(
+class NewsContentRepository(
     private val id: Int, private val newsDao: NewsDao, private val profileApi: ProfileApi
-                                       ) : CacheWebRepository<NewsContent>()
+                           ) : CacheWebRepository<NewsContent>()
 {
 
     override suspend fun getFromCache(): NewsContent? = kotlin.runCatching {

@@ -25,6 +25,7 @@ import androidx.compose.foundation.layout.windowInsetsBottomHeight
 import androidx.compose.foundation.layout.windowInsetsTopHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -43,6 +44,7 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
@@ -68,12 +70,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.HorizontalPager
-import com.google.accompanist.pager.PagerState
+import com.google.accompanist.pager.PagerScope
 import com.google.accompanist.pager.pagerTabIndicatorOffset
-import com.google.accompanist.pager.rememberPagerState
 import com.google.accompanist.swiperefresh.SwipeRefresh
-import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import github.alexzhirkevich.studentbsuby.R
 import github.alexzhirkevich.studentbsuby.data.models.Subject
 import github.alexzhirkevich.studentbsuby.ui.common.BsuProgressBar
@@ -463,7 +462,7 @@ private fun AllSemesters(
     onSemesterChanged: (Int) -> Unit
                         )
 {
-    val state = rememberPagerState()
+    val state = androidx.compose.foundation.pager.rememberPagerState(initialPage = 0)
     val scope = rememberCoroutineScope()
 
     LaunchedEffect(Unit) {
@@ -494,9 +493,9 @@ private fun SubjectsPager(
     visibleSubjects: List<List<Subject>>
                          )
 {
-    val refreshState = rememberSwipeRefreshState(
-        isRefreshing = isRefreshing
-                                                )
+    val refreshState = rememberPullRefreshState(
+        refreshing = isRefreshing, onRefresh =
+                                               )
 
     val openedSubjects = remember {
         mutableStateListOf<Subject>()
@@ -509,21 +508,19 @@ private fun SubjectsPager(
         state = refreshState,
         onRefresh = updater::update,
                 ) {
-        HorizontalPager(
-            count = subjects.size,
+        Modifier.fillMaxSize()
+        PaddingValues(0.dp)
+        PagerDefaults.flingBehavior(
             state = state,
-            verticalAlignment = Alignment.Top,
-            modifier = Modifier.fillMaxSize()
-                       ) { page ->
+            endContentPadding = contentPadding.calculateEndPadding(LayoutDirection.Ltr),
+        )
+        fun PagerScope.(page: Int)
+        {
             if (visibleSubjects.getOrNull(page)?.isNotEmpty() == true)
             {
                 Page(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .verticalScroll(rememberScrollState())
-                        .navigationBarsPadding()
-                        .imePadding()
-                        .graphicsLayer {
+                    modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState())
+                        .navigationBarsPadding().imePadding().graphicsLayer {
                             translationY = refreshState.indicatorOffset
                         },
                     subjects = visibleSubjects[page],
@@ -536,9 +533,7 @@ private fun SubjectsPager(
                     ErrorWidget(
                         title = stringResource(id = R.string.empty),
                         error = stringResource(id = R.string.subjects_not_found),
-                        modifier = Modifier
-                            .align(Alignment.TopCenter)
-                            .padding(top = 100.dp)
+                        modifier = Modifier.align(Alignment.TopCenter).padding(top = 100.dp)
                                )
                 }
             }

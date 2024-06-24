@@ -33,7 +33,7 @@
     <string name="type">Тип</string>
     <string name="teacher">Преподаватель</string>
     <string name="timetable">Расписание</string>
-    <string name="about_text">"Приложение позволяет получить доступ к <a href="https://student.bsu.by/">личному кабинету студента БГУ</a>. Оно не является официальным. Исходный код открыт и доступен на <a href="https://github.com/alexzhirkevich/student-bsu-by">GitHub</a>. \n\nЕсли какие-то функции не работают или работают неправильно, или у Вас возникли вопросы, пожалуйста, свяжитесь с разработчиком одним из способов, указанных ниже, либо создайте <a href="https://github.com/alexzhirkevich/student-bsu-by/issues">issue</a> на GitHub."</string>
+    <string name="about_text">"Приложение позволяет получить доступ к <a href="https://student.bsu.by/">личному кабинету студента БГУ</a>. Оно не является официальным. Исходный код открыт и доступен на <a href="https://github.com/geugenm/student-bsu-by">GitHub</a>. \n\nЕсли какие-то функции не работают или работают неправильно, или у Вас возникли вопросы, пожалуйста, свяжитесь с разработчиком одним из способов, указанных ниже, либо создайте <a href="https://github.com/geugenm/student-bsu-by/issues">issue</a> на GitHub."</string>
     <string name="hostel">Общежитие</string>
     <string name="hostel_provided">Вам предоставлено общежитие</string>
     <string name="show_on_map">Показать на карте</string>

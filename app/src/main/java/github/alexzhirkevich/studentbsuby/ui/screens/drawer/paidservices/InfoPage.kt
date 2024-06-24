@@ -28,7 +28,6 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
-import androidx.compose.material.icons.filled.HelpOutline
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -178,7 +177,7 @@ internal fun InfoPage(
                           ) {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Icon(
-                                imageVector = Icons.Default.HelpOutline,
+                                imageVector = Icons.AutoMirrored.Filled.HelpOutline,
                                 tint = MaterialTheme.colors.onPrimary,
                                 contentDescription = "Payment help"
                                 )
@@ -191,9 +190,11 @@ internal fun InfoPage(
                     }
                 }
 
-                Spacer(modifier = Modifier
-                    .navigationBarsPadding()
-                    .imePadding())
+                Spacer(
+                    modifier = Modifier
+                        .navigationBarsPadding()
+                        .imePadding()
+                      )
             }
         }
     }
