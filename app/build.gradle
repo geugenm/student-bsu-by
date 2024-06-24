@@ -18,10 +18,10 @@ android {
 //            keyPassword ""
         }
     }
-    compileSdk 35
+    compileSdk 34
 
     defaultConfig {
-        applicationId "github.alexzhirkevich.studentbsuby"
+        applicationId 'by.egleba.studentbsu'
         minSdk 26
         targetSdk 34
         versionCode 11
@@ -30,6 +30,7 @@ android {
         vectorDrawables {
             useSupportLibrary true
         }
+        proguardFiles 'proguard-rules.pro'
     }
     buildTypes {
         release {
@@ -68,6 +69,7 @@ android {
     }
     buildFeatures {
         compose true
+        buildConfig true
     }
     composeOptions {
         kotlinCompilerExtensionVersion "1.5.3"
