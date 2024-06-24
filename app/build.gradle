@@ -18,7 +18,7 @@ android {
 //            keyPassword ""
         }
     }
-    compileSdk 34
+    compileSdk 35
 
     defaultConfig {
         applicationId "github.alexzhirkevich.studentbsuby"
@@ -87,14 +87,14 @@ dependencies {
     implementation 'com.google.android.material:material:1.12.0'
 
     // Jetpack Compose
-    implementation 'androidx.compose.ui:ui:1.6.7'
-    implementation 'androidx.compose.material:material:1.6.7'
-    implementation 'androidx.compose.ui:ui-tooling-preview:1.6.7'
-    implementation 'androidx.compose.material:material-icons-extended:1.6.7'
+    implementation 'androidx.compose.ui:ui:1.6.8'
+    implementation 'androidx.compose.material:material:1.6.8'
+    implementation 'androidx.compose.ui:ui-tooling-preview:1.6.8'
+    implementation 'androidx.compose.material:material-icons-extended:1.6.8'
 
     // AndroidX Lifecycle
-    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.8.0'
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.0'
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.8.2'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.2'
 
     // AndroidX Activity Compose
     implementation 'androidx.activity:activity-compose:1.9.0'
@@ -103,7 +103,7 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
-    androidTestImplementation 'androidx.compose.ui:ui-test-junit4:1.6.7'
+    androidTestImplementation 'androidx.compose.ui:ui-test-junit4:1.6.8'
 
     // Retrofit and OkHttp
     implementation 'com.squareup.retrofit2:retrofit:2.11.0'
@@ -149,7 +149,7 @@ dependencies {
     implementation 'com.google.accompanist:accompanist-swiperefresh:0.34.0'
 
     // Image Loading (Glide)
-    implementation 'com.github.skydoves:landscapist-glide:2.3.3'
+    implementation 'com.github.skydoves:landscapist-glide:2.3.4'
 
     // WorkManager
     implementation 'androidx.work:work-runtime-ktx:2.9.0'
