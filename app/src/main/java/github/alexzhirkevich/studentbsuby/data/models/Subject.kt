@@ -24,5 +24,4 @@ data class Subject(
     @ColumnInfo(name = "exam_retakes") val examRetakes: Int,
     val semester: Int
                   )
-{
-}
+{}

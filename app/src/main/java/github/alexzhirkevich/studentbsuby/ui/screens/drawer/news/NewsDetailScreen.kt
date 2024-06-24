@@ -41,7 +41,10 @@ fun NewsDetailsScreen(
                       )
 
 
-        AndroidView(modifier = Modifier.fillMaxSize().background(bgColor).navigationBarsPadding()
+        AndroidView(modifier = Modifier
+            .fillMaxSize()
+            .background(bgColor)
+            .navigationBarsPadding()
             .imePadding(), factory = {
             WebView(it).apply {
                 setBackgroundColor(bgColor.toArgb())

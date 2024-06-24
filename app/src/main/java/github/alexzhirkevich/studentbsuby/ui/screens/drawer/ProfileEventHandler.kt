@@ -65,8 +65,9 @@ private class RouteSelectedHandler(
                 routeMapper.map(event.route)
                 event.navController.navigate(event.route.route) {
                     // TODO Temporary solution is replace 'backQueue' with 'currentBackStack.value'
-                    val last = event.navController.currentBackStack.value.lastOrNull()?.destination?.id
-                        ?: event.navController.graph.findStartDestination().id
+                    val last =
+                        event.navController.currentBackStack.value.lastOrNull()?.destination?.id
+                            ?: event.navController.graph.findStartDestination().id
                     popUpTo(last) {
                         event.navController.currentBackStack.value.last().destination
                         saveState = true
@@ -165,35 +166,35 @@ private class UpdateRequestedHandler(
     private suspend fun update(source: DataSource) = coroutineScope {
         launch {
             photoRepository.get(source).onEach {
-                    imageMapper.map(DataState.Success(it.asImageBitmap()))
-                }.onEmpty {
-                    imageMapper.map(DataState.Empty)
-                }.catch {
-                    if (imageMapper.current !is DataState.Success)
-                    {
-                        imageMapper.map(
-                            DataState.Error(
-                                R.string.error_load_photo, it
-                                           )
+                imageMapper.map(DataState.Success(it.asImageBitmap()))
+            }.onEmpty {
+                imageMapper.map(DataState.Empty)
+            }.catch {
+                if (imageMapper.current !is DataState.Success)
+                {
+                    imageMapper.map(
+                        DataState.Error(
+                            R.string.error_load_photo, it
                                        )
-                    }
-                }.collect()
+                                   )
+                }
+            }.collect()
         }
         launch {
             userRepository.get(source).onEach {
-                    userMapper.map(DataState.Success(it))
-                }.onEmpty {
-                    userMapper.map(DataState.Empty)
-                }.catch {
-                    if (userMapper.current !is DataState.Success)
-                    {
-                        userMapper.map(
-                            DataState.Error(
-                                R.string.error_load_user, it
-                                           )
-                                      )
-                    }
-                }.collect()
+                userMapper.map(DataState.Success(it))
+            }.onEmpty {
+                userMapper.map(DataState.Empty)
+            }.catch {
+                if (userMapper.current !is DataState.Success)
+                {
+                    userMapper.map(
+                        DataState.Error(
+                            R.string.error_load_user, it
+                                       )
+                                  )
+                }
+            }.collect()
         }
     }
 }

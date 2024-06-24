@@ -261,7 +261,9 @@ fun ConnectivitySnackBar(
     if (connection != ConnectivityUi.Connected)
     {
         Box(
-            modifier = Modifier.navigationBarsPadding().imePadding()
+            modifier = Modifier
+                .navigationBarsPadding()
+                .imePadding()
                 .fillMaxWidth()
            ) {
             Card(
@@ -306,7 +308,8 @@ fun ConnectivitySnackBar(
                         {
                             IconButton(onClick = onRelogin) {
                                 Icon(
-                                    imageVector = Icons.AutoMirrored.Filled.Login, contentDescription = null
+                                    imageVector = Icons.AutoMirrored.Filled.Login,
+                                    contentDescription = null
                                     )
                             }
                         }
@@ -350,15 +353,21 @@ private fun DrawerContent(
             .widthIn(max = DrawerShape.width.dp)
           ) {
         Column(
-            modifier = Modifier.weight(1f).verticalScroll(rememberScrollState())
-                .navigationBarsPadding().imePadding(),
+            modifier = Modifier
+                .weight(1f)
+                .verticalScroll(rememberScrollState())
+                .navigationBarsPadding()
+                .imePadding(),
               ) {
 
             Box(
-                Modifier.clip(ProfileRoundShape()).background(MaterialTheme.colors.primaryVariant)
+                Modifier
+                    .clip(ProfileRoundShape())
+                    .background(MaterialTheme.colors.primaryVariant)
                     .bsuBackgroundPattern(
                         MaterialTheme.colors.onPrimary.copy(alpha = .1f)
-                                         ).statusBarsPadding()
+                                         )
+                    .statusBarsPadding()
                ) {
 
                 SelectionContainer {

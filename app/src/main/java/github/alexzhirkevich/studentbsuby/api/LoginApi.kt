@@ -36,8 +36,7 @@ interface LoginApi
 }
 
 val ResponseBody.isSessionExpired: Boolean
-    get() =  contains("ctl00_ContentPlaceHolder0_cmdLogIn") ||
-            contains("ctl00\$ContentPlaceHolder0\$btnLogon")
+    get() = contains("ctl00_ContentPlaceHolder0_cmdLogIn") || contains("ctl00\$ContentPlaceHolder0\$btnLogon")
 
 private fun ResponseBody.contains(text: String): Boolean =
     source().buffer.clone().readString(Charsets.UTF_8).contains(text)
@@ -52,7 +51,8 @@ class LoginApiWrapper(val api: LoginApi) : LoginApi
     private var __EVENTTARGET = ""
     private var __EVENTARGUMENT = ""
 
-    override suspend fun initialize(): Response<ResponseBody> {
+    override suspend fun initialize(): Response<ResponseBody>
+    {
         val response = api.initialize()
         response.body()?.byteStream()?.use { stream ->
             val document = Jsoup.parse(stream.readBytes().toString(Charsets.UTF_8))
@@ -60,9 +60,12 @@ class LoginApiWrapper(val api: LoginApi) : LoginApi
             __EVENTARGUMENT = document.getElementById("__EVENTARGUMENT")?.attr("value").orEmpty()
             __EVENTTARGET = document.getElementById("__EVENTTARGET")?.attr("value").orEmpty()
             __VIEWSTATE = document.getElementById("__VIEWSTATE")?.attr("value").orEmpty()
-            __VIEWSTATEGENERATOR = document.getElementById("__VIEWSTATEGENERATOR")?.attr("value").orEmpty()
-            __EVENTVALIDATION = document.getElementById("__EVENTVALIDATION")?.attr("value").orEmpty()
-            __BTNLOGON = document.selectFirst("input[name=ctl00\$ContentPlaceHolder0\$btnLogon]")?.attr("value") ?: "Войти"
+            __VIEWSTATEGENERATOR =
+                document.getElementById("__VIEWSTATEGENERATOR")?.attr("value").orEmpty()
+            __EVENTVALIDATION =
+                document.getElementById("__EVENTVALIDATION")?.attr("value").orEmpty()
+            __BTNLOGON = document.selectFirst("input[name=ctl00\$ContentPlaceHolder0\$btnLogon]")
+                ?.attr("value") ?: "Войти"
         }
         return response
     }
@@ -74,7 +77,8 @@ class LoginApiWrapper(val api: LoginApi) : LoginApi
 
     override suspend fun login(
         @FieldMap(encoded = false) body: FormUrlEncodedBody
-                              ): Response<ResponseBody> {
+                              ): Response<ResponseBody>
+    {
         val form = body.toMutableMap().apply {
             put("__EVENTTARGET", __EVENTTARGET)
             put("__EVENTARGUMENT", __EVENTARGUMENT)

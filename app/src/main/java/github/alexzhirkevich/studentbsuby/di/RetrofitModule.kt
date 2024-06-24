@@ -56,8 +56,8 @@ class RetrofitModule
                 val cookies = cookieJar.loadForRequest(it.request().url)
                 val sCookies = cookies.joinToString(separator = "; ") { it.name + '=' + it.value }
                 val newReq = it.request().newBuilder().let {
-                        if (sCookies.isNotEmpty()) it.addHeader("Cookie", sCookies) else it
-                    }.build()
+                    if (sCookies.isNotEmpty()) it.addHeader("Cookie", sCookies) else it
+                }.build()
                 it.proceed(newReq)
             }.addNetworkInterceptor(Interceptor {
                 val request = it.request().newBuilder().addHeader("Connection", "close").build()

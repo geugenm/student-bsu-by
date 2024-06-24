@@ -21,14 +21,14 @@ fun <T> Communication<T>.toStateCommunication(initial: T): StateCommunication<T>
         {
             listOf(flow {
                 this@toStateCommunication.collect {
-                        current = it
-                        currentSaveStateHandle?.let {
-                            currentSaveStateHandleKey?.let { key ->
-                                it[key] = current
-                            }
+                    current = it
+                    currentSaveStateHandle?.let {
+                        currentSaveStateHandleKey?.let { key ->
+                            it[key] = current
                         }
-                        emit(it)
                     }
+                    emit(it)
+                }
             }, saveStateHandleFlow).merge().collect {
                 collector(it)
             }

@@ -51,42 +51,43 @@ fun TimetableWidget(
     val state = rememberLazyListState()
 
     LazyColumn(state = state, modifier = modifier.applyIf(list.size > 1) {
-            it.drawBehind {
-                drawLine(
-                    color = lineColor,
-                    strokeWidth = 1 * density,
-                    start = Offset(
-                        x = density * (LessonTimeLineOffsetX + HorizontalPadding),
-                        y = if (state.firstVisibleItemIndex == 0) timelineStart - state.firstVisibleItemScrollOffset
-                        else 0f
-                                  ),
-                    end = Offset(
-                        x = density * (LessonTimeLineOffsetX + HorizontalPadding),
-                        y = timelineEnd
-                                ),
-                        )
-            }
-        }) {
+        it.drawBehind {
+            drawLine(
+                color = lineColor,
+                strokeWidth = 1 * density,
+                start = Offset(
+                    x = density * (LessonTimeLineOffsetX + HorizontalPadding),
+                    y = if (state.firstVisibleItemIndex == 0) timelineStart - state.firstVisibleItemScrollOffset
+                    else 0f
+                              ),
+                end = Offset(
+                    x = density * (LessonTimeLineOffsetX + HorizontalPadding), y = timelineEnd
+                            ),
+                    )
+        }
+    }) {
         items(list.size) { idx ->
             LessonWidget(lesson = list[idx].first,
                 state = list[idx].second,
                 backgroundColor = backgroundColor,
-                modifier = Modifier.padding(
-                    horizontal = HorizontalPadding.dp, vertical = 15.dp
-                                           ).let { it ->
-                    when (idx)
-                    {
-                        0 -> it.onSizeChanged {
-                            timelineStart = it.height.toFloat() / 2
-                        }
+                modifier = Modifier
+                    .padding(
+                        horizontal = HorizontalPadding.dp, vertical = 15.dp
+                            )
+                    .let { it ->
+                        when (idx)
+                        {
+                            0             -> it.onSizeChanged {
+                                timelineStart = it.height.toFloat() / 2
+                            }
 
-                        list.size - 1 -> it.onGloballyPositioned {
-                            timelineEnd = it.positionInParent().y + it.size.height.toFloat() / 2
-                        }
+                            list.size - 1 -> it.onGloballyPositioned {
+                                timelineEnd = it.positionInParent().y + it.size.height.toFloat() / 2
+                            }
 
-                        else -> it
-                    }
-                })
+                            else          -> it
+                        }
+                    })
         }
         item {
             Spacer(modifier = Modifier.windowInsetsBottomHeight(WindowInsets.navigationBars))

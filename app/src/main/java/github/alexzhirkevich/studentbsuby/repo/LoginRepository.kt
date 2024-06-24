@@ -76,8 +76,7 @@ class LoginRepository @Inject constructor(
             return LoginResponse(
                 success = successful,
                 loggedIn = result?.contains("вошли", true) == true || logout?.contains(
-                    "logout",
-                    true
+                    "logout", true
                                                                                       ) == true,
                 loginResult = result
                                 )

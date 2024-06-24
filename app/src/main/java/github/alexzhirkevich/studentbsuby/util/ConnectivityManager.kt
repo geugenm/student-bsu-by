@@ -28,14 +28,14 @@ interface ConnectivityManager : Releasable
         private val service =
             context.getSystemService(android.net.ConnectivityManager::class.java).also { it ->
                 wifiCallback = it.register(NetworkCapabilities.TRANSPORT_WIFI) {
-                        wifiAvailable = it
-                        isNetworkConnected.map(wifiAvailable || cellAvailable)
-                    }
-                    cellCallback = it.register(NetworkCapabilities.TRANSPORT_CELLULAR) {
-                        cellAvailable = it
-                        isNetworkConnected.map(wifiAvailable || cellAvailable)
-                    }
+                    wifiAvailable = it
+                    isNetworkConnected.map(wifiAvailable || cellAvailable)
                 }
+                cellCallback = it.register(NetworkCapabilities.TRANSPORT_CELLULAR) {
+                    cellAvailable = it
+                    isNetworkConnected.map(wifiAvailable || cellAvailable)
+                }
+            }
 
         fun finalize()
         {

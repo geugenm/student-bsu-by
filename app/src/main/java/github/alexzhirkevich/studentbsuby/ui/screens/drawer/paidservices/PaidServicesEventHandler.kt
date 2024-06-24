@@ -96,50 +96,50 @@ private class UpdateRequestedHandler(
     private suspend fun update(source: DataSource)
     {
         paidServicesRepository.getInfoAndBills(source).process({
-                DataState.Success(
-                    paidInfoMapper.current.valueOrNull() to paidInfoBillsMapper.current.valueOrNull()
-                                 )
-            }, {
-                if (it is DataState.Success)
-                {
-                    paidInfoMapper.map(it.value.first?.let {
-                        DataState.Success(it)
-                    } ?: DataState.Error(R.string.error_load_paidinfo))
+            DataState.Success(
+                paidInfoMapper.current.valueOrNull() to paidInfoBillsMapper.current.valueOrNull()
+                             )
+        }, {
+            if (it is DataState.Success)
+            {
+                paidInfoMapper.map(it.value.first?.let {
+                    DataState.Success(it)
+                } ?: DataState.Error(R.string.error_load_paidinfo))
 
-                    paidInfoBillsMapper.map(it.value.second?.let {
-                        if (it.isEmpty()) DataState.Empty
-                        else DataState.Success(it)
-                    } ?: DataState.Error(R.string.error_load_paidinfo))
-                }
-            }, R.string.error_load_paidinfo
+                paidInfoBillsMapper.map(it.value.second?.let {
+                    if (it.isEmpty()) DataState.Empty
+                    else DataState.Success(it)
+                } ?: DataState.Error(R.string.error_load_paidinfo))
+            }
+        }, R.string.error_load_paidinfo
                                                               )
         paidServicesRepository.getHostelBills(source).process(
-                hostelBillsMapper::current, {
-                    hostelBillsMapper.map(
-                        if (it.valueOrNull()?.isEmpty() == true) DataState.Empty else it
-                                         )
-                }, R.string.error_load_hostel_bills
+            hostelBillsMapper::current, {
+                hostelBillsMapper.map(
+                    if (it.valueOrNull()?.isEmpty() == true) DataState.Empty else it
+                                     )
+            }, R.string.error_load_hostel_bills
                                                              )
         paidServicesRepository.getAcademDebtFeeReceipts(source).process(
-                academDebtReceiptsMapper::current, {
-                    academDebtReceiptsMapper.map(
-                        if (it.valueOrNull()?.isEmpty() == true) DataState.Empty else it
-                                                )
-                }, R.string.error_load_academ_debt_receipts
+            academDebtReceiptsMapper::current, {
+                academDebtReceiptsMapper.map(
+                    if (it.valueOrNull()?.isEmpty() == true) DataState.Empty else it
+                                            )
+            }, R.string.error_load_academ_debt_receipts
                                                                        )
         paidServicesRepository.getCommonReceipts(source).process(
-                commonReceiptsMapper::current, {
-                    commonReceiptsMapper.map(
-                        if (it.valueOrNull()?.isEmpty() == true) DataState.Empty else it
-                                            )
-                }, R.string.error_load_receipts
+            commonReceiptsMapper::current, {
+                commonReceiptsMapper.map(
+                    if (it.valueOrNull()?.isEmpty() == true) DataState.Empty else it
+                                        )
+            }, R.string.error_load_receipts
                                                                 )
         paidServicesRepository.getTuitionFeeReceipts().process(
-                tutionFeePaymentsMapper::current, {
-                    tutionFeePaymentsMapper.map(
-                        if (it.valueOrNull()?.isEmpty() == true) DataState.Empty else it
-                                               )
-                }, R.string.error_load_tuition_fees
+            tutionFeePaymentsMapper::current, {
+                tutionFeePaymentsMapper.map(
+                    if (it.valueOrNull()?.isEmpty() == true) DataState.Empty else it
+                                           )
+            }, R.string.error_load_tuition_fees
                                                               )
     }
 
@@ -171,8 +171,8 @@ private class EripHelpClickedHandler(
     {
         val uri = Uri.parse(paidServicesRepository.eripUrl)
         val intent = Intent(Intent.ACTION_VIEW, uri).apply {
-                flags = Intent.FLAG_ACTIVITY_NEW_TASK
-            }
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK
+        }
         context.startActivity(intent)
     }
 }

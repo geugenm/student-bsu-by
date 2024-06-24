@@ -57,8 +57,8 @@ class SubjectsRepository @Inject constructor(
         val jsoup = Jsoup.parse(html)
 
         val numbers = jsoup.getElementsByClass("styleNumberBody").map {
-                it.text().toIntOrNull()
-            }
+            it.text().toIntOrNull()
+        }
         val lessons = jsoup.getElementsByClass("styleLessonBody").map {
             it.text()
         }
@@ -74,11 +74,7 @@ class SubjectsRepository @Inject constructor(
 
         //not same size
         if (setOf(
-                numbers.size,
-                lessons.size,
-                hours.size,
-                zach.size,
-                exam.size
+                numbers.size, lessons.size, hours.size, zach.size, exam.size
                  ).size != 1
         ) throw IncorrectResponseException()
 
@@ -147,8 +143,8 @@ class SubjectsRepository @Inject constructor(
     {
         return kotlin.runCatching {
             usernameProvider.username.takeIf(String::isNotEmpty)?.let { login ->
-                    subjectsDao.getAll(login).groupBy { it.semester }.values.toList()
-                }
+                subjectsDao.getAll(login).groupBy { it.semester }.values.toList()
+            }
         }.getOrNull()
     }
 }

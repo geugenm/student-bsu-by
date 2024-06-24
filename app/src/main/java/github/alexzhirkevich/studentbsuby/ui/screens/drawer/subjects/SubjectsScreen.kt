@@ -171,8 +171,11 @@ private fun SuccessSubjectsScreen(
 
     Column {
         Spacer(
-            modifier = Modifier.fillMaxWidth().background(MaterialTheme.colors.secondary)
-                .windowInsetsTopHeight(WindowInsets.statusBars).zIndex(2f)
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(MaterialTheme.colors.secondary)
+                .windowInsetsTopHeight(WindowInsets.statusBars)
+                .zIndex(2f)
               )
 
         CollapsingToolbarScaffold(modifier = Modifier
@@ -404,16 +407,22 @@ private fun SearchSubjects(
             val openedSubject = remember { mutableStateListOf<Subject>() }
 
             LazyColumn(
-                modifier = Modifier.weight(1f).navigationBarsPadding().imePadding()
+                modifier = Modifier
+                    .weight(1f)
+                    .navigationBarsPadding()
+                    .imePadding()
                       ) {
                 stickyHeader {
                     Box(
-                        Modifier.fillMaxWidth().padding(5.dp)
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(5.dp)
                        ) {
                         Text(
                             text = stringResource(id = R.string.semester, openedSubject.size + 1),
                             style = MaterialTheme.typography.body1,
-                            modifier = Modifier.clip(MaterialTheme.shapes.medium)
+                            modifier = Modifier
+                                .clip(MaterialTheme.shapes.medium)
                                 .background(MaterialTheme.colors.background.copy(.9f))
                                 .padding(vertical = 5.dp, horizontal = 10.dp)
                                 .align(Alignment.TopCenter)
@@ -509,8 +518,12 @@ private fun SubjectsPager(
             if (visibleSubjects.getOrNull(page)?.isNotEmpty() == true)
             {
                 Page(
-                    modifier = Modifier.fillMaxSize().verticalScroll(rememberScrollState())
-                        .navigationBarsPadding().imePadding().graphicsLayer {
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .verticalScroll(rememberScrollState())
+                        .navigationBarsPadding()
+                        .imePadding()
+                        .graphicsLayer {
                             translationY = refreshState.indicatorOffset
                         },
                     subjects = visibleSubjects[page],

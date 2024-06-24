@@ -84,8 +84,8 @@ fun BsuProgressBarSwipeRefreshIndicator(state: SwipeRefreshState, trigger: Dp)
         shape = CircleShape,
         elevation = 5.dp,
         modifier = Modifier.graphicsLayer {
-                translationY = if (state.isSwipeInProgress) offsetY else animatedOffsetY
-            },
+            translationY = if (state.isSwipeInProgress) offsetY else animatedOffsetY
+        },
         ) {
 
         val progress = minOf(

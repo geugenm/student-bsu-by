@@ -46,21 +46,26 @@ class TimetableApiWrapper(private val api: TimetableApi) : TimetableApi
     private var __BTNLOGON = ""
     private var __EVENTARGUMENT = ""
 
-    override suspend fun init(): Response<ResponseBody> {
+    override suspend fun init(): Response<ResponseBody>
+    {
         val response = api.init()
         response.body()?.byteStream()?.use { stream ->
             val document = Jsoup.parse(stream.readBytes().toString(Charsets.UTF_8))
 
             __EVENTARGUMENT = document.getElementById("__EVENTARGUMENT")?.attr("value").orEmpty()
             __VIEWSTATE = document.getElementById("__VIEWSTATE")?.attr("value").orEmpty()
-            __VIEWSTATEGENERATOR = document.getElementById("__VIEWSTATEGENERATOR")?.attr("value").orEmpty()
-            __EVENTVALIDATION = document.getElementById("__EVENTVALIDATION")?.attr("value").orEmpty()
-            __BTNLOGON = document.selectFirst("input[name=ctl00\$ContentPlaceHolder0\$btnLogon]")?.attr("value") ?: "Войти"
+            __VIEWSTATEGENERATOR =
+                document.getElementById("__VIEWSTATEGENERATOR")?.attr("value").orEmpty()
+            __EVENTVALIDATION =
+                document.getElementById("__EVENTVALIDATION")?.attr("value").orEmpty()
+            __BTNLOGON = document.selectFirst("input[name=ctl00\$ContentPlaceHolder0\$btnLogon]")
+                ?.attr("value") ?: "Войти"
         }
         return response
     }
 
-    override suspend fun timetable(dayOfWeek: FormUrlEncodedBody): Response<ResponseBody> {
+    override suspend fun timetable(dayOfWeek: FormUrlEncodedBody): Response<ResponseBody>
+    {
         val form = dayOfWeek.toMutableMap().apply {
             put("__EVENTARGUMENT", __EVENTARGUMENT)
             put("__VIEWSTATE", __VIEWSTATE)

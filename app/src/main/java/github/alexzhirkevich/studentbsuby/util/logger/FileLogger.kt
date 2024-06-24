@@ -95,9 +95,7 @@ class FileLogger constructor(
     {
         kotlin.runCatching {
             val uri = FileProvider.getUriForFile(
-                context,
-                BuildConfig.APPLICATION_ID + ".provider",
-                logFile
+                context, BuildConfig.APPLICATION_ID + ".provider", logFile
                                                 )
             Intent(Intent.ACTION_SEND).apply {
                 type = "application/txt"

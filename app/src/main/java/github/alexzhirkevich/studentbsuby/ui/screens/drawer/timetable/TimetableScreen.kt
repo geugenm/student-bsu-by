@@ -288,7 +288,8 @@ private fun Body(
 
                     if (tt.value[it].isNotEmpty())
                     {
-                        TimetableWidget(list = tt.value[it],
+                        TimetableWidget(
+                            list = tt.value[it],
                             modifier = Modifier
                                 .fillMaxSize()
                                 .graphicsLayer {

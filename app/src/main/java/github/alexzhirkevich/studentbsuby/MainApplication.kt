@@ -32,13 +32,15 @@ import ru.mintrocket.lib.mintpermissions.ext.initMintPermissions
 @ExperimentalAnimationApi
 @ExperimentalComposeUiApi
 @ExperimentalMaterialApi
-class MainApplication : Application(), Configuration.Provider {
+class MainApplication : Application(), Configuration.Provider
+{
 
     /**
      * Called when the application is starting.
      * Initializes MintPermissions for runtime permissions handling.
      */
-    override fun onCreate() {
+    override fun onCreate()
+    {
         super.onCreate()
         initMintPermissions()
     }
@@ -50,17 +52,15 @@ class MainApplication : Application(), Configuration.Provider {
      */
     @InstallIn(SingletonComponent::class)
     @EntryPoint
-    interface WorkManagerInitializerEntryPoint {
+    interface WorkManagerInitializerEntryPoint
+    {
         fun hiltWorkerFactory(): HiltWorkerFactory
     }
 
     override val workManagerConfiguration: Configuration
-        get() = Configuration.Builder()
-            .setWorkerFactory(
+        get() = Configuration.Builder().setWorkerFactory(
                 EntryPointAccessors.fromApplication(
-                    this,
-                    WorkManagerInitializerEntryPoint::class.java
+                    this, WorkManagerInitializerEntryPoint::class.java
                                                    ).hiltWorkerFactory()
-                             )
-            .build()
+                                                        ).build()
 }

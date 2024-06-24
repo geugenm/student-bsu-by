@@ -133,13 +133,17 @@ fun LoginScreen(
         backgroundColor = MaterialTheme.colors.background,
         snackbarHost = { snack ->
             SnackbarHost(
-                snack, modifier = Modifier.navigationBarsPadding().imePadding()
+                snack, modifier = Modifier
+                    .navigationBarsPadding()
+                    .imePadding()
 
                         ) {
                 Card(
                     elevation = 5.dp,
                     backgroundColor = MaterialTheme.colors.error,
-                    modifier = Modifier.fillMaxWidth().padding(10.dp)
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(10.dp)
                     ) {
                     Text(
                         modifier = Modifier.padding(10.dp),
@@ -162,9 +166,13 @@ fun LoginScreen(
            ) {
 
             Column(
-                Modifier.widthIn(max = 400.dp).align(Alignment.Center)
-                    .verticalScroll(rememberScrollState()).padding(bottom = 20.dp)
-                    .navigationBarsPadding().imePadding()
+                Modifier
+                    .widthIn(max = 400.dp)
+                    .align(Alignment.Center)
+                    .verticalScroll(rememberScrollState())
+                    .padding(bottom = 20.dp)
+                    .navigationBarsPadding()
+                    .imePadding()
 
                   ) {
                 Spacer(
@@ -173,14 +181,19 @@ fun LoginScreen(
 
                 Box {
                     Card(
-                        modifier = Modifier.align(Alignment.TopCenter).offset(y = (-40).dp)
-                            .size(80.dp).zIndex(2f),
+                        modifier = Modifier
+                            .align(Alignment.TopCenter)
+                            .offset(y = (-40).dp)
+                            .size(80.dp)
+                            .zIndex(2f),
                         elevation = 3.dp,
                         backgroundColor = MaterialTheme.colors.secondary,
                         shape = CircleShape
                         ) {
                         Box(
-                            Modifier.padding(5.dp).clip(CircleShape)
+                            Modifier
+                                .padding(5.dp)
+                                .clip(CircleShape)
                            ) {
                             Icon(
                                 painter = painterResource(id = R.drawable.logo),
@@ -193,7 +206,9 @@ fun LoginScreen(
                     Card(
                         elevation = 3.dp,
                         backgroundColor = MaterialTheme.colors.secondary,
-                        modifier = Modifier.padding(horizontal = 35.dp).zIndex(1f)
+                        modifier = Modifier
+                            .padding(horizontal = 35.dp)
+                            .zIndex(1f)
                         ) {
                         Column(
                             horizontalAlignment = Alignment.CenterHorizontally
@@ -271,7 +286,8 @@ fun LoginScreen(
                                         keyboard?.hide()
                                     },
                                     enabled = controlsEnabled,
-                                    modifier = Modifier.width(ButtonWidth.dp)
+                                    modifier = Modifier
+                                        .width(ButtonWidth.dp)
                                         .clip(MaterialTheme.shapes.medium)
                                       ) {
                                     Text(
@@ -462,7 +478,7 @@ private fun LoginForm(
 
         Box(
             Modifier.background(
-                    color = MaterialTheme.colors.background, shape = MaterialTheme.shapes.medium
+                color = MaterialTheme.colors.background, shape = MaterialTheme.shapes.medium
                                )
            ) {
             if (captcha is DataState.Loading)

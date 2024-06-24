@@ -74,10 +74,15 @@ fun SettingsScreen(viewModel: SettingsViewModel = hiltViewModel())
 
     Column {
         Spacer(
-            modifier = Modifier.fillMaxWidth().windowInsetsTopHeight(WindowInsets.statusBars)
-                .background(animateColorAsState(MaterialTheme.colors.secondary,
-                    label = ""
-                                               ).value).zIndex(1f)
+            modifier = Modifier
+                .fillMaxWidth()
+                .windowInsetsTopHeight(WindowInsets.statusBars)
+                .background(
+                    animateColorAsState(
+                        MaterialTheme.colors.secondary, label = ""
+                                       ).value
+                           )
+                .zIndex(1f)
               )
         CollapsingToolbarScaffold(modifier = Modifier
             .fillMaxSize()
@@ -120,9 +125,11 @@ private fun Toolbar()
             modifier = Modifier
                 .height(1.dp)
                 .fillMaxWidth()
-                .background(animateColorAsState(LocalContentColor.current.copy(.05f),
-                    label = ""
-                                               ).value)
+                .background(
+                    animateColorAsState(
+                        LocalContentColor.current.copy(.05f), label = ""
+                                       ).value
+                           )
               )
     }
 }
@@ -200,7 +207,9 @@ private fun Body(viewModel: SettingsViewModel)
                 .fillMaxWidth()
                 .padding(vertical = 15.dp)
             )
-        Spacer(modifier = Modifier.navigationBarsPadding().imePadding())
+        Spacer(modifier = Modifier
+            .navigationBarsPadding()
+            .imePadding())
     }
 }
 

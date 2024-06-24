@@ -31,7 +31,9 @@ sealed class DrawerRoute(
                                        )
 
     data object About : DrawerRoute(Icons.Default.Info, R.string.about, Route.DrawerScreen.About)
-    data object Hostel : DrawerRoute(Icons.Default.House, R.string.hostel, Route.DrawerScreen.Hostel)
+    data object Hostel :
+        DrawerRoute(Icons.Default.House, R.string.hostel, Route.DrawerScreen.Hostel)
+
     data object PaidServices :
         DrawerRoute(Icons.Default.Payment, R.string.paidservices, Route.DrawerScreen.PaidServices)
 

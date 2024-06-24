@@ -18,5 +18,4 @@ data class Lesson(
     val starts: String,
     val ends: String
                  )
-{
-}
+{}

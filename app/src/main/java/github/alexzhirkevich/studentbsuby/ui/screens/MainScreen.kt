@@ -59,7 +59,7 @@ fun MainScreen()
         modifier = Modifier.background(color = MaterialTheme.colors.background),
         navController = navController,
         startDestination = if (loginVm.skipLogin) Route.DrawerScreen.route else Route.AuthScreen.route,
-                   ) {
+           ) {
         animatedComposable(Route.AuthScreen, enterTransition = {
             fadeIn()
         }, popEnterTransition = {

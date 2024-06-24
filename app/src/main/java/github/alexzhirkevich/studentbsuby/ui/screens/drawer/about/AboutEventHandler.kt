@@ -35,10 +35,10 @@ private class TgClickedHandler(
         kotlin.runCatching {
             val uri = Uri.parse(configRepository.telegram())
             Intent(Intent.ACTION_VIEW, uri).apply {
-                    flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                }.let {
-                    context.startActivity(it)
-                }
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            }.let {
+                context.startActivity(it)
+            }
         }
     }
 }

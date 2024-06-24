@@ -55,7 +55,8 @@ fun NewsListScreen(
 
     val news by viewModel.newsCommunication.collectAsState()
 
-    SwipeRefresh(state = refreshState,
+    SwipeRefresh(
+        state = refreshState,
         onRefresh = viewModel::update,
         indicator = { state, trigger ->
             BsuProgressBarSwipeRefreshIndicator(state = state, trigger = trigger)
@@ -127,7 +128,9 @@ private fun Body(
                 onClick(news[it])
             }
         }
-        item { Spacer(modifier = Modifier.navigationBarsPadding().imePadding()) }
+        item { Spacer(modifier = Modifier
+            .navigationBarsPadding()
+            .imePadding()) }
     }
 }
 

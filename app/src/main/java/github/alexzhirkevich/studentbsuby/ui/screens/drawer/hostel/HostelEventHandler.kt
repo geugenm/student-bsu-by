@@ -68,19 +68,19 @@ private class UpdateRequestedHandler(
     private suspend fun update(dataSource: DataSource)
     {
         hostelRepository.get(dataSource).onEach {
-                hostelStateMapper.map(DataState.Success(it))
-            }.onEmpty {
-                hostelStateMapper.map(DataState.Empty)
-            }.catch {
-                if (hostelStateMapper.current !is DataState.Success)
-                {
-                    hostelStateMapper.map(
-                        DataState.Error(
-                            R.string.error_load_hostel, it
-                                       )
-                                         )
-                }
-            }.collect()
+            hostelStateMapper.map(DataState.Success(it))
+        }.onEmpty {
+            hostelStateMapper.map(DataState.Empty)
+        }.catch {
+            if (hostelStateMapper.current !is DataState.Success)
+            {
+                hostelStateMapper.map(
+                    DataState.Error(
+                        R.string.error_load_hostel, it
+                                   )
+                                     )
+            }
+        }.collect()
     }
 }
 
@@ -124,8 +124,8 @@ private class CallAdClickedHandler(
     {
         event.ad.phone?.let {
             val phone = it.filter {
-                    it == '+' || it.isDigit()
-                }
+                it == '+' || it.isDigit()
+            }
             val intent = Intent(
                 Intent.ACTION_DIAL, Uri.fromParts("tel", phone, null)
                                ).apply {
@@ -140,7 +140,7 @@ private fun showOnMap(context: Context, address: String)
 {
     val uri = Uri.parse("geo:0,0?q=$address")
     val intent = Intent(Intent.ACTION_VIEW, uri).apply {
-            flags = Intent.FLAG_ACTIVITY_NEW_TASK
-        }
+        flags = Intent.FLAG_ACTIVITY_NEW_TASK
+    }
     context.startActivity(intent)
 }

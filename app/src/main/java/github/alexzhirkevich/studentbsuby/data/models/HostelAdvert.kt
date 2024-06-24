@@ -17,5 +17,4 @@ data class HostelAdvert(
     @ColumnInfo(name = "publish_date") val publishDate: String,
     val note: String?,
                        )
-{
-}
+{}

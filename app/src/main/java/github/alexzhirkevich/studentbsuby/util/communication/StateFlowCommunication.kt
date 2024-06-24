@@ -38,8 +38,8 @@ class StateFlowCommunication<T>(
         currentSaveStateHandleKey = key
 
         savedStateHandle.get<Bundle>(key)?.let(serializer::deserialize)?.let {
-                map(it)
-            } ?: run {
+            map(it)
+        } ?: run {
             savedStateHandle[key] = serializer.serialize(current)
         }
     }

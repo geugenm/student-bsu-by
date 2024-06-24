@@ -365,7 +365,9 @@ private fun NonProvidedHostelScreen(
 
     Column {
         Spacer(
-            modifier = Modifier.zIndex(2f).fillMaxWidth()
+            modifier = Modifier
+                .zIndex(2f)
+                .fillMaxWidth()
                 .windowInsetsTopHeight(WindowInsets.statusBars)
                 .background(MaterialTheme.colors.secondary)
               )
@@ -422,7 +424,9 @@ private fun NonProvidedHostelScreen(
                                 viewModel.handle(HostelEvent.CallClicked(ads[it]))
                             })
                     }
-                    item { Spacer(modifier = Modifier.navigationBarsPadding().imePadding()) }
+                    item { Spacer(modifier = Modifier
+                        .navigationBarsPadding()
+                        .imePadding()) }
                 }
             }
         }

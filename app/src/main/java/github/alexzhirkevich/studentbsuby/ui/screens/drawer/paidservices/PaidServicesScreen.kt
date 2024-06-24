@@ -81,8 +81,11 @@ fun PaidServicesScreen(
 
     Column {
         Spacer(
-            modifier = Modifier.windowInsetsTopHeight(WindowInsets.statusBars).fillMaxWidth()
-                .background(MaterialTheme.colors.secondary).zIndex(1f)
+            modifier = Modifier
+                .windowInsetsTopHeight(WindowInsets.statusBars)
+                .fillMaxWidth()
+                .background(MaterialTheme.colors.secondary)
+                .zIndex(1f)
               )
         CollapsingToolbarScaffold(modifier = Modifier.fillMaxSize(),
             state = scaffoldState,

@@ -3,7 +3,8 @@ package github.alexzhirkevich.studentbsuby.util
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-interface Calendar {
+interface Calendar
+{
     val dayOfMonth: Int
     val dayOfWeek: Int
     val month: Int
@@ -11,7 +12,8 @@ interface Calendar {
     fun time(): String
 }
 
-object CurrentCalendar : Calendar {
+object CurrentCalendar : Calendar
+{
     private val now = LocalDateTime.now()
     override val dayOfMonth: Int = now.dayOfMonth
     override val dayOfWeek: Int = now.dayOfWeek.value % 7 // Adjust for 0-based indexing

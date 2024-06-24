@@ -61,38 +61,43 @@ private class UpdateRequestedHandler(
         isUpdatingMapper.map(false)
     }
 
-    private suspend fun update(dataSource: DataSource) {
-        if (dataSource == DataSource.Remote || dataSource == DataSource.All) {
+    private suspend fun update(dataSource: DataSource)
+    {
+        if (dataSource == DataSource.Remote || dataSource == DataSource.All)
+        {
             timetableRepository.init()
         }
 
-        timetableRepository.get(dataSource)
-            .map { timetable ->
-                if (timetable.any { it.isNotEmpty() }) {
+        timetableRepository.get(dataSource).map { timetable ->
+                if (timetable.any { it.isNotEmpty() })
+                {
                     DataState.Success(timetable.map { day ->
                         day.mapIndexed { _, lesson ->
                             lesson to getLessonState(lesson)
                         }
                     })
-                } else {
+                } else
+                {
                     DataState.Empty
                 }
-            }
-            .catch {
-                if (timetableMapper.current !is DataState.Success) {
+            }.catch {
+                if (timetableMapper.current !is DataState.Success)
+                {
                     timetableMapper.map(DataState.Error(R.string.error_load_timetable, it))
                 }
-            }
-            .collect { state ->
+            }.collect { state ->
                 timetableMapper.map(state)
             }
     }
 
-    private fun getLessonState(lesson: Lesson): LessonState {
+    private fun getLessonState(lesson: Lesson): LessonState
+    {
         val time = calendar.time()
-        return when {
+        return when
+        {
             lesson.dayOfWeek < calendar.dayOfWeek || (lesson.dayOfWeek == calendar.dayOfWeek && lesson.ends <= time) -> LessonState.PASSED
-            lesson.dayOfWeek == calendar.dayOfWeek && lesson.ends > time -> LessonState.RUNNING
-            else -> LessonState.INCOMING
+            lesson.dayOfWeek == calendar.dayOfWeek && lesson.ends > time                                             -> LessonState.RUNNING
+            else                                                                                                     -> LessonState.INCOMING
         }
-    }}
+    }
+}

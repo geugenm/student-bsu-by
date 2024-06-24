@@ -23,17 +23,16 @@ open class BroadcastReceiverCommunication<T>(
             override fun onReceive(context: Context?, intent: Intent?)
             {
                 intent?.extras?.getBundle(extraKey)?.let(serializer::deserialize)?.let {
-                        launch {
-                            collector.invoke(it)
-                        }
+                    launch {
+                        collector.invoke(it)
                     }
+                }
             }
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU)
         {
             context.registerReceiver(receiver, IntentFilter(action), RECEIVER_EXPORTED)
-        }
-        else
+        } else
         {
             context.registerReceiver(receiver, IntentFilter(action))
         }

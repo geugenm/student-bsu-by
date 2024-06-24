@@ -54,9 +54,7 @@ class SyncWorkerManager @Inject constructor(
     override fun run()
     {
         val request = PeriodicWorkRequestBuilder<SyncWorker>(1, TimeUnit.HOURS).setBackoffCriteria(
-                BackoffPolicy.LINEAR,
-                15,
-                TimeUnit.MINUTES
+            BackoffPolicy.LINEAR, 15, TimeUnit.MINUTES
                                                                                                   )
             .setConstraints(
                 Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED)
@@ -64,7 +62,7 @@ class SyncWorkerManager @Inject constructor(
                            ).build()
 
         workManager.enqueueUniquePeriodicWork(
-                SyncWorker.TAG, ExistingPeriodicWorkPolicy.KEEP, request
+            SyncWorker.TAG, ExistingPeriodicWorkPolicy.KEEP, request
                                              )
 
     }

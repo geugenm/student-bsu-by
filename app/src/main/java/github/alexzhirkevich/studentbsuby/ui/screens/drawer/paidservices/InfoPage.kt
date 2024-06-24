@@ -191,7 +191,9 @@ internal fun InfoPage(
                     }
                 }
 
-                Spacer(modifier = Modifier.navigationBarsPadding().imePadding())
+                Spacer(modifier = Modifier
+                    .navigationBarsPadding()
+                    .imePadding())
             }
         }
     }
