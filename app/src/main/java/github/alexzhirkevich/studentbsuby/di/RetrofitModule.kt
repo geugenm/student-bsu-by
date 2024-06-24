@@ -12,7 +12,12 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import github.alexzhirkevich.studentbsuby.BuildConfig
-import github.alexzhirkevich.studentbsuby.api.*
+import github.alexzhirkevich.studentbsuby.api.LoginApi
+import github.alexzhirkevich.studentbsuby.api.LoginApiWrapper
+import github.alexzhirkevich.studentbsuby.api.PaidServicesApi
+import github.alexzhirkevich.studentbsuby.api.ProfileApi
+import github.alexzhirkevich.studentbsuby.api.TimetableApi
+import github.alexzhirkevich.studentbsuby.api.TimetableApiWrapper
 import github.alexzhirkevich.studentbsuby.util.LoginCookieManager
 import github.alexzhirkevich.studentbsuby.util.PreferencesCookieCache
 import io.harkema.retrofitcurlprinter.Logger

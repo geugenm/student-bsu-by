@@ -17,7 +17,11 @@ import github.alexzhirkevich.studentbsuby.ui.screens.login.LoginEventHandler
 import github.alexzhirkevich.studentbsuby.util.DataState
 import github.alexzhirkevich.studentbsuby.util.ResourceManager
 import github.alexzhirkevich.studentbsuby.util.SuspendEventHandler
-import github.alexzhirkevich.studentbsuby.util.communication.*
+import github.alexzhirkevich.studentbsuby.util.communication.BroadcastMapper
+import github.alexzhirkevich.studentbsuby.util.communication.Communication
+import github.alexzhirkevich.studentbsuby.util.communication.SharedFlowCommunication
+import github.alexzhirkevich.studentbsuby.util.communication.StateCommunication
+import github.alexzhirkevich.studentbsuby.util.communication.StateFlowCommunication
 import github.alexzhirkevich.studentbsuby.util.dispatchers.Dispatchers
 import github.alexzhirkevich.studentbsuby.workers.SyncWorkerManager
 import kotlinx.coroutines.ExperimentalCoroutinesApi

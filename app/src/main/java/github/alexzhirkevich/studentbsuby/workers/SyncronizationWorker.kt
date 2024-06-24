@@ -20,11 +20,9 @@ import androidx.work.await
 import com.google.accompanist.pager.ExperimentalPagerApi
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
-import github.alexzhirkevich.studentbsuby.R
 import github.alexzhirkevich.studentbsuby.repo.HostelRepository
 import github.alexzhirkevich.studentbsuby.repo.LoginRepository
 import github.alexzhirkevich.studentbsuby.repo.TimetableRepository
-import github.alexzhirkevich.studentbsuby.util.NotificationCreator
 import github.alexzhirkevich.studentbsuby.util.WorkerManager
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import me.onebone.toolbar.ExperimentalToolbarApi

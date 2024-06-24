@@ -1,7 +1,5 @@
 package github.alexzhirkevich.studentbsuby.util
 
-import java.util.Calendar as JCalendar
-
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 

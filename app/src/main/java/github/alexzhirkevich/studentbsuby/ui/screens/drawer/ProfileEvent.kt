@@ -6,7 +6,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.FormatListBulleted
 import androidx.compose.material.icons.filled.Campaign
 import androidx.compose.material.icons.filled.Dashboard
-import androidx.compose.material.icons.filled.FormatListBulleted
 import androidx.compose.material.icons.filled.House
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Payment

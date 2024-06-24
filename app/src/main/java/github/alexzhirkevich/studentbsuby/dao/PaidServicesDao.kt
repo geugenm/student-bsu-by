@@ -1,8 +1,13 @@
 package github.alexzhirkevich.studentbsuby.dao
 
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Insert
 import androidx.room.OnConflictStrategy.Companion.REPLACE
-import github.alexzhirkevich.studentbsuby.data.models.*
+import androidx.room.Query
+import github.alexzhirkevich.studentbsuby.data.models.Bill
+import github.alexzhirkevich.studentbsuby.data.models.PaidServicesInfo
+import github.alexzhirkevich.studentbsuby.data.models.Receipt
+import github.alexzhirkevich.studentbsuby.data.models.TuitionFeePayment
 
 @Dao
 interface PaidServicesDao

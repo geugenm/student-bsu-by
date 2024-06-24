@@ -11,11 +11,19 @@ import github.alexzhirkevich.studentbsuby.data.models.User
 import github.alexzhirkevich.studentbsuby.repo.LoginRepository
 import github.alexzhirkevich.studentbsuby.repo.PhotoRepository
 import github.alexzhirkevich.studentbsuby.repo.UserRepository
-import github.alexzhirkevich.studentbsuby.ui.screens.drawer.*
+import github.alexzhirkevich.studentbsuby.ui.screens.drawer.ConnectivityUi
+import github.alexzhirkevich.studentbsuby.ui.screens.drawer.ConnectivityUiSerializer
+import github.alexzhirkevich.studentbsuby.ui.screens.drawer.DrawerRoute
+import github.alexzhirkevich.studentbsuby.ui.screens.drawer.ProfileEvent
+import github.alexzhirkevich.studentbsuby.ui.screens.drawer.ProfileEventHandler
 import github.alexzhirkevich.studentbsuby.util.ConnectivityManager
 import github.alexzhirkevich.studentbsuby.util.DataState
 import github.alexzhirkevich.studentbsuby.util.SuspendEventHandler
-import github.alexzhirkevich.studentbsuby.util.communication.*
+import github.alexzhirkevich.studentbsuby.util.communication.BroadcastMapper
+import github.alexzhirkevich.studentbsuby.util.communication.BroadcastReceiverCommunication
+import github.alexzhirkevich.studentbsuby.util.communication.Communication
+import github.alexzhirkevich.studentbsuby.util.communication.StateCommunication
+import github.alexzhirkevich.studentbsuby.util.communication.StateFlowCommunication
 import github.alexzhirkevich.studentbsuby.util.dispatchers.Dispatchers
 
 @Module

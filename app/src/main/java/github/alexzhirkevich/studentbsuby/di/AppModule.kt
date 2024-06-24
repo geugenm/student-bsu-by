@@ -17,7 +17,13 @@ import github.alexzhirkevich.studentbsuby.repo.UsernameProvider
 import github.alexzhirkevich.studentbsuby.repo.UsernameProviderImpl
 import github.alexzhirkevich.studentbsuby.ui.screens.drawer.ConnectivityUi
 import github.alexzhirkevich.studentbsuby.ui.screens.drawer.ConnectivityUiSerializer
-import github.alexzhirkevich.studentbsuby.util.*
+import github.alexzhirkevich.studentbsuby.util.Calendar
+import github.alexzhirkevich.studentbsuby.util.CaptchaRecognizer
+import github.alexzhirkevich.studentbsuby.util.CaptchaRecognizerImpl
+import github.alexzhirkevich.studentbsuby.util.ConnectivityManager
+import github.alexzhirkevich.studentbsuby.util.CurrentCalendar
+import github.alexzhirkevich.studentbsuby.util.ErrorHandler
+import github.alexzhirkevich.studentbsuby.util.ResourceManager
 import github.alexzhirkevich.studentbsuby.util.communication.BroadcastMapper
 import github.alexzhirkevich.studentbsuby.util.communication.BroadcastReceiverMapper
 import github.alexzhirkevich.studentbsuby.util.communication.StateFlowCommunication

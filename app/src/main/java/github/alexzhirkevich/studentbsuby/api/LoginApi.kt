@@ -8,7 +8,6 @@ import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Streaming
-import java.nio.charset.Charset
 
 fun LoginApi.createLoginData(
     login: String, stud: String, captcha: String

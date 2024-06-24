@@ -4,7 +4,11 @@ import androidx.annotation.IntRange
 import okhttp3.ResponseBody
 import org.jsoup.Jsoup
 import retrofit2.Response
-import retrofit2.http.*
+import retrofit2.http.FieldMap
+import retrofit2.http.FormUrlEncoded
+import retrofit2.http.GET
+import retrofit2.http.Headers
+import retrofit2.http.POST
 
 fun TimetableApi.dayOfWeek(@IntRange(from = 0, to = 5) day: Int): FormUrlEncodedBody
 {
