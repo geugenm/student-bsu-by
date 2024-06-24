@@ -12,10 +12,10 @@ android {
             // Place file release.keystore in app directory
             // To generate new keystore use Keystore explorer (Win) - https://keystore-explorer.org/downloads.html
 
-//            storeFile file("release.keystore")
-//            storePassword ""
-//            keyAlias ""
-//            keyPassword ""
+            storeFile file("debug.keystore")
+            storePassword "android"
+            keyAlias "androiddebugkey"
+            keyPassword "android"
         }
     }
     compileSdk 34
@@ -24,8 +24,8 @@ android {
         applicationId 'by.egleba.studentbsu'
         minSdk 26
         targetSdk 34
-        versionCode 11
-        versionName "1.1.0"
+        versionCode 12
+        versionName "1.2.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary true
