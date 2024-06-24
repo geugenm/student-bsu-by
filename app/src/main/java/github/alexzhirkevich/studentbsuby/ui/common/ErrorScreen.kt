@@ -17,7 +17,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
-import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -31,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.google.accompanist.insets.LocalWindowInsets
 import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import github.alexzhirkevich.studentbsuby.R
 import github.alexzhirkevich.studentbsuby.util.Updatable
 import github.alexzhirkevich.studentbsuby.util.communication.collectAsState
@@ -72,9 +72,9 @@ fun ErrorScreen(
         val isUpdating by updater.isUpdating.collectAsState()
 
         SwipeRefresh(
-            state = rememberPullRefreshState(
-                refreshing = isUpdating, onRefresh =
-                                            ),
+            state = rememberSwipeRefreshState(
+                isRefreshing = isUpdating
+                                             ),
             indicator = { state, offset ->
                 BsuProgressBarSwipeRefreshIndicator(state = state, trigger = offset)
             },

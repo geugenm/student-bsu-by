@@ -19,7 +19,6 @@ import androidx.compose.material.LocalContentColor
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
-import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -31,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.navigation.NavController
 import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import github.alexzhirkevich.studentbsuby.R
 import github.alexzhirkevich.studentbsuby.data.models.News
 import github.alexzhirkevich.studentbsuby.navigation.Route
@@ -48,14 +48,15 @@ fun NewsListScreen(
     viewModel: NewsViewModel, navController: NavController
                   )
 {
-    val refreshState = rememberPullRefreshState(
-        refreshing = viewModel.isUpdating.collectAsState().value, onRefresh =
-                                               )
+    val refreshState = rememberSwipeRefreshState(
+        isRefreshing = viewModel.isUpdating.collectAsState().value
+                                                )
 
 
     val news by viewModel.newsCommunication.collectAsState()
 
-    SwipeRefresh(state = refreshState,
+    SwipeRefresh(
+        state = refreshState,
         onRefresh = viewModel::update,
         indicator = { state, trigger ->
             BsuProgressBarSwipeRefreshIndicator(state = state, trigger = trigger)
@@ -127,13 +128,9 @@ private fun Body(
                 onClick(news[it])
             }
         }
-        item {
-            Spacer(
-                modifier = Modifier
-                    .navigationBarsPadding()
-                    .imePadding()
-                  )
-        }
+        item { Spacer(modifier = Modifier
+            .navigationBarsPadding()
+            .imePadding()) }
     }
 }
 

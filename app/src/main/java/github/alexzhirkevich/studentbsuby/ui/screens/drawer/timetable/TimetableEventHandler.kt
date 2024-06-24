@@ -69,25 +69,25 @@ private class UpdateRequestedHandler(
         }
 
         timetableRepository.get(dataSource).map { timetable ->
-            if (timetable.any { it.isNotEmpty() })
-            {
-                DataState.Success(timetable.map { day ->
-                    day.mapIndexed { _, lesson ->
-                        lesson to getLessonState(lesson)
-                    }
-                })
-            } else
-            {
-                DataState.Empty
+                if (timetable.any { it.isNotEmpty() })
+                {
+                    DataState.Success(timetable.map { day ->
+                        day.mapIndexed { _, lesson ->
+                            lesson to getLessonState(lesson)
+                        }
+                    })
+                } else
+                {
+                    DataState.Empty
+                }
+            }.catch {
+                if (timetableMapper.current !is DataState.Success)
+                {
+                    timetableMapper.map(DataState.Error(R.string.error_load_timetable, it))
+                }
+            }.collect { state ->
+                timetableMapper.map(state)
             }
-        }.catch {
-            if (timetableMapper.current !is DataState.Success)
-            {
-                timetableMapper.map(DataState.Error(R.string.error_load_timetable, it))
-            }
-        }.collect { state ->
-            timetableMapper.map(state)
-        }
     }
 
     private fun getLessonState(lesson: Lesson): LessonState

@@ -101,13 +101,9 @@ fun <T> SuccessReceiptsPage(
 
 
             }
-            item {
-                Spacer(
-                    modifier = Modifier
-                        .navigationBarsPadding()
-                        .imePadding()
-                      )
-            }
+            item { Spacer(modifier = Modifier
+                .navigationBarsPadding()
+                .imePadding()) }
         }
     }
 }

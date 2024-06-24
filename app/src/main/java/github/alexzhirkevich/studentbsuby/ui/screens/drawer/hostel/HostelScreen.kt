@@ -32,7 +32,6 @@ import androidx.compose.material.TextButton
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Place
-import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -51,6 +50,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import com.skydoves.landscapist.glide.GlideImage
 import github.alexzhirkevich.studentbsuby.R
 import github.alexzhirkevich.studentbsuby.data.models.HostelAdvert
@@ -190,9 +190,9 @@ private fun ProvidedHostelScreen(
 {
 
     val scaffoldState = rememberCollapsingToolbarScaffoldState()
-    val refreshState = rememberPullRefreshState(
-        refreshing = updater.isUpdating.collectAsState().value, onRefresh =
-                                               )
+    val refreshState = rememberSwipeRefreshState(
+        isRefreshing = updater.isUpdating.collectAsState().value
+                                                )
     LaunchedEffect(Unit) {
         scaffoldState.toolbarState.collapse(0)
         scaffoldState.toolbarState.expand(500)
@@ -359,9 +359,9 @@ private fun NonProvidedHostelScreen(
     }
 
     val scaffoldState = rememberCollapsingToolbarScaffoldState()
-    val refreshState = rememberPullRefreshState(
-        refreshing = viewModel.isUpdating.collectAsState().value, onRefresh =
-                                               )
+    val refreshState = rememberSwipeRefreshState(
+        isRefreshing = viewModel.isUpdating.collectAsState().value
+                                                )
 
     Column {
         Spacer(
@@ -424,13 +424,9 @@ private fun NonProvidedHostelScreen(
                                 viewModel.handle(HostelEvent.CallClicked(ads[it]))
                             })
                     }
-                    item {
-                        Spacer(
-                            modifier = Modifier
-                                .navigationBarsPadding()
-                                .imePadding()
-                              )
-                    }
+                    item { Spacer(modifier = Modifier
+                        .navigationBarsPadding()
+                        .imePadding()) }
                 }
             }
         }

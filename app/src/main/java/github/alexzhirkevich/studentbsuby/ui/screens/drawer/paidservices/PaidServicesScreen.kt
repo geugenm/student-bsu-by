@@ -13,13 +13,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.windowInsetsTopHeight
-import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.ScrollableTabRow
 import androidx.compose.material.Tab
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
-import androidx.compose.material.pullrefresh.rememberPullRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -31,9 +29,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.PagerScope
+import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.pagerTabIndicatorOffset
+import com.google.accompanist.pager.rememberPagerState
 import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import github.alexzhirkevich.studentbsuby.R
 import github.alexzhirkevich.studentbsuby.ui.common.BsuProgressBarSwipeRefreshIndicator
 import github.alexzhirkevich.studentbsuby.ui.common.NavigationMenuButton
@@ -133,11 +133,11 @@ private fun Body(
                 )
 {
     val scope = rememberCoroutineScope()
-    val pagerState = androidx.compose.foundation.pager.rememberPagerState(initialPage = 0)
+    val pagerState = rememberPagerState()
 
-    val refreshState = rememberPullRefreshState(
-        refreshing = viewModel.isUpdating.collectAsState().value, onRefresh =
-                                               )
+    val refreshState = rememberSwipeRefreshState(
+        isRefreshing = viewModel.isUpdating.collectAsState().value
+                                                )
 
     Column(Modifier.fillMaxSize()) {
 
@@ -180,19 +180,17 @@ private fun Body(
                 BsuProgressBarSwipeRefreshIndicator(state = state, trigger = offset)
             },
                     ) {
-            Modifier.fillMaxSize().graphicsLayer {
-                    translationY = refreshState.indicatorOffset
-                }
-            PaddingValues(0.dp)
-            PagerDefaults.flingBehavior(
-                state = state,
-                endContentPadding = contentPadding.calculateEndPadding(LayoutDirection.Ltr),
-            )
-            fun PagerScope.(idx: Int)
-            {
+            HorizontalPager(count = pages.size,
+                state = pagerState,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .graphicsLayer {
+                        translationY = refreshState.indicatorOffset
+                    }) { idx ->
+
                 when (pages[idx])
                 {
-                    PaidServicesPage.Info       -> InfoPage(viewModel)
+                    PaidServicesPage.Info -> InfoPage(viewModel)
                     PaidServicesPage.TuitionFee -> TuitionFeePage(viewModel)
                     PaidServicesPage.AcademDebt -> CommonReceiptsPage(
                         viewModel = viewModel,
@@ -201,14 +199,14 @@ private fun Body(
                         viewModel.academDebtReceiptsCommunication.collectAsState().value
                     }
 
-                    PaidServicesPage.Common     -> CommonReceiptsPage(
+                    PaidServicesPage.Common -> CommonReceiptsPage(
                         viewModel = viewModel,
                         emptyErrorMsg = stringResource(id = R.string.common_receipts_empty)
-                                                                     ) {
+                                                                 ) {
                         viewModel.commonReceiptsCommunication.collectAsState().value
                     }
 
-                    PaidServicesPage.Hostel     -> HostelBillsPage(viewModel)
+                    PaidServicesPage.Hostel -> HostelBillsPage(viewModel)
                 }
             }
         }

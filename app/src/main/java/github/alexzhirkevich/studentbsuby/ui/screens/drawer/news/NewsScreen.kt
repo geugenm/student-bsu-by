@@ -24,6 +24,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -139,7 +140,7 @@ private fun Toolbar(isTablet: Boolean, inDetail: Boolean, onMenuClicked: () -> U
                 if (inDetail)
                 {
                     NavigationMenuButton(
-                        icon = Icons.AutoMirrored.Filled.ArrowBack,
+                        icon = Icons.Default.ArrowBack,
                         contentDescription = "Back",
                         onClick = activity::onBackPressed
                                         )
