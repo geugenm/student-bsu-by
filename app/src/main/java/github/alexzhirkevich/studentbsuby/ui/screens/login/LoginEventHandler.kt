@@ -1,5 +1,6 @@
 package github.alexzhirkevich.studentbsuby.ui.screens.login
 
+import android.util.Log
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.material.ExperimentalMaterialApi
@@ -234,7 +235,9 @@ private class InitLoginHandler(
             res.loggedIn to res.loginResult.orEmpty()
         } catch (t: Throwable)
         {
-            false to resourceManager.string(R.string.error_connection)
+            Log.e("LoginError", "Login failed", t)
+
+            false to "${resourceManager.string(R.string.error_connection)}: ${t.message ?: "Unknown error"}"
         }
     }
 }
