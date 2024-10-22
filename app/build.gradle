@@ -43,8 +43,7 @@ android {
                 removeUnusedResources true
             }
 
-            // TODO: See issue #15 https://github.com/geugenm/student-bsu-by/issues/15
-            minifyEnabled false
+            minifyEnabled true
             shrinkResources false
 
             signingConfig signingConfigs.release
