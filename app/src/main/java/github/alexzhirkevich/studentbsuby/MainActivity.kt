@@ -39,7 +39,6 @@ import androidx.compose.ui.window.DialogProperties
 import androidx.core.view.WindowCompat
 import com.google.accompanist.pager.ExperimentalPagerApi
 import dagger.hilt.android.AndroidEntryPoint
-import github.alexzhirkevich.studentbsuby.repo.ApplicationVersion
 import github.alexzhirkevich.studentbsuby.ui.screens.MainScreen
 import github.alexzhirkevich.studentbsuby.ui.theme.StudentbsubyTheme
 import github.alexzhirkevich.studentbsuby.util.communication.collectAsState
@@ -92,19 +91,6 @@ class MainActivity : ComponentActivity()
                 dismissOnBackPress = false,
                 dismissOnClickOutside = false
                                          ),
-            buttonClose = stringResource(id = R.string.exit)
-                    )
-    }
-
-    @Composable
-    fun UpdateProposalDialog(applicationVersion: ApplicationVersion)
-    {
-        UpdateDialog(
-            title = stringResource(id = R.string.update_proposal),
-            text = stringResource(R.string.update_proposal_text),
-            desc = stringResource(id = R.string.update_proposal_what_new),
-            destText = applicationVersion.desc,
-            properties = DialogProperties(usePlatformDefaultWidth = false),
             buttonClose = stringResource(id = R.string.exit)
                     )
     }
