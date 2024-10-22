@@ -12,9 +12,11 @@ android {
             // Place file release.keystore in app directory
             // To generate new keystore use Keystore explorer (Win) - https://keystore-explorer.org/downloads.html
 
+            // Or use linux command
+            // cd app && keytool -genkeypair -v -keystore debug.keystore -alias android_debug_key -keyalg RSA -keysize 2048 -validity 10000
             storeFile file("debug.keystore")
             storePassword "android"
-            keyAlias "androiddebugkey"
+            keyAlias "android_debug_key"
             keyPassword "android"
         }
     }
