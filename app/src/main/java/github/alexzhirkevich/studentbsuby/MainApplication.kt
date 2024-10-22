@@ -34,11 +34,6 @@ import ru.mintrocket.lib.mintpermissions.ext.initMintPermissions
 @ExperimentalMaterialApi
 class MainApplication : Application(), Configuration.Provider
 {
-
-    /**
-     * Called when the application is starting.
-     * Initializes MintPermissions for runtime permissions handling.
-     */
     override fun onCreate()
     {
         super.onCreate()
