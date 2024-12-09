@@ -48,7 +48,7 @@ class SyncWorkerManager @Inject constructor(
 
     override suspend fun isEnabled(): Boolean
     {
-        return workManager.getWorkInfosForUniqueWork(SyncWorker.TAG).await().isNotEmpty()
+        return workManager.getWorkInfosForUniqueWork(SyncWorker.TAG).isDone
     }
 
     override fun run()
